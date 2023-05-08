@@ -1,0 +1,87 @@
+extends base
+
+block content
+    section.music-section#recnet
+        .music-header
+            .title-wrapper 
+                h2 Listen again 
+                .more more
+            .buttons.desktop
+                img.left(src="static/icons/left.svg")
+                img.right(src="static/icons/right.svg")   
+        .music-wrapper
+            .music
+                .cover-wrapper
+                    img(src="") 
+                .info 
+                    .title Chopin: Piano Sonata No.3 1st Mov.
+                    .performer Maurizio Pollini
+
+    section.music-wection#recommend 
+        .music-header
+            .title-wrapper 
+                h2 Music for 
+                    span afternoon
+                .more more
+            .buttons.desktop
+                img.left(src="static/icons/left.svg")
+                img.right(src="static/icons/right.svg")   
+        .music-wrapper
+            .music
+                .cover-wrapper
+                    img(src="") 
+                .info 
+                    .title Chopin: Piano Sonata No.3 1st Mov.
+                    .performer Maurizio Pollini
+
+    section.music-wection#new 
+        .music-header
+            .title-wrapper 
+                h2 New released
+                .more more
+            .buttons.desktop
+                img.left(src="static/icons/left.svg")
+                img.right(src="static/icons/right.svg")   
+        .music-wrapper
+            .music
+                .cover-wrapper
+                    img(src="") 
+                .info 
+                    .title Chopin: Piano Sonata No.3 1st Mov.
+                    .performer Maurizio Pollini
+
+    section.music-wection#top 
+        .music-header
+            .title-wrapper 
+                h2 Today's charts
+                .more more
+            .buttons.desktop
+                img.left(src="static/icons/left.svg")
+                img.right(src="static/icons/right.svg")   
+        .music-wrapper
+            - for(let i=0; i<5; i++)
+                .column
+                    - for(let j=0; j<4; j++)
+                        .music
+                            .rank #{i*4+j+1}
+                            .cover-wrapper
+                                img(src="") 
+                            .info 
+                                .title #{songs}
+                                .performer Maurizio Pollini
+                
+    section.music-wection#recommend-playlist 
+        .music-header
+            .title-wrapper 
+                h2 How about this playlist? 
+                .more more
+            .buttons.desktop
+                img.left(src="static/icons/left.svg")
+                img.right(src="static/icons/right.svg")   
+        .music-wrapper
+            .music
+                .cover-wrapper
+                    img(src="") 
+                .info 
+                    .title Morning Classic
+                    .performer Leonard Hoffstadter

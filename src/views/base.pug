@@ -1,0 +1,31 @@
+doctype html
+html(lang="ko")
+    head
+        title #{pageTitle} | #{siteName}
+        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css")
+        link(rel="stylesheet", href="/static/css/reset.css")
+        link(rel="stylesheet", href="/static/css/style.css")
+        link(rel="stylesheet", href="/static/css/player.css")
+        if (pageTitle === "Search")
+            link(rel="stylesheet", href="/static/css/search.css")
+        if (pageTitle === "Library")
+            link(rel="stylesheet", href="/static/css/library.css")
+        if (pageTitle === "Playlist")
+            link(rel="stylesheet", href="/static/css/playlist.css")
+        if (pageTitle === "Profile")
+            link(rel="stylesheet", href="/static/css/profile.css")
+
+    
+    body
+        include partials/header
+        include partials/nav
+        main
+            block content
+        include partials/player
+        include partials/footer
+    script(src="/static/js/main.js")
+    if (pageTitle === "Search")
+        script(src="/static/js/search.js")
+    if (pageTitle === "Home")
+        script(type="module", src="/static/js/chart.js")
+    block scripts

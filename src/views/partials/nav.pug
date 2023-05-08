@@ -1,0 +1,26 @@
+nav 
+    .logo.desktop 
+        img(src="static/img/logo.png")
+    ul
+        li(data-menu="home")
+            a(href="/")
+                img(src="static/icons/home.svg")
+                span.tablet home
+        li(data-demnu="search")
+            a(href="/search")
+                img(src="static/icons/search.svg")
+                span.tablet search
+        li(data-menu="library")
+            a(href="/library")
+                img(src="static/icons/library_inactive.svg")
+                span.tablet library
+        .divider.desktop 
+        ul.my-playlist.desktop 
+            li(data-menu="playlist")
+                a(href="/playlist")
+                    img(src="static/icons/heart_inactive.svg")
+                    span Liked
+            li(data-menu="playlist")
+                a(href="/playlist")
+                    .playlist-cover C
+                    span Chopin Sonatas

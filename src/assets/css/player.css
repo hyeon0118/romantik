@@ -1,0 +1,238 @@
+.player.open {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  z-index: 9999;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100%;
+  background-color: #202020;
+  flex-direction: column;
+}
+
+.player.open .now-playing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.player.open .player-screen {
+  margin-top: 40px;
+}
+
+.player.open .player-header,
+.current-playlist .player-header {
+  height: 64px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 8px 15px;
+}
+
+/* .player.open .player-header img {
+  width: 30px;
+  height: 30px;
+} */
+
+.player.open .now-playing .cover-wrapper {
+  width: 85vw;
+  height: 85vw;
+  max-width: 350px;
+  max-height: 350px;
+}
+
+.player.open .controller-desktop .icons {
+  display: flex !important;
+  justify-content: space-between;
+  margin-top: 100px;
+}
+
+.player.open .controller-desktop .icons img {
+}
+
+.player.open .controller-desktop {
+  width: 100%;
+}
+
+.player.open .controller.mobile {
+  display: none;
+}
+
+.player.open .info {
+  text-align: center;
+  padding: 0;
+  margin-top: 45px;
+}
+
+.player.open .progress-bar {
+  position: absolute;
+  width: 85vw;
+  bottom: calc(100vh - 620px);
+}
+
+.player.open .progress-bar .passed,
+.player.open .progress-bar .bar,
+.player.open .progress-bar .total {
+  font-size: 13px;
+  display: flex !important;
+}
+
+.player.open .progress-bar .bar {
+  margin-bottom: 5px;
+  position: relative;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.player.open .progress-bar .bar::after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  width: 50%;
+  background-color: rgba(255, 255, 255, 1);
+}
+
+.player.open .progress-bar .passed {
+  position: absolute;
+  margin-top: 7px;
+}
+
+.player.open .progress-bar .total {
+  position: relative;
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.player.open .icons img:nth-of-type(3) {
+  transition: 0.2s ease-in-out;
+  border-radius: 50%;
+  padding: 5px;
+  width: 70px;
+  height: 70px;
+}
+
+.player.open .icons img:nth-of-type(3):hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+}
+
+.player.open .now-playing .title {
+  font-size: 25px;
+  line-height: inherit;
+  white-space: nowrap;
+  width: 85vw;
+}
+
+.player.open .now-playing .performer {
+  font-size: 15px;
+  width: 85vw;
+  white-space: nowrap;
+}
+
+.player.open .bottom-icons {
+  width: 85vw;
+  position: absolute;
+  bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* current playlist */
+
+.current-playlist {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  height: calc(100vh - 104px);
+  background-color: #202020;
+  position: absolute;
+  z-index: 2;
+}
+
+.current-playlist .info {
+  margin: 0;
+}
+
+.current-playlist .cover-wrapper {
+  width: 47px;
+  height: 47px;
+  min-height: 47px;
+  min-width: 47px;
+  margin: 0;
+}
+
+.current-playlist .current-playlist-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.current-playlist .current-playlist-wrapper > div {
+  position: relative;
+  width: 100%;
+  display: flex;
+  padding: 10px 30px;
+}
+
+.current-playlist .current-playlist-wrapper > div:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.current-playlist .current-playlist-wrapper > div:not(.current)::after {
+  content: url("../icons/play.svg");
+  position: absolute;
+  height: 47px;
+  width: 47px;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+}
+
+.current-playlist .current-playlist-wrapper > div:not(.current):hover::after {
+  opacity: 1;
+}
+
+.current-playlist .current-playlist-wrapper .info {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  margin: 0;
+}
+
+.current-playlist .current {
+  position: relative;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.current-playlist .current::after {
+  content: url(../icons/sound.svg);
+  background-color: rgba(0, 0, 0, 0.5);
+  position: absolute;
+  height: 47px;
+  width: 47px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 540px) {
+}
+
+@media (min-width: 600px) {
+  .current-playlist {
+    margin-left: 240px;
+    width: calc(100vw - 240px);
+    height: calc(100vh - 90px);
+  }
+}
