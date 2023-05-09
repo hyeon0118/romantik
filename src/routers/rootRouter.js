@@ -20,23 +20,30 @@ rootRouter.get("/profile", profile);
 
 
 
-rootRouter.get('/add-work', (req, res) => {
-    const work = new Work({
-        title: "test",
-        composer: "test",
-        view: 0,
-        performer: "test",
-        time: "test",
-        character: "test"
-    });
 
-    work.save()
-        .then((result) => {
-            res.send(result)
-        })
-        .catch((err) => {
-            console.log(err)
-        })
+rootRouter.get('/update', (req, res) => {
+    Work.updateMany(
+        {},
+        { $set: { videoId } }
+    )
+
+
+    // const work = new Work({
+    //     title: "test",
+    //     composer: "test",
+    //     view: 0,
+    //     performer: "test",
+    //     time: "test",
+    //     character: "test"
+    // });
+
+    // work.save()
+    //     .then((result) => {
+    //         res.send(result)
+    //     })
+    //     .catch((err) => {
+    //         console.log(err)
+    //     })
 
     // Song.find()
     //     .then((result) => {

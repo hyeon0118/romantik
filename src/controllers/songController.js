@@ -3,23 +3,13 @@ import Work from "../models/Work";
 import User from "../models/User";
 
 
-const axios = require('axios'); // new 
-const API_KEY = process.env.API_KEY;
-const titleList = []
-
-
-
-
 export const home = async (req, res) => {
-  Work.find()
+  Work.find({ videoId: { $exists: true } })
+    .sort({ view: -1 })
     .then((result) => {
-      for (let i = 0; i < result.length; i++) {
-        titleList.push(result[i].title)
-      }
-
       return res.render("home", {
         pageTitle: "Home",
-        works: titleList
+        works: result
       });
     })
     .catch((err) => {
