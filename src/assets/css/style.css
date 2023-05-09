@@ -12,6 +12,10 @@ body {
   overflow-x: hidden;
 }
 
+.icons {
+  z-index: 99999;
+}
+
 html {
   display: inline-block;
   position: absolute;
@@ -322,6 +326,11 @@ main .cover-wrapper::after {
   border-radius: 0;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.3);
+}
+
+#top .performer {
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .player:not(.open) {

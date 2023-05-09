@@ -64,7 +64,7 @@ block content
                     - for(let j=0; j<4; j++)
                         .music
                             .rank #{i*4+j+1}
-                            .cover-wrapper
+                            .cover-wrapper(onclick=`changeVideoId(${works[i+4+j].videoId})`)
                                 img(src="") 
                             .info 
                                 .title #{works[i*4+j].title}
