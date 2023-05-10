@@ -300,10 +300,11 @@ main .cover-wrapper::after {
   width: 100%;
   margin-bottom: 10px;
   align-items: center;
+  height: 60px;
 }
 
 #top .music-wrapper .info {
-  width: auto;
+  width: 100%;
 }
 
 #top .music-wrapper .cover-wrapper {

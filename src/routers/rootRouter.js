@@ -22,12 +22,6 @@ rootRouter.get("/profile", profile);
 
 
 rootRouter.get('/update', (req, res) => {
-    Work.updateMany(
-        {},
-        { $set: { videoId } }
-    )
-
-
     // const work = new Work({
     //     title: "test",
     //     composer: "test",

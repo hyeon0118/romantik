@@ -43,12 +43,13 @@ block content
                 img.left(src="static/icons/left.svg")
                 img.right(src="static/icons/right.svg")   
         .music-wrapper
-            .music
-                .cover-wrapper
-                    img(src="") 
-                .info 
-                    .title Chopin: Piano Sonata No.3 1st Mov.
-                    .performer Maurizio Pollini
+            - for(let i=0; i<10; i++)
+                .music
+                    .cover-wrapper
+                        img(src="") 
+                    .info 
+                        .title #{recent[i].title}
+                        .performer #{recent[i].performer}
 
     section.music-wection#top 
         .music-header
@@ -64,16 +65,16 @@ block content
                     - for(let j=0; j<4; j++)
                         .music
                             .rank #{i*4+j+1}
-                            .cover-wrapper(onclick=`changeVideoId(${works[i+4+j].videoId})`)
+                            .cover-wrapper(onclick = `updateVideoId('${rank[i*4+j].videoId}')`)
                                 img(src="") 
                             .info 
-                                .title #{works[i*4+j].title}
-                                .performer #{works[i*4+j].performer}
+                                .title #{rank[i*4+j].title}
+                                .performer #{rank[i*4+j].performer}
                 
     section.music-wection#recommend-playlist 
         .music-header
             .title-wrapper 
-                h2 How about this playlist? 
+                h2 How about this playlist? #{currentVideoId}
                 .more more
             .buttons.desktop
                 img.left(src="static/icons/left.svg")

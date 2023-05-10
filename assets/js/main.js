@@ -56,9 +56,6 @@ if (currentPath !== "/profile") {
     menuItem.classList.add('active');
 }
 
-
-
-
 const playButton = document.querySelectorAll(".play")
 const iframe = document.querySelector("#iframe")
 
@@ -69,20 +66,30 @@ tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+let currentVideoId = "tDEOyl_o30o"
+
+
 var iframePlayer;
-let currentVideoId = ""
 function onYouTubeIframeAPIReady() {
     iframePlayer = new YT.Player('player', {
         height: '0',
         width: '0',
-        videoId: '06-puNWFuMQ',
-        // videoId: currentVideoId,
+        videoId: `${currentVideoId}`,
         events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
         }
     });
 }
+
+function updateVideoId(videoId) {
+    stopVideo()
+    currentVideoId = videoId
+    iframePlayer.loadVideoById(currentVideoId);
+    isPlaying = true;
+    playPause();
+}
+
 
 let isPlaying = false;
 
@@ -104,7 +111,6 @@ function playPause() {
 
 
 function onPlayerReady(event) {
-    console.log("hi");
     playButton.forEach(btn => {
         btn.addEventListener('click', () => {
             iframePlayer.playVideo();
@@ -123,13 +129,16 @@ function onPlayerReady(event) {
 
 let login = false;
 function onPlayerStateChange(event) {
-    if (event.data == YT.PlayerState.PLAYING && login == false) {
-        setTimeout(stopVideo, 60000);
-    }
-}
+    // if (event.data == YT.PlayerState.PLAYING && login == false) {
+    //     setTimeout(stopVideo, 60000);
+    // }
+};
 
 
 function stopVideo() {
+    isPlaying = !isPlaying;
     iframePlayer.stopVideo();
-}
+    playPause();
+};
+
 
