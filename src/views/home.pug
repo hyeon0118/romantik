@@ -45,7 +45,7 @@ block content
         .music-wrapper
             - for(let i=0; i<10; i++)
                 .music
-                    .cover-wrapper
+                    .cover-wrapper(onclick = `addPlaylist('${recent[i].videoId}', '${recent[i].title}', '${recent[i].performer}', '${recent[i].composer}' ); updateNowPlaying()`)
                         img(src="") 
                     .info 
                         .title #{recent[i].title}
@@ -65,7 +65,7 @@ block content
                     - for(let j=0; j<4; j++)
                         .music
                             .rank #{i*4+j+1}
-                            .cover-wrapper(onclick = `updateVideoId('${rank[i*4+j].videoId}')`)
+                            .cover-wrapper(onclick = `addPlaylist('${rank[i*4+j].videoId}', '${rank[i*4+j].title}', '${rank[i*4+j].performer}', '${rank[i*4+j].composer}' ); updateNowPlaying()`)
                                 img(src="") 
                             .info 
                                 .title #{rank[i*4+j].title}
@@ -74,7 +74,7 @@ block content
     section.music-wection#recommend-playlist 
         .music-header
             .title-wrapper 
-                h2 How about this playlist? #{currentVideoId}
+                h2 How about this playlist?
                 .more more
             .buttons.desktop
                 img.left(src="static/icons/left.svg")

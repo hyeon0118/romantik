@@ -14,11 +14,11 @@
                 img(src="static/icons/heart_inactive.svg")
         .controller-desktop.closed 
             .icons.desktop 
-                img(src="static/icons/random_inactive.svg")
-                img(src="static/icons/previous.svg")
+                img(class="random", src="static/icons/random_inactive.svg")
+                img(class="previous", src="static/icons/previous.svg")
                 img.play(src="static/icons/play.svg")
-                img(src="static/icons/next.svg")
-                img(src="static/icons/repeat_inactive.svg")
+                img(class="next", src="static/icons/next.svg")
+                img(class="repeat", src="static/icons/repeat_inactive.svg")
             .progress-bar
                 .desktop.passed 2:36
                 .bar 
@@ -35,13 +35,13 @@
     .player-header
         img(src="static/icons/close.svg")
     .current-playlist-wrapper 
-        .current
-            .cover-wrapper
-            .info 
-                .title Brahms: Intermezzo
-                .performer Evgeni Kissin
-            .drag
-                img(src="static/icons/drag.svg")
+        //- .element 
+        //-     .cover-wrapper
+        //-     .info 
+        //-         .title Brahms: Intermezzo
+        //-         .performer Evgeni Kissin
+        //-     .drag
+        //-         img(src="static/icons/drag.svg")
         
 #player
 

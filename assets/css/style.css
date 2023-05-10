@@ -646,7 +646,7 @@ main .cover-wrapper::after {
     justify-content: center;
   }
 
-  .player:not(.open) img::before {
+  /* .player:not(.open) img::before {
     content: "";
     display: block;
     width: 100px;
@@ -654,5 +654,5 @@ main .cover-wrapper::after {
     position: absolute;
     background-color: red;
     z-index: 99999999;
-  }
+  } */
 }
