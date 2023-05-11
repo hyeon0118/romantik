@@ -102,6 +102,7 @@ function onYouTubeIframeAPIReady() {
 const currentTitle = document.querySelector(".player .info .title")
 const currentPerformer = document.querySelector(".player .info .performer")
 const currentComposer = document.querySelector(".player .info .composer")
+const currentCover = document.querySelector(".player .cover-wrapper")
 
 let currentIndex = -1;
 let playing = 'none';
@@ -117,7 +118,8 @@ function playPlayer() {
     playing = currentPlaylist[currentIndex]
     currentVideoId = playing.videoId
     iframePlayer.loadVideoById(currentVideoId);
-    updateCurrentCover(currentVideoId);
+    updateCurrentCover();
+    currentCover.style.backgroundImage = `url(${playing.thumbnail})`;
     currentTitle.textContent = playing.title;
     currentPerformer.textContent = playing.performer;
     currentComposer.textContent = playing.composer;
@@ -263,27 +265,31 @@ previous.addEventListener("click", playPreviousVideo)
 
 let currentPlaylist = [];
 
-function addPlaylist(videoId, title, performer, composer) {
+function addPlaylist(videoId, title, performer, composer, thumbnail) {
     const added = {
         videoId: videoId,
         title: title,
         performer: performer,
-        composer: composer
+        composer: composer,
+        thumbnail: thumbnail,
     }
+
+    currentCoverUrl = thumbnail;
 
     currentPlaylist.push(added);
 
-    createPlaylistElement(title, performer);
+    createPlaylistElement(title, performer, thumbnail);
 }
 
 
 
-function createPlaylistElement(addedTitle, addedPerformer) {
+function createPlaylistElement(addedTitle, addedPerformer, addedCover) {
     const newElement = document.createElement('div');
     newElement.classList.add('element');
 
     const coverWrapper = document.createElement('div');
     coverWrapper.classList.add('cover-wrapper');
+    coverWrapper.style.backgroundImage = `url(${addedCover})`
 
     const info = document.createElement('div');
     info.classList.add('info');
@@ -351,12 +357,16 @@ function updateProgressBar(event) {
 
 bar.addEventListener('click', updateProgressBar);
 
-function updateCurrentCover(videoId) {
-    const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/default.jpg`;
+let currentCoverUrl = "";
 
+function getCover(url) {
+    const div = document.get
+}
+
+function updateCurrentCover() {
     const covers = document.querySelectorAll(".player .cover-wrapper");
 
     covers.forEach((cover) => {
-        cover.style.backgroundImage = `url(${thumbnailUrl})`;
+        cover.style.backgroundImage = `url(${currentCoverUrl})`;
     })
 }

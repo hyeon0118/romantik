@@ -6,8 +6,8 @@ const workSchema = new mongoose.Schema({
     videoId: { type: String, required: true },
     view: { type: Number, required: true },
     performer: { type: String, required: true },
-    time: { type: String, required: true },
-    character: { type: String, required: true }
+    thumbnail: { type: String },
+    date: { type: String }
 });
 
 const Work = mongoose.model("Work", workSchema);
