@@ -28,7 +28,11 @@
                     img(src="static/icons/heart_inactive.svg")
                     img(class="view-playlist" src="static/icons/add_to_playlist.svg")
                     img(class="view-playlist" src="static/icons/view_playlist.svg")
-                    img(src="static/icons/sound.svg")
+                    .soundbar-container
+                        .soundbar-wrapper
+                            .soundbar
+                        img(class="sound", src="static/icons/sound.svg")
+
         .bottom-icons.mobile.hidden
             img(src="static/icons/heart_inactive.svg")
             img(class="view-playlist" src="static/icons/playlist.svg")
@@ -36,6 +40,7 @@
         .player-header
             img(src="static/icons/close.svg")
         .current-playlist-wrapper 
+
             
     #player
 
