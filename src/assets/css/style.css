@@ -255,13 +255,25 @@ main .cover-wrapper::after {
 .info {
   margin-top: 8px;
   width: 100%;
-  padding: 0 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.player .info {
+  overflow: hidden;
+}
+
+.player .title,
+.player .composer,
+.player .performer {
+  overflow: auto;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .title,
 .performer {
   line-height: 16px;
-  overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -416,8 +428,35 @@ main .cover-wrapper::after {
 
 .player:not(.open) .title {
   text-overflow: ellipsis;
-  overflow: hidden;
   white-space: nowrap;
+}
+
+.soundbar-container {
+  height: 30px;
+  width: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  background-color: transparent;
+  padding-top: 10px;
+  border-radius: 10px;
+}
+
+.soundbar-wrapper {
+  height: 100%;
+  width: 100%;
+  padding: 0 14px;
+  display: none;
+  transform: rotate(180deg);
+}
+
+.soundbar {
+  position: relative;
+  --sound-height: 100%;
+  width: 2px;
+  background-color: white;
+  height: var(--sound-height);
 }
 
 @media (min-width: 530px) {
@@ -555,6 +594,7 @@ main .cover-wrapper::after {
   .player:not(.open) .progress-bar .passed,
   .player:not(.open) .progress-bar .total {
     margin: 0 10px;
+    width: 20px;
   }
 
   .player:not(.open) .progress-bar .bar {

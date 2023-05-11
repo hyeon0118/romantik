@@ -255,13 +255,25 @@ main .cover-wrapper::after {
 .info {
   margin-top: 8px;
   width: 100%;
-  padding: 0 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.player .info {
+  overflow: hidden;
+}
+
+.player .title,
+.player .composer,
+.player .performer {
+  overflow: auto;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
 
 .title,
 .performer {
   line-height: 16px;
-  overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -416,7 +428,6 @@ main .cover-wrapper::after {
 
 .player:not(.open) .title {
   text-overflow: ellipsis;
-  overflow: hidden;
   white-space: nowrap;
 }
 

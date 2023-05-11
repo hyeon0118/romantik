@@ -99,9 +99,9 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
-const currentTitle = document.querySelector(".player .info .title")
-const currentPerformer = document.querySelector(".player .info .performer")
-const currentComposer = document.querySelector(".player .info .composer")
+const currentTitle = document.querySelector(".player .info .title span")
+const currentPerformer = document.querySelector(".player .info .performer span")
+const currentComposer = document.querySelector(".player .info .composer span")
 const currentCover = document.querySelector(".player .cover-wrapper")
 
 let currentIndex = -1;
@@ -350,8 +350,6 @@ function updateProgressBar(event) {
     const progress = (clickedX / barWidth) * 100;
 
     iframePlayer.seekTo(iframePlayer.getDuration() * (progress * 0.01));
-    console.log(clickedX);
-    console.log(barWidth);
     bar.style.setProperty('--after-width', `${progress}%`)
 }
 
@@ -464,3 +462,5 @@ function hideSoundbar() {
 
 soundbarContainer.addEventListener("mouseover", showSoundbar)
 soundbarContainer.addEventListener("mouseleave", hideSoundbar)
+
+

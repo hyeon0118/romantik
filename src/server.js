@@ -9,6 +9,7 @@ import rootRouter from "./routers/rootRouter";
 const app = express();
 const logger = morgan("dev");
 
+
 app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views");
 app.use(logger);
@@ -32,6 +33,12 @@ app.get("views/partials/home.pug", function (req, res) {
 })
 
 app.use("/", rootRouter);
+app.use(function (req, res, next) {
+  res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+  res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+  next();
+});
+
 
 /*
 Add more routers here!

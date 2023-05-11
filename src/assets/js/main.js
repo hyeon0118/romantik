@@ -99,9 +99,10 @@ function onYouTubeIframeAPIReady() {
     });
 }
 
-const currentTitle = document.querySelector(".player .info .title")
-const currentPerformer = document.querySelector(".player .info .performer")
-const currentComposer = document.querySelector(".player .info .composer")
+const currentTitle = document.querySelector(".player .info .title span")
+const currentPerformer = document.querySelector(".player .info .performer span")
+const currentComposer = document.querySelector(".player .info .composer span")
+const currentCover = document.querySelector(".player .cover-wrapper")
 
 let currentIndex = -1;
 let playing = 'none';
@@ -118,6 +119,7 @@ function playPlayer() {
     currentVideoId = playing.videoId
     iframePlayer.loadVideoById(currentVideoId);
     updateCurrentCover();
+    currentCover.style.backgroundImage = `url(${playing.thumbnail})`;
     currentTitle.textContent = playing.title;
     currentPerformer.textContent = playing.performer;
     currentComposer.textContent = playing.composer;
@@ -287,8 +289,7 @@ function createPlaylistElement(addedTitle, addedPerformer, addedCover) {
 
     const coverWrapper = document.createElement('div');
     coverWrapper.classList.add('cover-wrapper');
-    coverWrapper.style.backgroundColor = "red";
-    // coverWrapper.style.backgroundImage = `url(${addedCover})`
+    coverWrapper.style.backgroundImage = `url(${addedCover})`
 
     const info = document.createElement('div');
     info.classList.add('info');
@@ -349,8 +350,6 @@ function updateProgressBar(event) {
     const progress = (clickedX / barWidth) * 100;
 
     iframePlayer.seekTo(iframePlayer.getDuration() * (progress * 0.01));
-    console.log(clickedX);
-    console.log(barWidth);
     bar.style.setProperty('--after-width', `${progress}%`)
 }
 
@@ -369,3 +368,98 @@ function updateCurrentCover() {
         cover.style.backgroundImage = `url(${currentCoverUrl})`;
     })
 }
+
+
+// soundbar 
+
+const soundbarContainer = document.querySelector(".soundbar-container");
+const soundbarWrapper = document.querySelector('.soundbar-wrapper');
+const soundbar = document.querySelector('.soundbar');
+const soundHeightVariable = '--sound-height';
+
+let isDragging = false;
+
+soundbarWrapper.addEventListener('mousedown', startDrag);
+soundbarWrapper.addEventListener('touchstart', startDrag);
+document.addEventListener('mousemove', handleDrag);
+document.addEventListener('touchmove', handleDrag);
+document.addEventListener('mouseup', stopDrag);
+document.addEventListener('touchend', stopDrag);
+
+function startDrag(event) {
+    isDragging = true;
+    event.preventDefault();
+    updateSoundHeight(event);
+}
+
+function handleDrag(event) {
+    if (isDragging) {
+        event.preventDefault();
+        updateSoundHeight(event);
+        showSoundbar()
+    }
+}
+
+function stopDrag() {
+    isDragging = false;
+}
+
+const soundIcon = document.querySelector('.sound')
+let newSoundHeight = 0;
+
+function updateSoundHeight(event) {
+    const soundbarHeight = soundbarWrapper.offsetHeight;
+    const rect = soundbarWrapper.getBoundingClientRect();
+    const offsetY = event.clientY;
+    let relativeY = rect.bottom - offsetY;
+    const clampedRelativeY = Math.max(0, Math.min(relativeY, soundbarHeight));
+    let percentage = ((clampedRelativeY / soundbarHeight) * 100);
+    newSoundHeight = `${Math.floor(relativeY)}px`;
+
+    if (!isMuted) {
+        if (Math.floor(relativeY) > 60) {
+            newSoundHeight = '60px';
+        }
+    }
+    soundbar.style.setProperty(soundHeightVariable, newSoundHeight);
+
+    const volume = percentage;
+    iframePlayer.setVolume(volume);
+
+}
+
+let isMuted = false
+let previousVolume = 0;
+
+soundIcon.addEventListener("click", (event) => {
+    let previousHeight = newSoundHeight;
+    if (!isMuted) {
+        isMuted = true;
+        soundIcon.src = "static/icons/mute.svg";
+        previousVolume = iframePlayer.getVolume();
+        iframePlayer.setVolume(0);
+        soundbar.style.setProperty(soundHeightVariable, 0);
+    } else {
+        soundIcon.src = "static/icons/sound.svg";
+        iframePlayer.setVolume(previousVolume);
+        soundbar.style.setProperty(soundHeightVariable, previousHeight);
+    }
+})
+
+function showSoundbar() {
+    soundbarContainer.style.height = '100px';
+    soundbarContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'
+    soundbarContainer.style.marginBottom = '70px';
+    soundbarWrapper.style.display = "flex";
+}
+
+function hideSoundbar() {
+    soundbarContainer.style.height = '30px'
+    soundbarContainer.style.backgroundColor = 'transparent'
+    soundbarContainer.style.marginBottom = '0';
+    soundbarWrapper.style.display = "none"
+}
+
+soundbarContainer.addEventListener("mouseover", showSoundbar)
+soundbarContainer.addEventListener("mouseleave", hideSoundbar)
+
