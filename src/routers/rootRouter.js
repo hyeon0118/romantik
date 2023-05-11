@@ -19,8 +19,6 @@ rootRouter.get("/playlist", playlist);
 rootRouter.get("/profile", profile);
 
 
-
-
 rootRouter.get('/update', (req, res) => {
     // const work = new Work({
     //     title: "test",

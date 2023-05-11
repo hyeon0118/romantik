@@ -213,6 +213,8 @@ nav ul li a {
 }
 
 .cover-wrapper {
+  background-position: center;
+  background-size: cover;
   cursor: pointer;
   position: relative;
   height: 150px;
@@ -355,6 +357,7 @@ main .cover-wrapper::after {
 }
 
 .player:not(.open) .progress-bar .bar {
+  --after-width: 0%;
   position: absolute;
   left: 0;
   bottom: 0;
@@ -369,7 +372,7 @@ main .cover-wrapper::after {
   left: 0;
   bottom: 0;
   height: 2px;
-  width: 50%;
+  width: var(--after-width);
   background-color: white;
 }
 

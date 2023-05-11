@@ -2,7 +2,7 @@
   position: absolute;
   display: flex;
   align-items: center;
-  z-index: 9999;
+  z-index: 999;
   position: absolute;
   top: 0;
   left: 0;
@@ -91,7 +91,7 @@
   content: "";
   position: absolute;
   height: 2px;
-  width: 50%;
+  width: var(--after-width);
   background-color: rgba(255, 255, 255, 1);
 }
 
@@ -153,7 +153,7 @@
   height: calc(100vh - 104px);
   background-color: #202020;
   position: absolute;
-  z-index: 2;
+  z-index: 9999;
 }
 
 .current-playlist .info {

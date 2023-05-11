@@ -25,8 +25,7 @@ html(lang="ko")
         main
             block content
         include partials/player
-        include partials/footer
     script(src="/static/js/main.js")
-    if (pageTitle === "Search")
+    if (pageTitle == "Search") 
         script(src="/static/js/search.js")
     block scripts

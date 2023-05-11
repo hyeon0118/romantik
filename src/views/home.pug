@@ -5,7 +5,6 @@ block content
         .music-header
             .title-wrapper 
                 h2 Listen again 
-                .more more
             .buttons.desktop
                 img.left(src="static/icons/left.svg")
                 img.right(src="static/icons/right.svg")   
@@ -17,12 +16,11 @@ block content
                     .title Chopin: Piano Sonata No.3 1st Mov.
                     .performer Maurizio Pollini
 
-    section.music-wection#recommend 
+    section.music-section#recommend 
         .music-header
             .title-wrapper 
                 h2 Music for 
                     span afternoon
-                .more more
             .buttons.desktop
                 img.left(src="static/icons/left.svg")
                 img.right(src="static/icons/right.svg")   
@@ -34,11 +32,10 @@ block content
                     .title Chopin: Piano Sonata No.3 1st Mov.
                     .performer Maurizio Pollini
 
-    section.music-wection#new 
+    section.music-section#new 
         .music-header
             .title-wrapper 
                 h2 New released
-                .more more
             .buttons.desktop
                 img.left(src="static/icons/left.svg")
                 img.right(src="static/icons/right.svg")   
@@ -51,11 +48,11 @@ block content
                         .title #{recent[i].title}
                         .performer #{recent[i].performer}
 
-    section.music-wection#top 
+
+    section.music-section#top
         .music-header
             .title-wrapper 
                 h2 Today's charts
-                .more more
             .buttons.desktop
                 img.left(src="static/icons/left.svg")
                 img.right(src="static/icons/right.svg")   
@@ -71,11 +68,10 @@ block content
                                 .title #{rank[i*4+j].title}
                                 .performer #{rank[i*4+j].performer}
                 
-    section.music-wection#recommend-playlist 
+    section.music-section#recommend-playlist 
         .music-header
             .title-wrapper 
                 h2 How about this playlist?
-                .more more
             .buttons.desktop
                 img.left(src="static/icons/left.svg")
                 img.right(src="static/icons/right.svg")   
@@ -86,3 +82,4 @@ block content
                 .info 
                     .title Morning Classic
                     .performer Leonard Hoffstadter
+    

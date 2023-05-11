@@ -3,24 +3,24 @@ nav
         img(src="static/img/logo.png")
     ul
         li(data-menu="home")
-            a(href="/")
+            a(href="/" onclick="loadPage('home')")
                 img(src="static/icons/home.svg")
                 span.tablet home
         li(data-demnu="search")
-            a(href="/search")
+            a(href="/search" onclick="loadPage('search')")
                 img(src="static/icons/search.svg")
                 span.tablet search
         li(data-menu="library")
-            a(href="/library")
+            a(href="/library" onclick="loadPage('library-container')")
                 img(src="static/icons/library_inactive.svg")
                 span.tablet library
         .divider.desktop 
         ul.my-playlist.desktop 
             li(data-menu="playlist")
-                a(href="/playlist")
+                a(href="/playlist" onclick="loadPage('playlist')")
                     img(src="static/icons/heart_inactive.svg")
                     span Liked
             li(data-menu="playlist")
-                a(href="/playlist")
+                a(href="/playlist" onclick="loadPage('playlist')")
                     .playlist-cover C
                     span Chopin Sonatas

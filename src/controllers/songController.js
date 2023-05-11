@@ -2,6 +2,7 @@ import { Billingconductor } from "aws-sdk";
 import Work from "../models/Work";
 import User from "../models/User";
 
+
 export const home = async (req, res) => {
   const sortByViewPromise = Work.find({ videoId: { $exists: true } }).sort({ view: -1 }).exec();
   const sortByDatePromise = Work.find({ videoId: { $exists: true } }).sort({ date: -1 }).exec();
@@ -35,18 +36,11 @@ export const profile = async (req, res) => {
   return res.render("profile", { pageTitle: "Profile" });
 };
 
+export const player = async (req, res) => {
+  const playerData = {
 
-// songController.js
+  };
 
-const EventEmitter = require('events');
+  return res.json(playerData);
+}
 
-// 이벤트를 생성할 객체 생성
-const eventEmitter = new EventEmitter();
-
-// 이벤트 핸들러 등록
-eventEmitter.on('customEvent', (data) => {
-  console.log('이벤트 발생:', data);
-});
-
-// 이벤트 발생
-eventEmitter.emit('customEvent', 'Hello, Node.js!');

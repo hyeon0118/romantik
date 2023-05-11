@@ -27,7 +27,12 @@ app.use(localsMiddleware);
 app.use("/uploads", express.static("uploads"));
 app.use("/static", express.static("assets"));
 
+app.get("views/partials/home.pug", function (req, res) {
+  res.render("player");
+})
+
 app.use("/", rootRouter);
+
 /*
 Add more routers here!
 */
