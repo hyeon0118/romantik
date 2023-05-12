@@ -263,12 +263,19 @@ main .cover-wrapper::after {
   overflow: hidden;
 }
 
+.player .info div {
+  display: flex;
+  align-items: center;
+  height: ;
+}
+
 .player .title,
 .player .composer,
 .player .performer {
   overflow: auto;
   white-space: nowrap;
   text-overflow: ellipsis;
+  line-height: 14px;
 }
 
 .title,
@@ -432,7 +439,7 @@ main .cover-wrapper::after {
 }
 
 .soundbar-container {
-  height: 30px;
+  height: 27px;
   width: 30px;
   display: flex;
   flex-direction: column;
@@ -643,6 +650,7 @@ main .cover-wrapper::after {
     flex-direction: column;
     justify-content: center;
     margin: 0;
+    margin-left: 10px;
   }
 
   .player:not(.open) .icons {
@@ -667,7 +675,7 @@ main .cover-wrapper::after {
   }
 
   .player:not(.open) .controller-right-wrapper {
-    width: 150px;
+    width: 130px;
     height: 40px;
     justify-content: space-between;
     align-items: center;
@@ -675,7 +683,7 @@ main .cover-wrapper::after {
   }
 
   .player:not(.open) .controller-right-wrapper img {
-    width: 30px;
+    width: 27px;
   }
 
   .my-playlist .playlist-cover {

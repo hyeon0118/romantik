@@ -20,17 +20,25 @@ block content
         .music-header
             .title-wrapper 
                 h2 Music for 
-                    span afternoon
+                    span #{time} 
+                    - if(time === 'morning')
+                        span ☀️
+                    - else if(time === 'afternoon')
+                        span &#9749;
+                    - else if(time === 'evening')
+                        span &#x1F306;
+                    - else 
+                        span &#x1F319;
             .buttons.desktop
                 img.left(src="static/icons/left.svg")
                 img.right(src="static/icons/right.svg")   
         .music-wrapper
-            .music
-                .cover-wrapper
-                    img(src="") 
-                .info 
-                    .title Chopin: Piano Sonata No.3 1st Mov.
-                    .performer Maurizio Pollini
+            - for(let i=0; i < recommend.length; i++)
+                .music
+                    .cover-wrapper(style=`background-image: url('${recommend[i].thumbnail}')`, onclick = `addPlaylist('${recommend[i].videoId}', '${recommend[i].title}', '${recommend[i].performer}', '${recommend[i].composer}', '${recommend[i].thumbnail}' ); updateNowPlaying()`)
+                    .info 
+                        .title #{recommend[i].title}
+                        .performer #{recommend[i].performer}
 
     section.music-section#new 
         .music-header

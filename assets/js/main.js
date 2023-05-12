@@ -188,7 +188,22 @@ function onPlayerStateChange(event) {
         setTimeout(stopVideo, 60000);
     } else if (event.data == YT.PlayerState.PLAYING) {
         duration = iframePlayer.getDuration();
-        duration = `${Math.floor(duration / 60)}:${Math.floor(duration - (60 * (Math.floor(duration / 60))))}`
+        let minutes = Math.floor(duration / 60)
+        const seconds = Math.floor(duration - (60 * (Math.floor(duration / 60))))
+
+        if (minutes >= 60) {
+            const hours = Math.floor(minutes / 60)
+            minutes = minutes - (hours * 60)
+            duration = `${hours}:${minutes}:${seconds}`
+        } else {
+            if (seconds < 10) {
+                duration = `${minutes}:0${seconds}`
+            } else {
+                duration = `${minutes}:${seconds}`
+            }
+        }
+
+
         total.textContent = duration;
     } else {
         if (event.data === YT.PlayerState.ENDED) {
@@ -449,12 +464,12 @@ soundIcon.addEventListener("click", (event) => {
 function showSoundbar() {
     soundbarContainer.style.height = '100px';
     soundbarContainer.style.backgroundColor = 'rgba(255, 255, 255, 0.3)'
-    soundbarContainer.style.marginBottom = '70px';
+    soundbarContainer.style.marginBottom = '73px';
     soundbarWrapper.style.display = "flex";
 }
 
 function hideSoundbar() {
-    soundbarContainer.style.height = '30px'
+    soundbarContainer.style.height = '27px'
     soundbarContainer.style.backgroundColor = 'transparent'
     soundbarContainer.style.marginBottom = '0';
     soundbarWrapper.style.display = "none"

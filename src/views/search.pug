@@ -65,9 +65,11 @@ block content
                 .cover-wrapper 
                 .title Chopin 
             h2 Top result 
-            .result 
-                .cover-wrapper 
-                .info 
-                    .title Chopin: Piano Sonata No.3 
-                    .performer Maurizio Pollini 
-                img(src="static/icons/add_to_playlist.svg")
+            - if(results !== undefined)
+                each result in results
+                    .result     
+                        .cover-wrapper(style=`background-image:'url(${result.thumbnail})'`) 
+                        .info 
+                            .title #{result.title}
+                            .performer #{result.performer}
+                        img(src="static/icons/add_to_playlist.svg")

@@ -4,6 +4,7 @@ import { library } from "../controllers/songController";
 import { search } from "../controllers/songController";
 import { playlist } from "../controllers/songController";
 import { profile } from "../controllers/songController";
+import { result } from "../controllers/songController";
 import Composer from "../models/Composer";
 import User from "../models/User";
 import Work from "../models/Work";
@@ -11,6 +12,7 @@ import Work from "../models/Work";
 
 
 const rootRouter = express.Router();
+let searchResult = [];
 
 rootRouter.get("/", home);
 rootRouter.get("/", (req, res) => {
@@ -20,6 +22,8 @@ rootRouter.get("/search", search);
 rootRouter.get("/library", library);
 rootRouter.get("/playlist", playlist);
 rootRouter.get("/profile", profile);
+
+
 
 
 rootRouter.get('/update', async (req, res) => {
@@ -104,4 +108,4 @@ rootRouter.get('/update', async (req, res) => {
 
 
 
-export default rootRouter;
+export default rootRouter
