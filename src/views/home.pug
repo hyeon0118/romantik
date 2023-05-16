@@ -1,92 +1,94 @@
 extends base
 
 block content
-    - if (loggedIn && history.length > 0)
-        section.music-section#recnet
+    section#home
+        - if (loggedIn && history.length > 0)
+            section.music-section#recnet
+                .music-header
+                    .title-wrapper 
+                        h2 Listen again, 
+                            span.username #{user.username}
+                    .buttons.desktop
+                        img.left(src="static/icons/left.svg")
+                        img.right(src="static/icons/right.svg")   
+                .music-wrapper
+                    - for (let i = history.length - 1; i >= 0; i--)
+                        .music
+                            .cover-wrapper(style=`background-image: url('${history[i].thumbnail}')`, onclick = `addPlaylist('${history[i].videoId}', '${history[i].title}', '${history[i].performer}', '${history[i].composer}', '${history[i].thumbnail}' ); updateNowPlaying()`)
+                            .info 
+                                .title #{history[i].title}
+                                .performer #{history[i].performer}
+
+        section.music-section#recommend 
             .music-header
                 .title-wrapper 
-                    h2 Listen again,
+                    h2 Music for 
+                        span #{time} 
+                        - if(time === 'morning')
+                            span ☀️
+                        - else if(time === 'afternoon')
+                            span &#9749;
+                        - else if(time === 'evening')
+                            span &#x1F306;
+                        - else 
+                            span &#x1F319;
                 .buttons.desktop
                     img.left(src="static/icons/left.svg")
                     img.right(src="static/icons/right.svg")   
             .music-wrapper
-                - for (let i = history.length - 1; i >= 0; i--)
+                - for(let i=0; i < recommend.length; i++)
                     .music
-                        .cover-wrapper(style=`background-image: url('${history[i].thumbnail}')`, onclick = `addPlaylist('${history[i].videoId}', '${history[i].title}', '${history[i].performer}', '${history[i].composer}', '${history[i].thumbnail}' ); updateNowPlaying()`)
+                        .cover-wrapper(style=`background-image: url('${recommend[i].thumbnail}')`, onclick = `addPlaylist('${recommend[i].videoId}', '${recommend[i].title}', '${recommend[i].performer}', '${recommend[i].composer}', '${recommend[i].thumbnail}' ); updateNowPlaying()`)
                         .info 
-                            .title #{history[i].title}
-                            .performer #{history[i].performer}
+                            .title #{recommend[i].title}
+                            .performer #{recommend[i].performer}
 
-    section.music-section#recommend 
-        .music-header
-            .title-wrapper 
-                h2 Music for 
-                    span #{time} 
-                    - if(time === 'morning')
-                        span ☀️
-                    - else if(time === 'afternoon')
-                        span &#9749;
-                    - else if(time === 'evening')
-                        span &#x1F306;
-                    - else 
-                        span &#x1F319;
-            .buttons.desktop
-                img.left(src="static/icons/left.svg")
-                img.right(src="static/icons/right.svg")   
-        .music-wrapper
-            - for(let i=0; i < recommend.length; i++)
+        section.music-section#new 
+            .music-header
+                .title-wrapper 
+                    h2 New released
+                .buttons.desktop
+                    img.left(src="static/icons/left.svg")
+                    img.right(src="static/icons/right.svg")   
+            .music-wrapper
+                - for(let i=0; i<10; i++)
+                    .music
+                        .cover-wrapper(style=`background-image: url('${recent[i].thumbnail}')`, onclick = `addPlaylist('${recent[i].videoId}', '${recent[i].title}', '${recent[i].performer}', '${recent[i].composer}', '${recent[i].thumbnail}' ); updateNowPlaying()`)
+                        .info 
+                            .title #{recent[i].title}
+                            .performer #{recent[i].performer}
+
+
+        section.music-section#top
+            .music-header
+                .title-wrapper 
+                    h2 Today's charts
+                .buttons.desktop
+                    img.left(src="static/icons/left.svg")
+                    img.right(src="static/icons/right.svg")   
+            .music-wrapper
+                - for(let i=0; i<5; i++)
+                    .column
+                        - for(let j=0; j<4; j++)
+                            .music
+                                .rank #{i*4+j+1}
+                                .cover-wrapper(style=`background-image: url('${rank[i*4+j].thumbnail}')`, onclick = `addPlaylist('${rank[i*4+j].videoId}', '${rank[i*4+j].title}', '${rank[i*4+j].performer}', '${rank[i*4+j].composer}', '${rank[i*4+j].thumbnail}' ); updateNowPlaying()`)
+                                .info 
+                                    .title #{rank[i*4+j].title}
+                                    .performer #{rank[i*4+j].performer}
+                    
+        section.music-section#recommend-playlist 
+            .music-header
+                .title-wrapper 
+                    h2 How about this playlist?
+                .buttons.desktop
+                    img.left(src="static/icons/left.svg")
+                    img.right(src="static/icons/right.svg")   
+            .music-wrapper
                 .music
-                    .cover-wrapper(style=`background-image: url('${recommend[i].thumbnail}')`, onclick = `addPlaylist('${recommend[i].videoId}', '${recommend[i].title}', '${recommend[i].performer}', '${recommend[i].composer}', '${recommend[i].thumbnail}' ); updateNowPlaying()`)
+                    .cover-wrapper
+                        img(src="") 
                     .info 
-                        .title #{recommend[i].title}
-                        .performer #{recommend[i].performer}
-
-    section.music-section#new 
-        .music-header
-            .title-wrapper 
-                h2 New released
-            .buttons.desktop
-                img.left(src="static/icons/left.svg")
-                img.right(src="static/icons/right.svg")   
-        .music-wrapper
-            - for(let i=0; i<10; i++)
-                .music
-                    .cover-wrapper(style=`background-image: url('${recent[i].thumbnail}')`, onclick = `addPlaylist('${recent[i].videoId}', '${recent[i].title}', '${recent[i].performer}', '${recent[i].composer}', '${recent[i].thumbnail}' ); updateNowPlaying()`)
-                    .info 
-                        .title #{recent[i].title}
-                        .performer #{recent[i].performer}
-
-
-    section.music-section#top
-        .music-header
-            .title-wrapper 
-                h2 Today's charts
-            .buttons.desktop
-                img.left(src="static/icons/left.svg")
-                img.right(src="static/icons/right.svg")   
-        .music-wrapper
-            - for(let i=0; i<5; i++)
-                .column
-                    - for(let j=0; j<4; j++)
-                        .music
-                            .rank #{i*4+j+1}
-                            .cover-wrapper(style=`background-image: url('${rank[i*4+j].thumbnail}')`, onclick = `addPlaylist('${rank[i*4+j].videoId}', '${rank[i*4+j].title}', '${rank[i*4+j].performer}', '${rank[i*4+j].composer}', '${rank[i*4+j].thumbnail}' ); updateNowPlaying()`)
-                            .info 
-                                .title #{rank[i*4+j].title}
-                                .performer #{rank[i*4+j].performer}
-                
-    section.music-section#recommend-playlist 
-        .music-header
-            .title-wrapper 
-                h2 How about this playlist?
-            .buttons.desktop
-                img.left(src="static/icons/left.svg")
-                img.right(src="static/icons/right.svg")   
-        .music-wrapper
-            .music
-                .cover-wrapper
-                    img(src="") 
-                .info 
-                    .title Morning Classic
-                    .performer Leonard Hoffstadter
-    
+                        .title Morning Classic
+                        .performer Leonard Hoffstadter
+        

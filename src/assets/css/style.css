@@ -66,7 +66,7 @@ input:focus {
 }
 
 .searchbar svg {
-  width: 25px;
+  width: 50px;
   padding: 0 10px;
 }
 
@@ -539,6 +539,15 @@ main .cover-wrapper::after {
   width: 2px;
   background-color: white;
   height: var(--sound-height);
+}
+
+.username {
+  color: yellow;
+}
+
+input[type="text"] {
+  color: black;
+  width: 100%;
 }
 
 @media (min-width: 530px) {

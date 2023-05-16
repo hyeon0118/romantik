@@ -41,9 +41,45 @@ rootRouter.post('/signup', async (req, res) => {
     }
 })
 
+// rootRouter.post('/addSongToHistory', (req, res) => {
+//     const videoId = req.body.videoId;
+
+
+//     User.updateOne(
+//         { email: req.session.email },
+//         { $pull: { history: videoId } },
+//         (err, result) => {
+//             if (err) {
+//                 console.error(err);
+//                 return res.status(500).json({ error: 'Failed to update user history' });
+//             }
+
+//             User.updateOne(
+//                 { email: req.session.email },
+//                 { $push: { history: { $each: [videoId] } }, $set: { currentPlaying: videoId } },
+//                 (err, result) => {
+//                     if (err) {
+//                         console.error(err);
+//                         return res.status(500).json({ error: 'Failed to update user history' });
+//                     }
+//                     return res.status(200).json({ message: 'Song added to history successfully' });
+//                 }
+//             );
+//         });
+// });
+
+rootRouter.post('/addPlaylistToHistory', (req, res) => {
+    const playlist = req.body.playlist;
+
+    User.updateOne(
+        { email: req.session.email },
+        { $set: { currentPlaylist: playlist } }
+    )
+})
+
 rootRouter.post('/addSongToHistory', (req, res) => {
     const videoId = req.body.videoId;
-
+    const maxHistoryLength = 10;
 
     User.updateOne(
         { email: req.session.email },
@@ -56,7 +92,15 @@ rootRouter.post('/addSongToHistory', (req, res) => {
 
             User.updateOne(
                 { email: req.session.email },
-                { $push: { history: { $each: [videoId] } }, $set: { currentPlaying: videoId } },
+                {
+                    $push: {
+                        history: {
+                            $each: [videoId],
+                            $slice: -maxHistoryLength
+                        }
+                    },
+                    $set: { currentPlaying: videoId }
+                },
                 (err, result) => {
                     if (err) {
                         console.error(err);
@@ -67,6 +111,7 @@ rootRouter.post('/addSongToHistory', (req, res) => {
             );
         });
 });
+
 
 rootRouter.post('/signin', async (req, res) => {
     const { email, password } = req.body;

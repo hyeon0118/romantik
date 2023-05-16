@@ -577,16 +577,11 @@ function updateContent(main, header) {
 
 
 navAnchor.forEach((anchor) => {
+    currentPlaylistDisplay.classList.add("hidden");
     anchor.addEventListener("click", (event) => {
         const mainContent = document.querySelector("main");
         event.preventDefault();
         const url = anchor.getAttribute("href");
-        if (url.substring(1) !== "") {
-            document.body.id = url.substring(1);
-        } else {
-            document.body.id = "home";
-        }
-
         navigateToPage(url);
         window.history.pushState({}, "", url);
     });
@@ -598,12 +593,11 @@ logo.addEventListener("click", (event) => {
     const mainContent = document.querySelector("main");
     event.preventDefault();
     const url = "/"
-    document.body.id = "home";
     navigateToPage(url);
     window.history.pushState({}, "", url);
 })
 
-const profile = document.querySelector("header a .profile-wrapper")
+const profile = document.querySelector("header .profile-wrapper")
 
 profile.addEventListener("click", (event) => {
     event.preventDefault();
@@ -622,7 +616,6 @@ profile.addEventListener("click", (event) => {
         .catch((error) => {
             console.error(error);
         });
-    document.body.id = url.substring(1);
     window.history.pushState({}, "", url);
 }, true)
 
@@ -638,6 +631,7 @@ if (location.pathname == '/profile') {
             await fetch('/logout', {
                 method: 'POST',
             });
+            addPlaylistHistory();
 
             location.reload();
         } catch (error) {
@@ -688,5 +682,28 @@ function addSongHistory(videoId) {
             console.error(error);
         });
 }
+
+function addPlaylistHistory() {
+    const playlist = Object.values(currentPlaylist).map(song => song.videoId);
+
+    fetch('/addPlaylistToHistory', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ playlist }),
+    })
+        .then((response) => {
+            if (response.ok) {
+                console.log('playlist added to history successfully');
+            } else {
+                console.error('Failed to add playlist to history');
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
+
 
 

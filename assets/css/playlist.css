@@ -43,11 +43,11 @@
 #playlist #playlist-wrapper {
   padding: 0 42px;
 }
-#playlist #playlist #playlist-wrapper .playlist {
+#playlist #playlist-div #playlist-wrapper .playlist {
   display: flex;
   padding: 6px 10px;
 }
-#playlist #playlist #playlist-wrapper .cover-wrapper {
+#playlist #playlist-div #playlist-wrapper .cover-wrapper {
   min-width: 47px;
   min-height: 47px;
   max-width: 47px;
