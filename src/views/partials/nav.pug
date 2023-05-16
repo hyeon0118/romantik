@@ -1,26 +1,27 @@
 nav 
     .logo.desktop 
-        img(src="static/img/logo.png")
+        a(href="/")
+            img(src="static/img/logo.png")
     ul
-        li(data-menu="home")
-            a(href="/" onclick="loadPage('home')")
+        a(href="/")
+            li(data-menu="home")
                 img(src="static/icons/home.svg")
                 span.tablet home
-        li(data-demnu="search")
-            a(href="/search" onclick="loadPage('search')")
+        a(href="/search")
+            li(data-demnu="search")
                 img(src="static/icons/search.svg")
                 span.tablet search
-        li(data-menu="library")
-            a(href="/library" onclick="loadPage('library-container')")
+        a(href="/library")
+            li(data-menu="library")
                 img(src="static/icons/library_inactive.svg")
                 span.tablet library
         .divider.desktop 
         ul.my-playlist.desktop 
-            li(data-menu="playlist")
-                a(href="/playlist" onclick="loadPage('playlist')")
+            a(href="/playlist")
+                li(data-menu="playlist")
                     img(src="static/icons/heart_inactive.svg")
                     span Liked
-            li(data-menu="playlist")
-                a(href="/playlist" onclick="loadPage('playlist')")
+            a(href="/playlist")
+                li(data-menu="playlist")
                     .playlist-cover C
                     span Chopin Sonatas

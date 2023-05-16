@@ -20,6 +20,9 @@ const bar = progressBar.querySelector(".bar")
 const barAfter = window.getComputedStyle(bar, "::after")
 let duration = 0;
 
+const playlistWrapper = document.querySelector('.current-playlist-wrapper');
+const navAnchor = document.querySelectorAll("nav ul a");
+const logoutButton = document.querySelector("button.logout");
 
 nowPlaying.addEventListener("click", () => {
     if (window.innerWidth < 600) {
@@ -30,14 +33,15 @@ nowPlaying.addEventListener("click", () => {
     }
 });
 
+
 viewPlaylist.forEach(btn => {
     btn.addEventListener("click", () => {
         bottomIcons.classList.add('hidden');
         body.classList.toggle("not-overflowY");
         currentPlaylistDisplay.classList.toggle("hidden");
+        updateCurrentPlaylistScreen();
     })
 })
-
 
 
 playlistClose.addEventListener("click", () => {
@@ -49,7 +53,7 @@ playlistClose.addEventListener("click", () => {
 const playerClose = document.querySelector(".player-header img")
 
 playerClose.addEventListener("click", (event) => {
-    event.stopPropagation(); // 이벤트 전파 막기
+    event.stopPropagation();
     player.classList.remove("open");
     body.classList.remove("not-overflowY");
     playerHeader.classList.add("hidden");
@@ -61,17 +65,30 @@ window.addEventListener("resize", () => {
         player.classList.remove("open");
         playerHeader.classList.add("hidden");
         bottomIcons.classList.add("hidden");
-        console.log("hi");
+
     }
 })
 
 
+function changeNav() {
+    let currentPath = location.pathname;
 
-let currentPath = location.pathname;
-if (currentPath !== "/profile") {
-    let menuItem = document.querySelector('[href="' + currentPath + '"]').parentNode;
-    menuItem.classList.add('active');
+    navAnchor.forEach(anchor => {
+        anchor.classList.remove('active');
+    })
+
+    if (currentPath !== "/profile") {
+        let menuItem = document.querySelector('[href="' + currentPath + '"]');
+
+        if (currentPath == '/') {
+            menuItem = document.querySelector('nav ul a:first-of-type')
+        }
+
+        menuItem.classList.add('active');
+    }
 }
+
+changeNav()
 
 const playButton = document.querySelectorAll(".play")
 const iframe = document.querySelector("#iframe")
@@ -89,6 +106,7 @@ function onYouTubeIframeAPIReady() {
     iframePlayer = new YT.Player('player', {
         height: '0',
         width: '0',
+        host: 'https://www.youtube-nocookie.com',
         playerVars: {
             playlist: currentPlaylist.map(item => item.videoId).join(','),
         },
@@ -124,6 +142,21 @@ function playPlayer() {
     currentPerformer.textContent = playing.performer;
     currentComposer.textContent = playing.composer;
     isPlaying = true;
+}
+
+const currentPlaylistList = playlistWrapper.querySelectorAll("div")
+
+currentPlaylistList.forEach(list => {
+    list.addEventListener("click", () => {
+        console.log("worked");
+        const index = list.className
+        inPlaylistPlay(index);
+    })
+})
+
+function inPlaylistPlay(index) {
+    currentIndex = index;
+    playPlayer()
 }
 
 
@@ -181,10 +214,14 @@ repeat.addEventListener("click", () => {
     }
 })
 
+setInterval(progressBarAutomaticUpdate, 1000);
 
-let login = true;
+
+let loggedIn = false;
 function onPlayerStateChange(event) {
-    if (event.data == YT.PlayerState.PLAYING && login == false) {
+    if (event.data == YT.PlayerState.PLAYING && loggedIn !== true) {
+        duration = "1:00"
+        total.textContent = duration;
         setTimeout(stopVideo, 60000);
     } else if (event.data == YT.PlayerState.PLAYING) {
         duration = iframePlayer.getDuration();
@@ -254,9 +291,6 @@ function playNextVideo() {
 }
 
 
-
-
-
 function playPreviousVideo() {
     if (!shuffled) {
         if (currentIndex != 0) {
@@ -291,6 +325,12 @@ function addPlaylist(videoId, title, performer, composer, thumbnail) {
 
     currentCoverUrl = thumbnail;
 
+    const existingIndex = currentPlaylist.findIndex(item => item.videoId === videoId);
+
+    if (existingIndex !== -1) {
+        currentPlaylist.splice(existingIndex, 1);
+    }
+
     currentPlaylist.push(added);
 
     createPlaylistElement(title, performer, thumbnail);
@@ -298,7 +338,7 @@ function addPlaylist(videoId, title, performer, composer, thumbnail) {
 
 
 
-function createPlaylistElement(addedTitle, addedPerformer, addedCover) {
+function createPlaylistElement(addedTitle, addedPerformer, addedCover, i) {
     const newElement = document.createElement('div');
     newElement.classList.add('element');
 
@@ -330,9 +370,18 @@ function createPlaylistElement(addedTitle, addedPerformer, addedCover) {
     newElement.appendChild(info);
     newElement.appendChild(drag);
 
-    const playlistWrapper = document.querySelector('.current-playlist-wrapper');
-    playlistWrapper.appendChild(newElement);
+    newElement.className = i
 
+    playlistWrapper.appendChild(newElement);
+}
+
+function updateCurrentPlaylistScreen() {
+    playlistWrapper.innerHTML = "";
+    let i = 0;
+    currentPlaylist.forEach(list => {
+        createPlaylistElement(list.title, list.performer, list.thumbnail, i);
+        i++
+    })
 }
 
 
@@ -343,37 +392,49 @@ function progressBarAutomaticUpdate() {
     let minutes = Math.floor(iframePlayer.getCurrentTime() / 60)
     let seconds = Math.trunc(iframePlayer.getCurrentTime() - (minutes * 60))
 
+    if (loggedIn === true) {
+        percentage = (Math.floor(iframePlayer.getCurrentTime()) / Math.floor(iframePlayer.getDuration())) * 100;
+
+    } else if (loggedIn === undefined || loggedIn === false) {
+        percentage = (Math.floor(iframePlayer.getCurrentTime()) / 60) * 100;
+        if (iframePlayer.getCurrentTime() >= 60) {
+            stopVideo();
+        }
+    }
     if (seconds == 0) {
         seconds = '00';
     } else if (seconds < 10) {
         seconds = `0${seconds}`
     }
-
     passed.textContent = `${minutes}:${seconds}`;
-
-    percentage = (Math.floor(iframePlayer.getCurrentTime()) / Math.floor(iframePlayer.getDuration())) * 100;
+    console.log(minutes)
 
     bar.style.setProperty('--after-width', `${percentage}%`);
 }
 
 
-setInterval(progressBarAutomaticUpdate, 1000);
 
 function updateProgressBar(event) {
     const clickedX = event.clientX - bar.getBoundingClientRect().left;
     const barWidth = bar.clientWidth;
     const progress = (clickedX / barWidth) * 100;
+    if (loggedIn === true) {
+        iframePlayer.seekTo(iframePlayer.getDuration() * (progress * 0.01));
+    } else {
+        iframePlayer.seekTo(60 * (progress * 0.01));
+    }
 
-    iframePlayer.seekTo(iframePlayer.getDuration() * (progress * 0.01));
     bar.style.setProperty('--after-width', `${progress}%`)
+
 }
+
 
 bar.addEventListener('click', updateProgressBar);
 
 let currentCoverUrl = "";
 
 function getCover(url) {
-    const div = document.get
+
 }
 
 function updateCurrentCover() {
@@ -478,4 +539,133 @@ function hideSoundbar() {
 soundbarContainer.addEventListener("mouseover", showSoundbar)
 soundbarContainer.addEventListener("mouseleave", hideSoundbar)
 
+
+// main tag update 
+
+function navigateToPage(url) {
+    fetch(url)
+        .then((response) => response.text())
+        .then((html) => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+            const newMainContent = doc.querySelector("main");
+            const newHeaderContent = doc.querySelector("header");
+
+            const currentMain = document.querySelector("main")
+            const currentHeader = document.querySelector("header")
+
+            currentMain.innerHTML = "";
+            currentHeader.innerHTML = "";
+
+            currentMain.innerHTML = newMainContent.innerHTML;
+            currentHeader.innerHTML = newHeaderContent.innerHTML;
+            pageTitle = url.charAt(0);
+            changeNav();
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
+
+
+function updateContent(main, header) {
+    const mainContent = document.querySelector("main");
+    const headerContent = document.querySelector("header");
+    headerContent.innerHTML = header
+    mainContent.innerHTML = main;
+}
+
+
+navAnchor.forEach((anchor) => {
+    anchor.addEventListener("click", (event) => {
+        const mainContent = document.querySelector("main");
+        event.preventDefault();
+        const url = anchor.getAttribute("href");
+        if (url.substring(1) !== "") {
+            document.body.id = url.substring(1);
+        } else {
+            document.body.id = "home";
+        }
+
+        navigateToPage(url);
+        window.history.pushState({}, "", url);
+    });
+});
+
+const logo = document.querySelector(".logo")
+
+logo.addEventListener("click", (event) => {
+    const mainContent = document.querySelector("main");
+    event.preventDefault();
+    const url = "/"
+    document.body.id = "home";
+    navigateToPage(url);
+    window.history.pushState({}, "", url);
+})
+
+const profile = document.querySelector("header a .profile-wrapper")
+
+profile.addEventListener("click", (event) => {
+    event.preventDefault();
+    const url = "/profile"
+    fetch(url)
+        .then((response) => response.text())
+        .then((html) => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+            const mainContent = doc.querySelector("main").innerHTML;
+            const docMain = document.querySelector("main");
+            docMain.innerHTML = mainContent;
+            pageTitle = url.charAt(0)
+            changeNav();
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    document.body.id = url.substring(1);
+    window.history.pushState({}, "", url);
+}, true)
+
+window.addEventListener("popstate", () => {
+    const url = window.location.href;
+    navigateToPage(url);
+});
+
+if (location.pathname == '/profile') {
+    logoutButton.addEventListener('click', async () => {
+        console.log("worked");
+        try {
+            await fetch('/logout', {
+                method: 'POST',
+            });
+
+            location.reload();
+        } catch (error) {
+            console.error('Failed to logout:', error);
+        }
+    });
+}
+
+
+
+function checkLogin() {
+    return new Promise((resolve, reject) => {
+        fetch('/getLoginStatus')
+            .then(response => response.json())
+            .then(data => {
+                loggedIn = data.loggedIn;
+                resolve();
+            })
+            .catch(error => {
+                console.error(error);
+                reject(error);
+            });
+    });
+}
+
+window.onload = () => {
+    checkLogin().then(() => {
+        console.log(loggedIn);
+    });
+};
 

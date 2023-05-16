@@ -1,45 +1,29 @@
 extends base
 
 block content
-    section#profile.hidden
-        .profile-wrapper
-            .profile-img
-            .user-id user-id
-            .username user1
-        .button-wrapper
-            button.change-pwChange password
-            button.logout Sign out
-            button.resignation Delete account
-
-    section#login.hidden
-        h2 Sign in 
-            form(action="/",method="post")
-                .email
-                    img(src="static/icons/email.svg")
-                    input(type="email", placeholder="Enter your E-mail")
-                .pw
-                    img(src="static/icons/pw.svg")
-                    input(type="password", placeholder="Enter your password")
-            input(type="submit")
-        div Don't have an account? Click 
-            span here 
-            span  to sign up!
-    section#register
-        h2 Sign up
-        form(action="/",method="post")
-            .email
-                img(src="static/icons/email.svg")
-                input(type="email", placeholder="Enter your E-mail")
-            .pw
-                img(src="static/icons/pw.svg")
-                input(type="password", placeholder="Enter your password")
-            .pw
-                img(src="static/icons/pw.svg")
-                input(type="password", placeholder="Enter your password")
-            .username
-                img(src="static/icons/user.svg")
-                input(type="text", placeholder="Enter your username")
-            input(type="submit")
-        div Have already an account? Click 
-            span here
-            span  to sign in!
+    section#user
+        - if (loggedIn)
+            section#profile
+                .profile-wrapper
+                    .profile-img
+                    .user-id #{loggedInEmail}
+                    .username #{loggedInUsername}
+                .button-wrapper
+                    button.change-pwChange Change password
+                    button.logout Sign out
+                    button.resignation Delete account
+        - if (!loggedIn)
+            section#login
+                h2 Sign in 
+                form(action="/signin",method="POST")
+                    .email
+                        img(src="static/icons/email.svg")
+                        input(name="email", type="email", placeholder="Enter your E-mail")
+                    .pw
+                        img(src="static/icons/pw.svg")
+                        input(name="password", type="password", placeholder="Enter your password")
+                    input(type="submit")
+                div Don't have an account? Click 
+                    a(href="/register")
+                        span here 
+                    span  to sign up!

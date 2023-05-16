@@ -1,8 +1,7 @@
-body {
+#user body {
   overflow-y: hidden;
 }
-
-main {
+#user main {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -10,17 +9,14 @@ main {
   height: calc(100vh - 104px);
   padding: 0;
 }
-
-#profile .profile-wrapper {
+#user #profile .profile-wrapper {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-bottom: ;
   font-size: 20px;
 }
-
-#profile .profile-img::after {
+#user #profile .profile-img::after {
   cursor: pointer;
   content: "Change";
   position: absolute;
@@ -35,42 +31,34 @@ main {
   opacity: 0;
   transition: 0.2s ease-in-out;
 }
-
-#profile .profile-img:hover::after {
+#user #profile .profile-img:hover::after {
   opacity: 1;
 }
-
-#profile .profile-wrapper .profile-img {
+#user #profile .profile-wrapper .profile-img {
   position: relative;
-
   width: 250px;
   height: 250px;
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 50%;
 }
-
-#profile .profile-wrapper div {
+#user #profile .profile-wrapper div {
   margin: 3px 0;
 }
-
-#profile .profile-wrapper div:nth-of-type(2) {
+#user #profile .profile-wrapper div:nth-of-type(2) {
   opacity: 0.6;
 }
-
-#profile .profile-wrapper div:nth-of-type(3) {
+#user #profile .profile-wrapper div:nth-of-type(3) {
   font-size: 25px;
   font-weight: bold;
 }
-
-#profile .button-wrapper {
+#user #profile .button-wrapper {
   margin-top: 20px;
   display: flex;
   width: 100%;
   flex-direction: column;
   align-items: center;
 }
-
-#profile button {
+#user #profile button {
   cursor: pointer;
   font-size: 16px;
   border-radius: 30px;
@@ -79,28 +67,24 @@ main {
   margin: 5px;
   width: 80%;
 }
-
-#profile button:hover {
+#user #profile button:hover {
   background-color: rgba(255, 255, 255, 0.3);
   border-color: transparent;
 }
-
-section {
+#user section {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-
-form {
+#user form {
   width: 80vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
-
-form div {
+#user form div {
   display: flex;
   flex-direction: flex;
   align-items: center;
@@ -109,13 +93,11 @@ form div {
   background-color: white;
   border-radius: 30px;
 }
-
-form img {
+#user form img {
   width: 30px;
   height: 30px;
 }
-
-input {
+#user input {
   width: 300px;
   padding: 15px 20px;
   color: black;
@@ -123,8 +105,7 @@ input {
   border-radius: 30px;
   font-size: 18px;
 }
-
-label {
+#user label {
   /* display: flex; */
   display: none;
   justify-content: center;
@@ -133,25 +114,23 @@ label {
   font-size: 20px;
   margin-bottom: 10px;
 }
-
-input[type="submit"] {
+#user input[type=submit] {
   border-radius: 30px;
   width: 250px;
   background-color: rgba(255, 255, 255, 0.7);
   margin-bottom: 20px;
 }
-
-input[type="submit"]:hover {
+#user input[type=submit]:hover {
   background-color: rgba(255, 255, 255, 0.3);
 }
-
-h2 {
+#user h2 {
   font-size: 30px;
   margin-bottom: 20px;
 }
-
 @media (min-width: 600px) {
-  #profile button {
+  #user #profile button {
     width: 400px;
   }
 }
+
+/*# sourceMappingURL=profile.css.map */

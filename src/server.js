@@ -27,6 +27,12 @@ app.use(flash());
 app.use(localsMiddleware);
 app.use("/uploads", express.static("uploads"));
 app.use("/static", express.static("assets"));
+app.get('/getLoginStatus', (req, res) => {
+  const loginStatus = {
+    loggedIn: req.session.loggedIn
+  };
+  res.json(loginStatus);
+});
 
 app.get("views/partials/home.pug", function (req, res) {
   res.render("player");
@@ -36,6 +42,14 @@ app.use("/", rootRouter);
 app.use(function (req, res, next) {
   res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
   res.setHeader('Cross-Origin-Embedder-Policy', 'require-corp');
+
+  const isSecure = req.secure || req.headers['x-forwarded-proto'] === 'https';
+  if (isSecure) {
+    res.setHeader('Set-Cookie', 'cookieName=value; Secure; SameSite=None');
+  } else {
+    res.setHeader('Set-Cookie', 'cookieName=value; SameSite=Lax');
+  }
+
   next();
 });
 

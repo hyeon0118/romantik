@@ -9,23 +9,20 @@ html(lang="ko")
         link(rel="stylesheet", href="/static/css/reset.css")
         link(rel="stylesheet", href="/static/css/style.css")
         link(rel="stylesheet", href="/static/css/player.css")
-        if (pageTitle === "Search")
-            link(rel="stylesheet", href="/static/css/search.css")
-        if (pageTitle === "Library")
-            link(rel="stylesheet", href="/static/css/library.css")
-        if (pageTitle === "Playlist")
-            link(rel="stylesheet", href="/static/css/playlist.css")
-        if (pageTitle === "Profile")
-            link(rel="stylesheet", href="/static/css/profile.css")
+        link(rel="stylesheet", href="/static/css/search.css")
+        link(rel="stylesheet", href="/static/css/library.css")
+        link(rel="stylesheet", href="/static/css/playlist.css")
+        link(rel="stylesheet", href="/static/css/profile.css")
 
     
     body
         include partials/header
         include partials/nav
-        main
+        main.fade-in
             block content
         include partials/player
     script(src="/static/js/main.js")
+    script(src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js")
     if (pageTitle == "Search") 
         script(src="/static/js/search.js")
     block scripts

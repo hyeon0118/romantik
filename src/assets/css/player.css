@@ -67,7 +67,12 @@
   margin-top: 45px;
 }
 
+.player.open .info div {
+  justify-content: center;
+}
+
 .player.open .progress-bar {
+  height: 24px;
   position: absolute;
   width: 85vw;
   bottom: calc(100vh - 620px);
@@ -81,6 +86,7 @@
 }
 
 .player.open .progress-bar .bar {
+  transition: 0.1s ease-in-out;
   margin-bottom: 5px;
   position: relative;
   height: 2px;
@@ -101,10 +107,9 @@
 }
 
 .player.open .progress-bar .total {
-  position: relative;
-  display: flex;
-  width: 100%;
-  justify-content: flex-end;
+  position: absolute;
+  right: 0;
+  margin-top: 7px;
 }
 
 .player.open .icons img:nth-of-type(3) {
@@ -139,6 +144,14 @@
   bottom: 30px;
   display: flex;
   justify-content: space-between;
+}
+
+.player:not(.open) .progress-bar .bar:hover {
+  height: 4px;
+}
+
+.player.open .progress-bar .bar:hover {
+  height: 4px;
 }
 
 /* current playlist */

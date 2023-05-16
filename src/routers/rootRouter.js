@@ -4,10 +4,12 @@ import { library } from "../controllers/songController";
 import { search } from "../controllers/songController";
 import { playlist } from "../controllers/songController";
 import { profile } from "../controllers/songController";
+import { register } from "../controllers/songController";
 import { result } from "../controllers/songController";
 import Composer from "../models/Composer";
 import User from "../models/User";
 import Work from "../models/Work";
+import bcrypt from 'bcrypt';
 
 
 
@@ -22,8 +24,66 @@ rootRouter.get("/search", search);
 rootRouter.get("/library", library);
 rootRouter.get("/playlist", playlist);
 rootRouter.get("/profile", profile);
+rootRouter.get("/register", register);
+
+rootRouter.post('/signup', async (req, res) => {
+    const { email, password, username } = req.body;
+    try {
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        let newUser = new User({ email, password: hashedPassword, username });
+
+        await newUser.save();
+        res.redirect('/profile');
+    } catch (error) {
+        res.status(500).json({ error: 'failed to sign up' })
+    }
+})
+
+rootRouter.post('/signin', async (req, res) => {
+    const { email, password } = req.body;
+    try {
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const passwordMatch = await bcrypt.compare(password, user.password);
+
+        if (!passwordMatch) {
+            return res.status(401).json({ error: 'Invalid password' });
+        }
+
+        req.session.loggedIn = true;
+        req.session.email = email
+        req.session.username = user.username;
+        res.redirect('/');
+
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to sign in' });
+    }
+
+})
 
 
+rootRouter.post('/logout', (req, res) => {
+    req.session.destroy();
+
+    res.sendStatus(200);
+});
+
+rootRouter.get('/session', (req, res) => {
+    res.send(req.session.email);
+});
+
+rootRouter.get('/getLoginStatus', (req, res) => {
+    const loginStatus = {
+        loggedIn: req.session.loggedIn
+    };
+    res.json(loginStatus);
+});
 
 
 rootRouter.get('/update', async (req, res) => {

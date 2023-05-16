@@ -1,7 +1,7 @@
 extends base
 
 block content
-    #before-search 
+    #before-search(style=`display: ${results == undefined ? 'block': 'none'}`)
         section.music-section#era
             .music-header 
                 .title-wrapper 
@@ -55,21 +55,23 @@ block content
                     .rachmaninov.cover-wrapper 
                     .info 
                         .title Sergei Rachmaninov 
-    #after-search.hidden
-        .info-box.hidden
-            .years 1810.03.01 ~ 1849.10.17
-            .title Frederic Chopin 
-            p Frédéric François Chopin was a Polish composer and virtuoso pianist of the Romantic period, who wrote primarily for solo piano. He has maintained worldwide renown as a leading musician of his era, one whose "poetic genius was based on a professional technique that was without equal in his generation".
+    #after-search(style=`display: ${results == undefined ? 'none': 'block'}`)
+        //- .info-box
+        //-     .years 1810.03.01 ~ 1849.10.17
+        //-     .title Frederic Chopin 
+        //-     p Frédéric François Chopin was a Polish composer and virtuoso pianist of the Romantic period, who wrote primarily for solo piano. He has maintained worldwide renown as a leading musician of his era, one whose "poetic genius was based on a professional technique that was without equal in his generation".
         #result-list 
-            .result-composer 
-                .cover-wrapper 
-                .title Chopin 
+            //- .result-composer 
+            //-     .cover-wrapper 
+            //-     .title Chopin 
             h2 Top result 
-            - if(results !== undefined)
+            - if(results !== undefined && results.length > 0)
                 each result in results
                     .result     
-                        .cover-wrapper(style=`background-image:'url(${result.thumbnail})'`) 
+                        .cover-wrapper(onclick=`addPlaylist('${result.videoId}', '${result.title}', '${result.performer}', '${result.composer}', '${result.thumbnail}'); updateNowPlaying()`, style=`background-image:url(${result.thumbnail})`) 
                         .info 
                             .title #{result.title}
                             .performer #{result.performer}
                         img(src="static/icons/add_to_playlist.svg")
+            - else 
+                p No results found

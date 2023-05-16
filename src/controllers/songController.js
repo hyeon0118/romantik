@@ -3,14 +3,20 @@ import Work from "../models/Work";
 import User from "../models/User";
 import searchResult from "../routers/rootRouter";
 
-
 export const home = async (req, res) => {
   const sortByViewPromise = Work.find({ videoId: { $exists: true } }).sort({ view: -1 }).exec();
   const sortByDatePromise = Work.find({ videoId: { $exists: true } }).sort({ date: -1 }).exec();
+  const user = User.findOne({ email: req.session.email })
+  let userHistoryList = []
+  user.history.forEach(item => {
+    const history = Work.find({ videoId: item }).exec();
+    userHistoryList.push(history);
+  })
+
   const currentHour = new Date().getHours();
   let timeRecommend = "";
 
-  if (4 < currentHour < 12) {
+  if (4 < currentHour && currentHour < 12) {
     timeRecommend = "morning"
   } else if (currentHour < 18) {
     timeRecommend = "afternoon"
@@ -31,7 +37,8 @@ export const home = async (req, res) => {
       recent: sortByDateResult,
       recommend: sortByTimeResult,
       time: timeRecommend,
-      recommendLength: sortByTimeResult.length
+      recommendLength: sortByTimeResult.length,
+      history: userHistoryList
     });
   } catch (err) {
     console.log(err);
@@ -45,10 +52,20 @@ export const search = async (req, res) => {
   try {
     if (query !== undefined) {
       const sortBySearchPromise = await Work.find({ videoId: { $exists: true }, title: new RegExp(query, "i") }).exec();
-      const [sortBySearchResult] = await Promise.all([sortBySearchPromise])
+      const earlyRomanticPromise = await Work.find({ videoId: { $exists: true }, era: "early" }).exec();
+      const middleRomanticPromise = await Work.find({ videoId: { $exists: true }, era: "middle" }).exec();
+      const lateRomanticPromise = await Work.find({ videoId: { $exists: true }, era: "late" }).exec();
+      const postRomanticPromise = await Work.find({ videoId: { $exists: true }, era: "post" }).exec();
+      const [sortBySearchResult, earlyRomanticResult, middleRomanticResult, lateRomanticResult, postRomanticResult] = await Promise.all([sortBySearchPromise, earlyRomanticPromise, middleRomanticPromise, lateRomanticPromise, postRomanticPromise])
+
       return res.render("search", {
         pageTitle: "Search",
+        keyword: query,
         results: sortBySearchResult,
+        early: earlyRomanticResult,
+        middle: middleRomanticResult,
+        late: lateRomanticResult,
+        post: postRomanticResult,
       });
     } else {
       return res.render("Search", {
@@ -85,4 +102,9 @@ export const player = async (req, res) => {
   return res.json(playerData);
 }
 
+export const register = async (req, res) => {
+  return res.render("register", { pageTitle: "Register" });
+}
+
+const composers = ['Frédéric Chopin', 'Robert Schumann', 'Clara Schumann', 'Franz Liszt', 'Pyotr Ilyich Tchaikovsky', 'Felix Mendelssohn', 'Johannes Brahms', 'Sergei Rachmaninov']
 

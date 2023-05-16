@@ -1,0 +1,24 @@
+extends base
+
+block content
+    section#user
+        section#register
+            h2 Sign up
+            form(action="/signup",method="POST")
+                .email
+                    img(src="static/icons/email.svg")
+                    input(name="email", type="email", placeholder="Enter your E-mail")
+                .pw
+                    img(src="static/icons/pw.svg")
+                    input(name="password", type="password", placeholder="Enter your password")
+                .pw
+                    img(src="static/icons/pw.svg")
+                    input(name="verification", type="password", placeholder="Enter your password")
+                .username
+                    img(src="static/icons/user.svg")
+                    input(name="username", type="text", placeholder="Enter your username")
+                input(type="submit")
+            div Have already an account? Click 
+                a(href="/profile")
+                    span here
+                span  to sign in!

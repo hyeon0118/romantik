@@ -1,20 +1,21 @@
 extends base
 
 block content
-    section.music-section#recnet
-        .music-header
-            .title-wrapper 
-                h2 Listen again 
-            .buttons.desktop
-                img.left(src="static/icons/left.svg")
-                img.right(src="static/icons/right.svg")   
-        .music-wrapper
-            .music
-                .cover-wrapper
-                    img(src="") 
-                .info 
-                    .title Chopin: Piano Sonata No.3 1st Mov.
-                    .performer Maurizio Pollini
+    - if (loggedIn === true)
+        section.music-section#recnet
+            .music-header
+                .title-wrapper 
+                    h2 Listen again 
+                .buttons.desktop
+                    img.left(src="static/icons/left.svg")
+                    img.right(src="static/icons/right.svg")   
+            .music-wrapper
+                .music
+                    .cover-wrapper
+                        img(src="") 
+                    .info 
+                        .title Chopin: Piano Sonata No.3 1st Mov.
+                        .performer Maurizio Pollini
 
     section.music-section#recommend 
         .music-header
