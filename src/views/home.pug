@@ -1,16 +1,16 @@
 extends base
 
 block content
-    - if (loggedIn === true)
+    - if (loggedIn && history.length > 0)
         section.music-section#recnet
             .music-header
                 .title-wrapper 
-                    h2 Listen again, #{user.username}
+                    h2 Listen again,
                 .buttons.desktop
                     img.left(src="static/icons/left.svg")
                     img.right(src="static/icons/right.svg")   
             .music-wrapper
-                - for (let i = 0; i < history.length; i ++)
+                - for (let i = history.length - 1; i >= 0; i--)
                     .music
                         .cover-wrapper(style=`background-image: url('${history[i].thumbnail}')`, onclick = `addPlaylist('${history[i].videoId}', '${history[i].title}', '${history[i].performer}', '${history[i].composer}', '${history[i].thumbnail}' ); updateNowPlaying()`)
                         .info 

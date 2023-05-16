@@ -4,7 +4,7 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     username: { type: String, required: true },
-    history: { type: Array, default: [0] },
+    history: { type: Array },
     profile: { type: String, default: "none" },
     currentPlaylist: { type: Array },
     currentPlaying: { type: String },

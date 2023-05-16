@@ -41,6 +41,33 @@ rootRouter.post('/signup', async (req, res) => {
     }
 })
 
+rootRouter.post('/addSongToHistory', (req, res) => {
+    const videoId = req.body.videoId;
+
+
+    User.updateOne(
+        { email: req.session.email },
+        { $pull: { history: videoId } },
+        (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: 'Failed to update user history' });
+            }
+
+            User.updateOne(
+                { email: req.session.email },
+                { $push: { history: { $each: [videoId] } }, $set: { currentPlaying: videoId } },
+                (err, result) => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).json({ error: 'Failed to update user history' });
+                    }
+                    return res.status(200).json({ message: 'Song added to history successfully' });
+                }
+            );
+        });
+});
+
 rootRouter.post('/signin', async (req, res) => {
     const { email, password } = req.body;
     try {
@@ -83,9 +110,7 @@ rootRouter.post('/logout', (req, res) => {
     res.sendStatus(200);
 });
 
-rootRouter.get('/session', (req, res) => {
-    res.send(req.session.email);
-});
+
 
 // rootRouter.get('/getLoginStatus', (req, res) => {
 //     const loginStatus = {

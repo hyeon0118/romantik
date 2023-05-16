@@ -7,19 +7,24 @@ export const home = async (req, res) => {
   const sortByViewPromise = await Work.find({ videoId: { $exists: true } }).sort({ view: -1 }).exec();
   const sortByDatePromise = await Work.find({ videoId: { $exists: true } }).sort({ date: -1 }).exec();
   const user = await User.findOne({ email: req.session.email })
-  const username = user.username
   let history = []
 
-  for (let i = 0; i < user.history.length; i++) {
-    const music = await Work.findOne({ videoId: `${user.history[i]}` }).exec();
+  if (user) {
+    const username = user.username
+    for (let i = 0; i < user.history.length; i++) {
+      const music = await Work.findOne({ videoId: `${user.history[i]}` }).exec();
 
-    if (music) {
-      const { composer, title, performer, thumbnail } = music;
-      const info = { composer, title, performer, thumbnail };
-      history.push(info);
+      if (music) {
+        const { composer, title, performer, thumbnail, videoId } = music;
+        const info = { composer, title, performer, thumbnail, videoId };
+        history.push(info);
+      }
+
     }
 
   }
+
+
 
 
 

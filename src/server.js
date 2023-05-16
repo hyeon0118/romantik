@@ -34,6 +34,8 @@ app.get('/getLoginStatus', (req, res) => {
   res.json(loginStatus);
 });
 
+
+
 app.get("views/partials/home.pug", function (req, res) {
   res.render("player");
 })

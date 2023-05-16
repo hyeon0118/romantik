@@ -148,7 +148,6 @@ const currentPlaylistList = playlistWrapper.querySelectorAll("div")
 
 currentPlaylistList.forEach(list => {
     list.addEventListener("click", () => {
-        console.log("worked");
         const index = list.className
         inPlaylistPlay(index);
     })
@@ -333,6 +332,8 @@ function addPlaylist(videoId, title, performer, composer, thumbnail) {
 
     currentPlaylist.push(added);
 
+    addSongHistory(videoId);
+
     createPlaylistElement(title, performer, thumbnail);
 }
 
@@ -407,7 +408,6 @@ function progressBarAutomaticUpdate() {
         seconds = `0${seconds}`
     }
     passed.textContent = `${minutes}:${seconds}`;
-    console.log(minutes)
 
     bar.style.setProperty('--after-width', `${percentage}%`);
 }
@@ -665,7 +665,28 @@ function checkLogin() {
 
 window.onload = () => {
     checkLogin().then(() => {
-        console.log(loggedIn);
+        // console.log(loggedIn);
     });
 };
+
+function addSongHistory(videoId) {
+    fetch('/addSongToHistory', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ videoId }),
+    })
+        .then((response) => {
+            if (response.ok) {
+                // console.log('Song added to history successfully');
+            } else {
+                console.error('Failed to add song to history');
+            }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
+
 
