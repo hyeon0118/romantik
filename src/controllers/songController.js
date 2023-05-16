@@ -4,14 +4,24 @@ import User from "../models/User";
 import searchResult from "../routers/rootRouter";
 
 export const home = async (req, res) => {
-  const sortByViewPromise = Work.find({ videoId: { $exists: true } }).sort({ view: -1 }).exec();
-  const sortByDatePromise = Work.find({ videoId: { $exists: true } }).sort({ date: -1 }).exec();
-  const user = User.findOne({ email: req.session.email })
-  let userHistoryList = []
-  user.history.forEach(item => {
-    const history = Work.find({ videoId: item }).exec();
-    userHistoryList.push(history);
-  })
+  const sortByViewPromise = await Work.find({ videoId: { $exists: true } }).sort({ view: -1 }).exec();
+  const sortByDatePromise = await Work.find({ videoId: { $exists: true } }).sort({ date: -1 }).exec();
+  const user = await User.findOne({ email: req.session.email })
+  const username = user.username
+  let history = []
+
+  for (let i = 0; i < user.history.length; i++) {
+    const music = await Work.findOne({ videoId: `${user.history[i]}` }).exec();
+
+    if (music) {
+      const { composer, title, performer, thumbnail } = music;
+      const info = { composer, title, performer, thumbnail };
+      history.push(info);
+    }
+
+  }
+
+
 
   const currentHour = new Date().getHours();
   let timeRecommend = "";
@@ -38,7 +48,8 @@ export const home = async (req, res) => {
       recommend: sortByTimeResult,
       time: timeRecommend,
       recommendLength: sortByTimeResult.length,
-      history: userHistoryList
+      history: history,
+      user: user,
     });
   } catch (err) {
     console.log(err);

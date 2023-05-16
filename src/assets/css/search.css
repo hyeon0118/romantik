@@ -33,38 +33,7 @@
 #search .cover-wrapper span {
   z-index: 1;
 }
-#search input[type=text] {
-  border: none;
-  height: 30px;
-  width: 100%;
-  padding: 0;
-  box-sizing: border-box;
-  font-size: 14px;
-  background-color: transparent;
-}
-#search input:focus {
-  outline: none;
-}
-#search .searchbar {
-  display: flex;
-  align-items: center;
-  height: 40px;
-  box-sizing: border-box;
-  display: flex;
-  background-color: white;
-  border-radius: 20px;
-  width: 80vw;
-  min-width: 250px;
-  max-width: 500px;
-}
-#search .searchbar svg {
-  width: 25px;
-  padding: 0 10px;
-}
-#search .searchbar svg:nth-of-type(2) {
-  opacity: 0;
-  transition: 0.1s ease-in-out;
-}
+
 #search #era .music-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -225,7 +194,11 @@
 }
 #search #after-search.category .info-box::before {
   content: "";
-  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+  background-image: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9),
+    rgba(0, 0, 0, 0)
+  );
   position: absolute;
   left: 0;
   top: 0;

@@ -67,6 +67,15 @@ rootRouter.post('/signin', async (req, res) => {
 
 })
 
+rootRouter.get('/user', async (req, res) => {
+    const user = await User.findOne({ email: req.session.email })
+    try {
+        return res.send(user)
+    } catch (error) {
+        res.status(500).json({ error: 'failed' })
+    }
+})
+
 
 rootRouter.post('/logout', (req, res) => {
     req.session.destroy();
@@ -78,12 +87,12 @@ rootRouter.get('/session', (req, res) => {
     res.send(req.session.email);
 });
 
-rootRouter.get('/getLoginStatus', (req, res) => {
-    const loginStatus = {
-        loggedIn: req.session.loggedIn
-    };
-    res.json(loginStatus);
-});
+// rootRouter.get('/getLoginStatus', (req, res) => {
+//     const loginStatus = {
+//         loggedIn: req.session.loggedIn
+//     };
+//     res.json(loginStatus);
+// });
 
 
 rootRouter.get('/update', async (req, res) => {

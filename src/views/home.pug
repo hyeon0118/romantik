@@ -5,17 +5,17 @@ block content
         section.music-section#recnet
             .music-header
                 .title-wrapper 
-                    h2 Listen again 
+                    h2 Listen again, #{user.username}
                 .buttons.desktop
                     img.left(src="static/icons/left.svg")
                     img.right(src="static/icons/right.svg")   
             .music-wrapper
-                .music
-                    .cover-wrapper
-                        img(src="") 
-                    .info 
-                        .title Chopin: Piano Sonata No.3 1st Mov.
-                        .performer Maurizio Pollini
+                - for (let i = 0; i < history.length; i ++)
+                    .music
+                        .cover-wrapper(style=`background-image: url('${history[i].thumbnail}')`, onclick = `addPlaylist('${history[i].videoId}', '${history[i].title}', '${history[i].performer}', '${history[i].composer}', '${history[i].thumbnail}' ); updateNowPlaying()`)
+                        .info 
+                            .title #{history[i].title}
+                            .performer #{history[i].performer}
 
     section.music-section#recommend 
         .music-header
