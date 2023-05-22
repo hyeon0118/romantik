@@ -24,9 +24,14 @@ const playlistWrapper = document.querySelector('.current-playlist-wrapper');
 const navAnchor = document.querySelectorAll("nav ul a");
 const logoutButton = document.querySelector("button.logout");
 
+const likeButton = document.querySelectorAll(".like")
+let liked = false
+const mobileLikeButton = document.querySelector(".like-wrap.mobile.open")
+
 nowPlaying.addEventListener("click", () => {
     if (window.innerWidth < 600) {
         player.classList.add("open");
+        mobileLikeButton.classList.remove("hidden")
         body.classList.add("not-overflowY");
         playerHeader.classList.remove("hidden");
         bottomIcons.classList.remove("hidden");
@@ -47,7 +52,7 @@ viewPlaylist.forEach(btn => {
 playlistClose.addEventListener("click", () => {
     body.classList.remove("not-overflowY");
     currentPlaylistDisplay.classList.add("hidden");
-    bottomIcons.classList.remove("add");
+    bottomIcons.classList.remove("hidden");
 })
 
 const playerClose = document.querySelector(".player-header img")
@@ -55,18 +60,29 @@ const playerClose = document.querySelector(".player-header img")
 playerClose.addEventListener("click", (event) => {
     event.stopPropagation();
     player.classList.remove("open");
+    mobileLikeButton.classList.add("hidden")
     body.classList.remove("not-overflowY");
     playerHeader.classList.add("hidden");
     bottomIcons.classList.add("hidden");
 })
 
 window.addEventListener("resize", () => {
-    if (window.innerWidth >= 600 && player.classList.contains("open")) {
-        player.classList.remove("open");
-        playerHeader.classList.add("hidden");
-        bottomIcons.classList.add("hidden");
-
+    if (window.innerWidth >= 600) {
+        if (player.classList.contains("open")) {
+            player.classList.remove("open");
+            playerHeader.classList.add("hidden");
+            bottomIcons.classList.add("hidden");
+            mobileLikeButton.classList.add("hidden")
+        }
     }
+    if (window.innerWidth < 600) {
+        const bottomIconsMobile = document.querySelector(".bottom-icons.mobile")
+        bottomIconsMobile.classList.add("hidden");
+        if (!currentPlaylistDisplay.classList.contains("hidden")) {
+            currentPlaylistDisplay.classList.add("hidden");
+        }
+    }
+
 })
 
 
@@ -135,6 +151,7 @@ function updateNowPlaying() {
 function playPlayer() {
     playing = currentPlaylist[currentIndex]
     currentVideoId = playing.videoId
+    checkLiked();
     iframePlayer.loadVideoById(currentVideoId);
     updateCurrentCover();
     currentCover.style.backgroundImage = `url(${playing.thumbnail})`;
@@ -142,6 +159,7 @@ function playPlayer() {
     currentPerformer.textContent = playing.performer;
     currentComposer.textContent = playing.composer;
     isPlaying = true;
+
 }
 
 const currentPlaylistList = playlistWrapper.querySelectorAll("div")
@@ -159,18 +177,18 @@ function inPlaylistPlay(index) {
 }
 
 
-let isPlaying = false;
+let isPlaying = undefined;
 
 function playPause() {
     if (isPlaying) {
         playButton.forEach(btn => {
             btn.className = "pause"
-            btn.src = "static/icons/pause.svg";
+            btn.src = "/static/icons/pause.svg";
         })
     } else if (!isPlaying) {
         playButton.forEach(btn => {
             btn.className = "play"
-            btn.src = "static/icons/play.svg";
+            btn.src = "/static/icons/play.svg";
         })
     }
 }
@@ -181,14 +199,16 @@ function playPause() {
 function onPlayerReady(event) {
     playButton.forEach(btn => {
         btn.addEventListener('click', () => {
-            iframePlayer.playVideo();
-            isPlaying = !isPlaying;
-            if (isPlaying) {
+            if (isPlaying !== undefined) {
                 iframePlayer.playVideo();
-            } else {
-                iframePlayer.pauseVideo();
+                isPlaying = !isPlaying;
+                if (isPlaying) {
+                    iframePlayer.playVideo();
+                } else {
+                    iframePlayer.pauseVideo();
+                }
+                playPause();
             }
-            playPause();
         });
     });
 }
@@ -205,11 +225,11 @@ repeat.addEventListener("click", () => {
     }
 
     if (repeatMode === true) {
-        repeat.src = "static/icons/repeat_one.svg";
+        repeat.src = "/static/icons/repeat_one.svg";
     } else if (repeatMode === 'playlistRepeat') {
-        repeat.src = "static/icons/repeat_active.svg";
+        repeat.src = "/static/icons/repeat_active.svg";
     } else {
-        repeat.src = "static/icons/repeat_inactive.svg";
+        repeat.src = "/static/icons/repeat_inactive.svg";
     }
 })
 
@@ -260,10 +280,10 @@ let shuffled = false;
 random.addEventListener("click", () => {
     if (!shuffled) {
         shuffled = true
-        random.src = 'static/icons/random_active.svg';
+        random.src = '/static/icons/random_active.svg';
     } else {
         shuffled = false
-        random.src = 'static/icons/random_inactive.svg';
+        random.src = '/static/icons/random_inactive.svg';
     }
 })
 
@@ -362,7 +382,7 @@ function createPlaylistElement(addedTitle, addedPerformer, addedCover, i) {
     drag.classList.add('drag');
 
     const dragImage = document.createElement('img');
-    dragImage.src = 'static/icons/drag.svg';
+    dragImage.src = '/static/icons/drag.svg';
 
     drag.appendChild(dragImage);
     info.appendChild(title);
@@ -511,12 +531,12 @@ soundIcon.addEventListener("click", (event) => {
     let previousHeight = newSoundHeight;
     if (!isMuted) {
         isMuted = true;
-        soundIcon.src = "static/icons/mute.svg";
+        soundIcon.src = "/static/icons/mute.svg";
         previousVolume = iframePlayer.getVolume();
         iframePlayer.setVolume(0);
         soundbar.style.setProperty(soundHeightVariable, 0);
     } else {
-        soundIcon.src = "static/icons/sound.svg";
+        soundIcon.src = "/static/icons/sound.svg";
         iframePlayer.setVolume(previousVolume);
         soundbar.style.setProperty(soundHeightVariable, previousHeight);
     }
@@ -567,14 +587,12 @@ function navigateToPage(url) {
         });
 }
 
-
-function updateContent(main, header) {
+function enterLibrary(event, url) {
     const mainContent = document.querySelector("main");
-    const headerContent = document.querySelector("header");
-    headerContent.innerHTML = header
-    mainContent.innerHTML = main;
+    event.preventDefault();
+    navigateToPage(url);
+    window.history.pushState({}, "", url);
 }
-
 
 navAnchor.forEach((anchor) => {
     currentPlaylistDisplay.classList.add("hidden");
@@ -599,7 +617,7 @@ logo.addEventListener("click", (event) => {
 
 const profile = document.querySelector("header .profile-wrapper")
 
-profile.addEventListener("click", (event) => {
+function profileBtn(event) {
     event.preventDefault();
     const url = "/profile"
     fetch(url)
@@ -608,7 +626,10 @@ profile.addEventListener("click", (event) => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, "text/html");
             const mainContent = doc.querySelector("main").innerHTML;
+            const headerContent = doc.querySelector("header").innerHTML;
             const docMain = document.querySelector("main");
+            const docHeader = document.querySelector("header");
+            docHeader.innerHTML = headerContent;
             docMain.innerHTML = mainContent;
             pageTitle = url.charAt(0)
             changeNav();
@@ -617,7 +638,7 @@ profile.addEventListener("click", (event) => {
             console.error(error);
         });
     window.history.pushState({}, "", url);
-}, true)
+}
 
 window.addEventListener("popstate", () => {
     const url = window.location.href;
@@ -626,7 +647,6 @@ window.addEventListener("popstate", () => {
 
 if (location.pathname == '/profile') {
     logoutButton.addEventListener('click', async () => {
-        console.log("worked");
         try {
             await fetch('/logout', {
                 method: 'POST',
@@ -695,7 +715,7 @@ function addPlaylistHistory() {
     })
         .then((response) => {
             if (response.ok) {
-                console.log('playlist added to history successfully');
+                // console.log('playlist added to history successfully');
             } else {
                 console.error('Failed to add playlist to history');
             }
@@ -705,5 +725,139 @@ function addPlaylistHistory() {
         });
 }
 
+function searchCategory(name) {
+    const keyword = name
+
+    const searchUrl = new URL("/search", window.location.origin);
+    searchUrl.searchParams.set("keyword", keyword);
+
+    window.location.href = searchUrl.href;
+}
+
+function updateLikedButton(liked) {
+    likeButton.forEach(btn => {
+        if (liked) {
+            btn.src = "/static/icons/heart.svg"
+            btn.classList.remove("inactive")
+            btn.classList.add("active")
+        } else {
+            btn.src = "/static/icons/heart_inactive.svg"
+            btn.classList.remove("active")
+            btn.classList.add("inactive")
+        }
+
+        likeButton.forEach((otherBtn) => {
+            if (otherBtn !== btn) {
+                otherBtn.classList.toggle("inactive", !liked);
+                otherBtn.classList.toggle("active", liked);
+                otherBtn.src = liked ? "/static/icons/heart.svg" : "/static/icons/heart_inactive.svg";
+            }
+        })
+    })
+
+}
+
+likeButton.forEach(btn => {
+    btn.addEventListener("click", () => {
+        if (loggedIn && isPlaying) {
+            liked = !liked;
+            updateLiked();
+            updateLikedButton(liked);
+        }
+
+    })
+
+})
+
+function updateLiked() {
+    fetch("/like", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ videoId: currentVideoId }),
+    })
+        .then((response) => {
+        })
+        .catch((error) => {
+            console.error("The current music like request encountered an error during processing", error);
+        });
+}
+
+function checkLiked() {
+    fetch('/checkLiked', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ currentVideoId }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            const { isLiked } = data;
+            liked = isLiked;
+            updateLikedButton(liked);
+        })
+        .catch(error => {
+            console.error('Error occured: ', error);
+        });
+
+}
+
+const likeWraps = document.querySelectorAll(".like-wrap")
+const viewWraps = document.querySelectorAll(".view-wrap")
 
 
+likeWraps.forEach(wrap => {
+    const tooltip = wrap.querySelector(".tooltip")
+
+    wrap.addEventListener("click", () => {
+        if (!loggedIn) {
+            tooltip.textContent = "Please sign in"
+            tooltip.classList.add("show");
+            setTimeout(function () {
+                tooltip.classList.remove("show");
+            }, 2000);
+        } else if (loggedIn && !isPlaying) {
+            tooltip.textContent = "Please select a song"
+            tooltip.classList.add("show");
+            setTimeout(function () {
+                tooltip.classList.remove("show");
+            }, 2000);
+        }
+    })
+})
+
+viewWraps.forEach(wrap => {
+    const tooltip = wrap.querySelector(".tooltip")
+
+    wrap.addEventListener("mouseover", () => {
+        tooltip.classList.remove("hidden");
+    })
+
+    wrap.addEventListener("mouseout", () => {
+        tooltip.classList.add("hidden");
+    })
+})
+
+const addToLibraryButton = document.querySelectorAll(".add-to-library");
+const viewLibrary = document.querySelector(".view-library")
+let isViewLibraryOpen = false;
+
+
+addToLibraryButton.addEventListener('click', function () {
+    console.log("worked");
+    // isViewLibraryOpen = !isViewLibraryOpen;
+    // if (isViewLibraryOpen) {
+    //     viewLibrary.classList.remove('hidden');
+    // } else {
+    //     viewLibrary.classList.add('hidden');
+    // }
+});
+
+document.addEventListener('click', function (event) {
+    if (isViewLibraryOpen && !viewLibrary.contains(event.target) && event.target !== addToLibraryButton) {
+        viewLibrary.classList.add('hidden');
+        isViewLibraryOpen = false;
+    }
+});

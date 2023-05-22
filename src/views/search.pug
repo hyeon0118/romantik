@@ -2,65 +2,66 @@ extends base
 
 block content
     section#search
-        #before-search(style=`display: ${results == undefined ? 'block': 'none'}`)
+        #before-search(style=`display: ${keyword == undefined ? 'flex': 'none'}`)
             section.music-section#era
                 .music-header 
                     .title-wrapper 
-                        h2 Era
+                        h2 Era #{keyword}
                 .music-wrapper
                     .music 
-                        .early-romantic.cover-wrapper Early Romantic
+                        .early-romantic.cover-wrapper(onclick="searchCategory('Early Romantic')") Early Romantic
                     .music
-                        .middle-romantic.cover-wrapper Middle Romantic
+                        .middle-romantic.cover-wrapper(onclick="searchCategory('Middle Romantic')") Middle Romantic
                     .music    
-                        .late-romantic.cover-wrapper Late Romantic
+                        .late-romantic.cover-wrapper(onclick="searchCategory('Late Romantic')") Late Romantic
                     .music    
-                        .post-romantic.cover-wrapper Post Romantic
+                        .post-romantic.cover-wrapper(onclick="searchCategory('Post Romantic')") Post Romantic
             section.music-section#composer
                 .music-header
                     .title-wrapper 
                         h2 Composers 
                     .buttons.desktop 
-                        img.left(src="static/icons/left.svg")
-                        img.right(src="static/icons/right.svg")
+                        img.left(src="/static/icons/left.svg")
+                        img.right(src="/static/icons/right.svg")
                 .music-wrapper 
                     .music
-                        .chopin.cover-wrapper 
+                        .chopin.cover-wrapper(onclick="searchCategory('Frédéric Chopin')")
                         .info 
                             .title Frédéric Chopin
                     .music
-                        .robert-schumann.cover-wrapper 
+                        .robert-schumann.cover-wrapper(onclick="searchCategory('Robert Schumann')")
                         .info 
                             .title Robert Schumann
                     .music
-                        .clara-schumann.cover-wrapper 
+                        .schubert.cover-wrapper(onclick="searchCategory('Franz Schubert')") 
                         .info 
-                            .title Clara Schumann
+                            .title Franz Schubert
                     .music
-                        .liszt.cover-wrapper 
+                        .liszt.cover-wrapper(onclick="searchCategory('Franz Liszt')")
                         .info 
                             .title Franz Liszt
                     .music
-                        .tchaikovsky.cover-wrapper 
+                        .tchaikovsky.cover-wrapper(onclick="searchCategory('Pyotr Ilyich Tchaikovsky')")
                         .info 
                             .title Pyotr Ilyich Tchaikovsky
                     .music
-                        .mendelssohn.cover-wrapper 
+                        .mendelssohn.cover-wrapper(onclick="searchCategory('Felix Mendelssohn')")
                         .info 
                             .title Felix Mendelssohn 
                     .music
-                        .brahms.cover-wrapper 
+                        .brahms.cover-wrapper(onclick="searchCategory('Johannes Brahms')")
                         .info 
                             .title Johannes Brahms
                     .music
-                        .rachmaninov.cover-wrapper 
+                        .rachmaninov.cover-wrapper(onclick="searchCategory('Sergei Rachmaninov')")
                         .info 
                             .title Sergei Rachmaninov 
-        #after-search(style=`display: ${results == undefined ? 'none': 'block'}`)
-            //- .info-box
-            //-     .years 1810.03.01 ~ 1849.10.17
-            //-     .title Frederic Chopin 
-            //-     p Frédéric François Chopin was a Polish composer and virtuoso pianist of the Romantic period, who wrote primarily for solo piano. He has maintained worldwide renown as a leading musician of his era, one whose "poetic genius was based on a professional technique that was without equal in his generation".
+        #after-search(style=`display: ${keyword == undefined ? 'none': 'flex'}`)
+            - if(info)
+                .info-box(style=`background-image:url("/static/img/${info.picture}")`)
+                    .years #{info.dates}
+                    .title #{info.name}
+                    p #{info.bio}
             #result-list 
                 //- .result-composer 
                 //-     .cover-wrapper 
@@ -73,6 +74,6 @@ block content
                             .info 
                                 .title #{result.title}
                                 .performer #{result.performer}
-                            img(src="static/icons/add_to_playlist.svg")
+                            img(src="/static/icons/add_to_playlist.svg")
                 - else 
                     p No results found

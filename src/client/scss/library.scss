@@ -1,25 +1,9 @@
 #library {
-  main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
   h2 {
     padding-left: 42px;
     height: 30px;
     display: flex;
     align-items: center;
-  }
-
-  #library {
-    margin-top: 22px;
-    width: 100%;
-    min-width: 350px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 25px;
   }
 
   #library .playlist.liked .cover-wrapper {

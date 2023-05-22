@@ -1,16 +1,21 @@
 import { Billingconductor } from "aws-sdk";
 import Work from "../models/Work";
 import User from "../models/User";
-import searchResult from "../routers/rootRouter";
+import Composer from "../models/Composer";
 
 export const home = async (req, res) => {
   const sortByViewPromise = await Work.find({ videoId: { $exists: true } }).sort({ view: -1 }).exec();
   const sortByDatePromise = await Work.find({ videoId: { $exists: true } }).sort({ date: -1 }).exec();
   const user = await User.findOne({ email: req.session.email })
+  let playlists = []
+
   let history = []
+  let loggedIn = false;
 
   if (user) {
-    const username = user.username
+    loggedIn = true;
+    playlists = Object.keys(user.playlist);
+
     for (let i = 0; i < user.history.length; i++) {
       const music = await Work.findOne({ videoId: `${user.history[i]}` }).exec();
 
@@ -19,14 +24,8 @@ export const home = async (req, res) => {
         const info = { composer, title, performer, thumbnail, videoId };
         history.push(info);
       }
-
     }
-
   }
-
-
-
-
 
   const currentHour = new Date().getHours();
   let timeRecommend = "";
@@ -55,6 +54,8 @@ export const home = async (req, res) => {
       recommendLength: sortByTimeResult.length,
       history: history,
       user: user,
+      playlist: playlists,
+      loggedIn: loggedIn
     });
   } catch (err) {
     console.log(err);
@@ -62,52 +63,147 @@ export const home = async (req, res) => {
 };
 
 export const search = async (req, res) => {
+  let query = req.query.keyword
+  let composer = ""
+  let playlists = []
+  let loggedIn = false;
 
-  const query = req.query.keyword
 
   try {
-    if (query !== undefined) {
-      const sortBySearchPromise = await Work.find({ videoId: { $exists: true }, title: new RegExp(query, "i") }).exec();
-      const earlyRomanticPromise = await Work.find({ videoId: { $exists: true }, era: "early" }).exec();
-      const middleRomanticPromise = await Work.find({ videoId: { $exists: true }, era: "middle" }).exec();
-      const lateRomanticPromise = await Work.find({ videoId: { $exists: true }, era: "late" }).exec();
-      const postRomanticPromise = await Work.find({ videoId: { $exists: true }, era: "post" }).exec();
-      const [sortBySearchResult, earlyRomanticResult, middleRomanticResult, lateRomanticResult, postRomanticResult] = await Promise.all([sortBySearchPromise, earlyRomanticPromise, middleRomanticPromise, lateRomanticPromise, postRomanticPromise])
+    const user = await User.findOne({ email: req.session.email })
+    if (user) {
+      loggedIn = true;
+      playlists = Object.keys(user.playlist);
 
-      return res.render("search", {
-        pageTitle: "Search",
-        keyword: query,
-        results: sortBySearchResult,
-        early: earlyRomanticResult,
-        middle: middleRomanticResult,
-        late: lateRomanticResult,
-        post: postRomanticResult,
-      });
+      if (query !== undefined) {
+        if (query === "Frédéric Chopin" || query === "Franz Schubert" || query === "Robert Schumann" || query === "Franz Liszt" || query === "Pyotr Ilyich Tchaikovsky" || query === "Felix Mendelssohn" || query === "Johannes Brahms" || query === "Sergei Rachmaninov") {
+          composer = query;
+          const words = query.split(" ");
+          query = words[words.length - 1];
+        }
+
+
+        let sortBySearchPromise = await Work.find({ videoId: { $exists: true }, title: new RegExp(query, "i") }).exec();
+
+        if (query === "Early Romantic" || query === "Middle Romantic" || query === "Late Romantic" || query === "Post Romantic") {
+          const words = query.split(" ");
+          const era = words[0].toLowerCase();
+          const sortByEraPromise = await Work.find({ videoId: { $exists: true }, era: era }).exec();
+          sortBySearchPromise = sortByEraPromise
+          composer = query;
+        }
+
+        let sortByComposerPromise = await Composer.findOne({ name: composer }).exec();
+        let [sortBySearchResult, composerResult] = await Promise.all([sortBySearchPromise, sortByComposerPromise])
+
+
+        return res.render("search", {
+          pageTitle: "Search",
+          keyword: req.query.keyword,
+          results: sortBySearchResult,
+          composer: composer,
+          info: composerResult,
+          playlist: playlists,
+          loggedIn: loggedIn
+        });
+
+      }
     } else {
       return res.render("Search", {
         pageTitle: "Search",
+        playlist: playlists,
+        loggedIn: loggedIn
       })
 
     }
+  } catch (err) {
+    console.log(err);
+  }
+};
 
+export const library = async (req, res) => {
+  let playlists = [];
+  let loggedIn = false;
 
+  try {
+    const user = await User.findOne({ email: req.session.email })
+    if (user) {
+      loggedIn = true;
+      playlists = Object.keys(user.playlist);
 
+      return res.render("library", {
+        pageTitle: "Library",
+        playlist: playlists,
+        loggedIn: loggedIn
+      });
+    }
   } catch (err) {
     console.log(err);
   }
 
 };
 
-export const library = async (req, res) => {
-  return res.render("library", { pageTitle: "Library" });
-};
-
 export const playlist = async (req, res) => {
-  return res.render("playlist", { pageTitle: "Playlist" });
+  try {
+    const playlistId = req.params.id;
+    let playlists = []
+    let loggedIn = false;
+
+    if (playlistId == "liked") {
+      const user = await User.findOne({ email: req.session.email })
+      playlists = Object.keys(user.playlist);
+
+      let likedList = []
+
+      if (user) {
+        loggedIn = true;
+        for (let i = 0; i < user.playlist.liked.length; i++) {
+          const music = await Work.findOne({ videoId: `${user.playlist.liked[i]}` }).exec();
+
+          if (music) {
+            const { composer, title, performer, thumbnail, videoId } = music;
+            const info = { composer, title, performer, thumbnail, videoId };
+            likedList.push(info);
+          }
+        }
+      }
+
+
+      return res.render("playlist", {
+        pageTitle: "Playlist",
+        like: likedList,
+        playlist: playlists,
+        loggedIn: loggedIn
+      });
+    } else {
+
+    }
+
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export const profile = async (req, res) => {
-  return res.render("profile", { pageTitle: "Profile" });
+  let playlists = []
+  try {
+    const user = await User.findOne({ email: req.session.email })
+    playlists = Object.keys(user.playlist);
+
+    let loggedIn = false;
+    if (user) {
+      loggedIn = true;
+    }
+
+
+    return res.render("profile", {
+      pageTitle: "Profile",
+      playlist: playlists,
+      loggedIn: loggedIn
+    });
+  } catch (err) {
+    console.log(err);
+  }
 };
 
 export const player = async (req, res) => {

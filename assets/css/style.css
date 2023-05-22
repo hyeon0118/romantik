@@ -5,6 +5,10 @@
   color: white;
 }
 
+section#library {
+  display: flex;
+}
+
 html,
 body {
   height: 100%;
@@ -35,7 +39,8 @@ header {
   padding: 8px 15px;
   position: fixed;
   width: 100%;
-  background-color: #020202;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
 }
 
 #search input[type="text"] {
@@ -182,7 +187,7 @@ nav {
   letter-spacing: 0.1rem;
   font-size: 10px;
   text-transform: uppercase;
-  background-color: #212121;
+  background-color: #111111;
   display: flex;
   align-items: center;
   height: 40px;
@@ -319,7 +324,6 @@ main .cover-wrapper::after {
 .player .info div {
   display: flex;
   align-items: center;
-  height: ;
 }
 
 .player .title,

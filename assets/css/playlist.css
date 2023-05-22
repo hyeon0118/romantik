@@ -5,20 +5,27 @@
   height: 30px;
   display: flex;
   align-items: center;
+  justify-content: center;
+  align-items: center;
   text-overflow: ellipsis;
   white-space: nowrap;
+  width: 100%;
   overflow: hidden;
   margin-bottom: 5px;
 }
+
 #playlist #playlist-info-wrapper {
   width: calc(100vw - 84px);
-  background-color: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   padding: 30px 30px;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   display: flex;
+  flex-direction: column;
   margin: 0 42px;
-  margin-bottom: 50px;
 }
+
 #playlist #playlist-info-wrapper .cover-wrapper {
   background: rgb(255, 255, 255);
   background: linear-gradient(
@@ -32,16 +39,21 @@
   min-width: 150px;
   max-height: 150px;
   min-height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 #playlist .playlist-info {
-  padding-left: 42px;
+  margin-top: 10px;
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
 #playlist #playlist-wrapper {
-  padding: 0 42px;
+  padding: 0 15px;
 }
 #playlist #playlist-div #playlist-wrapper .playlist {
   display: flex;
@@ -57,9 +69,60 @@
 #playlist .count {
   opacity: 0.7;
 }
-@media (min-width: 870px) {
+
+#playlist .cover-wrapper::after {
+  margin: 0;
+  border-radius: 0;
+  width: 100%;
+  height: 100%;
+}
+
+#playlist #playlist-info-wrapper .cover-wrapper::after {
+  display: none;
+}
+
+#playlist #playlist-info-wrapper .cover-wrapper {
+  cursor: auto;
+}
+
+@media (min-width: 500px) {
   #playlist #playlist-info-wrapper {
-    width: calc(100vw - 84px - 240px);
+    background-color: rgba(255, 255, 255, 0.2);
+    flex-direction: row;
+    margin-bottom: 30px;
+  }
+
+  #playlist .playlist-info {
+    align-items: flex-start;
+    margin-left: 20px;
+  }
+
+  #playlist h2 {
+    justify-content: flex-start;
+  }
+}
+
+@media (min-width: 600px) {
+  #playlist #playlist-info-wrapper {
+    width: calc(100vw - 240px - 84px);
+    min-width: 500px;
+  }
+
+  #playlist .playlist-info {
+    padding-left: 42px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  #playlist #playlist-wrapper {
+    min-width: 500px;
+    padding: 0 42px;
+  }
+
+  #playlist .playlist {
+    min-width: 500px;
   }
 }
 

@@ -1,27 +1,40 @@
 nav 
     .logo.desktop 
         a(href="/")
-            img(src="static/img/logo.png")
+            img(src="/static/img/logo.png")
     ul
         a(href="/")
             li(data-menu="home")
-                img(src="static/icons/home.svg")
+                img(src="/static/icons/home.svg")
                 span.tablet home
         a(href="/search")
             li(data-demnu="search")
-                img(src="static/icons/search.svg")
+                img(src="/static/icons/search.svg")
                 span.tablet search
-        a(href="/library")
-            li(data-menu="library")
-                img(src="static/icons/library_inactive.svg")
-                span.tablet library
-        .divider.desktop 
-        ul.my-playlist.desktop 
-            a(href="/playlist")
-                li(data-menu="playlist")
-                    img(src="static/icons/heart_inactive.svg")
-                    span Liked
-            a(href="/playlist")
-                li(data-menu="playlist")
-                    .playlist-cover C
-                    span Chopin Sonatas
+        - if (loggedIn)
+            a(href="/library")
+                li(data-menu="library")
+                    img(src="/static/icons/library_inactive.svg")
+                    span.tablet library
+            .divider.desktop 
+            ul.my-playlist.desktop 
+                a(href="/playlist/liked")
+                    li(data-menu="playlist")
+                        img(src="/static/icons/heart_inactive.svg")
+                        span Liked 
+                - for (i=1; i < playlist.length; i++)
+                    a(href=`/playlist/${playlist[i].id}`)
+                        li(data-menu="playlist")
+                            .playlist-cover #{playlist[i].charAt(0)}
+                            span #{playlist[i]}
+        - else 
+            a(href="#")
+                li
+                    img(src="/static/icons/library_inactive.svg")
+                    span.tablet library
+            .divider.desktop 
+            ul.my-playlist.desktop 
+                a(href="#")
+                    li
+                        img(src="/static/icons/heart_inactive.svg")
+                        span Liked 

@@ -47,7 +47,7 @@ viewPlaylist.forEach(btn => {
 playlistClose.addEventListener("click", () => {
     body.classList.remove("not-overflowY");
     currentPlaylistDisplay.classList.add("hidden");
-    bottomIcons.classList.remove("add");
+    bottomIcons.classList.remove("hidden");
 })
 
 const playerClose = document.querySelector(".player-header img")
@@ -567,15 +567,6 @@ function navigateToPage(url) {
         });
 }
 
-
-function updateContent(main, header) {
-    const mainContent = document.querySelector("main");
-    const headerContent = document.querySelector("header");
-    headerContent.innerHTML = header
-    mainContent.innerHTML = main;
-}
-
-
 navAnchor.forEach((anchor) => {
     currentPlaylistDisplay.classList.add("hidden");
     anchor.addEventListener("click", (event) => {
@@ -705,5 +696,13 @@ function addPlaylistHistory() {
         });
 }
 
+function searchComposer(name) {
+    const keyword = name
+
+    const searchUrl = new URL("/search", window.location.origin);
+    searchUrl.searchParams.set("keyword", keyword);
+
+    window.location.href = searchUrl.href;
+}
 
 

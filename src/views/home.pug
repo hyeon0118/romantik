@@ -6,11 +6,8 @@ block content
             section.music-section#recnet
                 .music-header
                     .title-wrapper 
-                        h2 Listen again, 
+                        h2 Listen again,
                             span.username #{user.username}
-                    .buttons.desktop
-                        img.left(src="static/icons/left.svg")
-                        img.right(src="static/icons/right.svg")   
                 .music-wrapper
                     - for (let i = history.length - 1; i >= 0; i--)
                         .music
@@ -31,10 +28,7 @@ block content
                         - else if(time === 'evening')
                             span &#x1F306;
                         - else 
-                            span &#x1F319;
-                .buttons.desktop
-                    img.left(src="static/icons/left.svg")
-                    img.right(src="static/icons/right.svg")   
+                            span &#x1F319;  
             .music-wrapper
                 - for(let i=0; i < recommend.length; i++)
                     .music
@@ -47,9 +41,6 @@ block content
             .music-header
                 .title-wrapper 
                     h2 New released
-                .buttons.desktop
-                    img.left(src="static/icons/left.svg")
-                    img.right(src="static/icons/right.svg")   
             .music-wrapper
                 - for(let i=0; i<10; i++)
                     .music
@@ -62,10 +53,7 @@ block content
         section.music-section#top
             .music-header
                 .title-wrapper 
-                    h2 Today's charts
-                .buttons.desktop
-                    img.left(src="static/icons/left.svg")
-                    img.right(src="static/icons/right.svg")   
+                    h2 Today's charts 
             .music-wrapper
                 - for(let i=0; i<5; i++)
                     .column
@@ -80,10 +68,7 @@ block content
         section.music-section#recommend-playlist 
             .music-header
                 .title-wrapper 
-                    h2 How about this playlist?
-                .buttons.desktop
-                    img.left(src="static/icons/left.svg")
-                    img.right(src="static/icons/right.svg")   
+                    h2 How about this playlist?  
             .music-wrapper
                 .music
                     .cover-wrapper

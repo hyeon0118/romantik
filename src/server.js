@@ -56,9 +56,4 @@ app.use(function (req, res, next) {
 });
 
 
-/*
-Add more routers here!
-*/
-
-
 export default app;

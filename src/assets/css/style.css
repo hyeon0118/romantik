@@ -5,6 +5,10 @@
   color: white;
 }
 
+section#library {
+  display: flex;
+}
+
 html,
 body {
   height: 100%;
@@ -319,7 +323,6 @@ main .cover-wrapper::after {
 .player .info div {
   display: flex;
   align-items: center;
-  height: ;
 }
 
 .player .title,

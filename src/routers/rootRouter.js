@@ -5,7 +5,6 @@ import { search } from "../controllers/songController";
 import { playlist } from "../controllers/songController";
 import { profile } from "../controllers/songController";
 import { register } from "../controllers/songController";
-import { result } from "../controllers/songController";
 import Composer from "../models/Composer";
 import User from "../models/User";
 import Work from "../models/Work";
@@ -14,7 +13,6 @@ import bcrypt from 'bcrypt';
 
 
 const rootRouter = express.Router();
-let searchResult = [];
 
 rootRouter.get("/", home);
 rootRouter.get("/", (req, res) => {
@@ -22,9 +20,9 @@ rootRouter.get("/", (req, res) => {
 })
 rootRouter.get("/search", search);
 rootRouter.get("/library", library);
-rootRouter.get("/playlist", playlist);
 rootRouter.get("/profile", profile);
 rootRouter.get("/register", register);
+rootRouter.get('/playlist/:id', playlist);
 
 rootRouter.post('/signup', async (req, res) => {
     const { email, password, username } = req.body;
@@ -41,32 +39,6 @@ rootRouter.post('/signup', async (req, res) => {
     }
 })
 
-// rootRouter.post('/addSongToHistory', (req, res) => {
-//     const videoId = req.body.videoId;
-
-
-//     User.updateOne(
-//         { email: req.session.email },
-//         { $pull: { history: videoId } },
-//         (err, result) => {
-//             if (err) {
-//                 console.error(err);
-//                 return res.status(500).json({ error: 'Failed to update user history' });
-//             }
-
-//             User.updateOne(
-//                 { email: req.session.email },
-//                 { $push: { history: { $each: [videoId] } }, $set: { currentPlaying: videoId } },
-//                 (err, result) => {
-//                     if (err) {
-//                         console.error(err);
-//                         return res.status(500).json({ error: 'Failed to update user history' });
-//                     }
-//                     return res.status(200).json({ message: 'Song added to history successfully' });
-//                 }
-//             );
-//         });
-// });
 
 rootRouter.post('/addPlaylistToHistory', (req, res) => {
     const playlist = req.body.playlist;
@@ -112,6 +84,77 @@ rootRouter.post('/addSongToHistory', (req, res) => {
         });
 });
 
+rootRouter.post('/like', (req, res) => {
+    const { videoId } = req.body;
+
+    User.findOne({ email: req.session.email }, (err, user) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ error: 'Failed to find user' });
+        }
+
+        const likedArray = user.playlist.liked;
+
+        if (likedArray.includes(videoId)) {
+            User.updateOne(
+                { email: req.session.email },
+                {
+                    $pull: { 'playlist.liked': videoId }
+                },
+                (err, result) => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).json({ error: 'Failed to update user history' });
+                    }
+                    return res.status(200).json({ message: 'Song added to history successfully' });
+                }
+            );
+
+        } else {
+            User.updateOne(
+                { email: req.session.email },
+                {
+                    $addToSet: { 'playlist.liked': videoId }
+                },
+                (err, result) => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).json({ error: 'Failed to update user history' });
+                    }
+                    return res.status(200).json({ message: 'Song added to history successfully' });
+                }
+            );
+        }
+
+        user.save((err) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: 'Failed to update user playlist' });
+            }
+
+            res.end();
+        });
+    });
+})
+
+rootRouter.post('/checkLiked', async (req, res) => {
+    const { currentVideoId } = req.body;
+
+    try {
+        const user = await User.findOne(
+            { email: req.session.email, "playlist.liked": currentVideoId }
+        );
+
+        if (user && user.playlist && user.playlist.liked.includes(currentVideoId)) {
+            res.json({ isLiked: true });
+        } else {
+            res.json({ isLiked: false });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'server error' });
+    }
+})
 
 rootRouter.post('/signin', async (req, res) => {
     const { email, password } = req.body;
