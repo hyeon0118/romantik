@@ -305,12 +305,13 @@
 }
 
 .view-library {
+  padding-top: 20px;
   font-family: "Montserrat", sans-serif;
   position: absolute;
   display: flex;
   flex-direction: column;
   overflow: auto;
-  flex-wrap: ;
+  align-items: center;
   left: 40px;
   height: 300px;
   width: 80%;
@@ -331,13 +332,19 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  width: 100%;
+  width: 80vw;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 60px;
   font-size: 16px;
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+
+.library-title:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid transparent;
 }
 
 .library-title:last-of-type {
@@ -356,6 +363,34 @@
   border-bottom: 2px solid white;
   border-radius: 20px 20px 0 0;
   color: white;
+  padding-bottom: 20px;
+}
+
+.view-library h3:last-of-type {
+  bottom: 0;
+  border: 1px solid white;
+  width: 70%;
+  border-radius: 50px;
+}
+
+.library-title.add input {
+  width: 80vw;
+  padding: 0 20px;
+  height: 100%;
+  background: transparent;
+  color: white;
+}
+
+.view-library .createBtn {
+  cursor: pointer;
+  margin: 20px 0;
+  padding-bottom: 0;
+  padding: 10px 0;
+}
+
+.createBtn:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid transparent;
 }
 
 @media (min-width: 540px) {

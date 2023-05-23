@@ -60,18 +60,18 @@
         h2 Playlist
         .current-playlist-wrapper 
     .view-library.hidden
-        h3 Add to library 
+        h3.title Add to library
         .titles-wrap 
-            .library-title chopin sonatas 
-            .library-title chopin sonatas
-            .library-title chopin sonatas 
-            .library-title chopin sonatas 
-            .library-title chopin sonatas 
-            .library-title chopin sonatas 
+            - for (i=0; i < list.length; i++)
+                .library-title(onclick=`addToLibrary("${list[i]._id}")`) #{list[i].name}
+            form(action="/createPlaylist", method="POST", id="playlistForm")
+                .library-title.add
+                    span + Create a playlist
+                    input.hidden(name="name", type="text", placeholder="Create a playlist")
+                input.hidden(name="currentVideoId", type="text", value="")
+
+        h3.createBtn.hidden(onclick="createPlaylist(event)") Create a playlist
+
             
     #player
         
-
-
-
-            

@@ -4,11 +4,11 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true },
     password: { type: String, required: true },
     username: { type: String, required: true },
-    history: { type: Array },
-    profile: { type: String, default: "none" },
-    currentPlaylist: { type: Array },
-    currentPlaying: { type: String },
-    playlist: { type: Object },
+    history: { type: Array, requied: true, default: [] },
+    profile: { type: String, default: "none", required: true },
+    currentPlaylist: { type: Array, default: [], required: true },
+    currentPlaying: { type: String, default: "", required: true },
+    liked: { type: Array, default: [], required: true },
 });
 
 const User = mongoose.model("User", userSchema);

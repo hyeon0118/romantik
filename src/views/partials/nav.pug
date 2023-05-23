@@ -22,11 +22,11 @@ nav
                     li(data-menu="playlist")
                         img(src="/static/icons/heart_inactive.svg")
                         span Liked 
-                - for (i=1; i < playlist.length; i++)
-                    a(href=`/playlist/${playlist[i].id}`)
+                - for (i=0; i < list.length; i++)
+                    a(href=`/playlist/${list[i]._id}`)
                         li(data-menu="playlist")
-                            .playlist-cover #{playlist[i].charAt(0)}
-                            span #{playlist[i]}
+                            .playlist-cover #{list[i].name.charAt(0)}
+                            span #{list[i].name}
         - else 
             a(href="#")
                 li

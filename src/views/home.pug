@@ -6,7 +6,7 @@ block content
             section.music-section#recnet
                 .music-header
                     .title-wrapper 
-                        h2 Listen again,
+                        h2 Listen again, 
                             span.username #{user.username}
                 .music-wrapper
                     - for (let i = history.length - 1; i >= 0; i--)
@@ -70,10 +70,12 @@ block content
                 .title-wrapper 
                     h2 How about this playlist?  
             .music-wrapper
-                .music
-                    .cover-wrapper
-                        img(src="") 
-                    .info 
-                        .title Morning Classic
-                        .performer Leonard Hoffstadter
-        
+                - for(let i=0; i < recommendPlaylist.length; i++)
+                    - if (recommendPlaylist[i].playlist.length >= 1)
+                        .music
+                            a(href=`/playlist/${recommendPlaylist[i]._id}`)
+                                .cover-wrapper
+                            .info 
+                                .title #{recommendPlaylist[i].name}
+                                .performer #{recommendPlaylist[i].userId}
+                

@@ -340,8 +340,8 @@ main .cover-wrapper::after {
   line-height: 16px;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  /* -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; */
 }
 
 .title {

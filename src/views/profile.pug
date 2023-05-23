@@ -10,7 +10,7 @@ block content
                     .username #{loggedInUsername}
                 .button-wrapper
                     button.change-pwChange Change password
-                    button.logout Sign out
+                    button.logout(onclick="signOut()") Sign out
                     button.resignation Delete account
         - if (!loggedIn)
             section#login

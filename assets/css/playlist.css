@@ -102,6 +102,13 @@
   }
 }
 
+#playlist .empty-playlist {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 @media (min-width: 600px) {
   #playlist #playlist-info-wrapper {
     width: calc(100vw - 240px - 84px);

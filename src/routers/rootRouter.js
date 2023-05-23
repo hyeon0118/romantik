@@ -8,6 +8,7 @@ import { register } from "../controllers/songController";
 import Composer from "../models/Composer";
 import User from "../models/User";
 import Work from "../models/Work";
+import Playlist from "../models/Playlist";
 import bcrypt from 'bcrypt';
 
 
@@ -40,14 +41,41 @@ rootRouter.post('/signup', async (req, res) => {
 })
 
 
-rootRouter.post('/addPlaylistToHistory', (req, res) => {
-    const playlist = req.body.playlist;
+rootRouter.post('/createPlaylist', async (req, res) => {
+    const { name, currentVideoId } = req.body;
+    try {
+        if (currentVideoId == "none") {
+            let newPlaylist = new Playlist({ name, userId: req.session.email })
 
-    User.updateOne(
-        { email: req.session.email },
-        { $set: { currentPlaylist: playlist } }
-    )
+            await newPlaylist.save();
+        } else {
+            let newPlaylist = new Playlist({ name, playlist: [currentVideoId], userId: req.session.email });
+
+            await newPlaylist.save();
+        }
+        res.status(200).json({ message: 'Playlist created successfully' });
+    } catch (error) {
+        res.status(500).json({ error: 'failed to create a playlist' })
+    }
 })
+
+rootRouter.post("/addToPlaylist", async (req, res) => {
+    const { playlistId, currentVideoId } = req.body;
+
+    try {
+        await Playlist.updateOne(
+            { _id: playlistId },
+            { $push: { playlist: currentVideoId } }
+        );
+
+        res.status(200).json({ message: 'Song added to playlist successfully' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to add song to playlist' });
+
+    }
+});
 
 rootRouter.post('/addSongToHistory', (req, res) => {
     const videoId = req.body.videoId;
@@ -93,13 +121,13 @@ rootRouter.post('/like', (req, res) => {
             return res.status(500).json({ error: 'Failed to find user' });
         }
 
-        const likedArray = user.playlist.liked;
+        const likedArray = user.liked;
 
         if (likedArray.includes(videoId)) {
             User.updateOne(
                 { email: req.session.email },
                 {
-                    $pull: { 'playlist.liked': videoId }
+                    $pull: { liked: videoId }
                 },
                 (err, result) => {
                     if (err) {
@@ -114,7 +142,7 @@ rootRouter.post('/like', (req, res) => {
             User.updateOne(
                 { email: req.session.email },
                 {
-                    $addToSet: { 'playlist.liked': videoId }
+                    $addToSet: { liked: videoId }
                 },
                 (err, result) => {
                     if (err) {
@@ -142,10 +170,10 @@ rootRouter.post('/checkLiked', async (req, res) => {
 
     try {
         const user = await User.findOne(
-            { email: req.session.email, "playlist.liked": currentVideoId }
+            { email: req.session.email }
         );
 
-        if (user && user.playlist && user.playlist.liked.includes(currentVideoId)) {
+        if (user && user.liked.includes(currentVideoId)) {
             res.json({ isLiked: true });
         } else {
             res.json({ isLiked: false });

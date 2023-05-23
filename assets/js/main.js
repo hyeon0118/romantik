@@ -28,6 +28,17 @@ const likeButton = document.querySelectorAll(".like")
 let liked = false
 const mobileLikeButton = document.querySelector(".like-wrap.mobile.open")
 
+const playlistTitleWrapper = document.querySelector(".library-title.add")
+const playlistTitle = document.querySelector(".library-title.add span")
+const playlistInput = document.querySelector(".library-title.add input")
+const createBtn = document.querySelector(".createBtn")
+
+const currentVideoInput = document.querySelector('input[name="currentVideoId"]')
+const playlistForm = document.querySelector("#playlistForm")
+
+const addToLibraryButton = document.querySelectorAll(".add-to-library");
+const viewLibrary = document.querySelector(".view-library")
+
 nowPlaying.addEventListener("click", () => {
     if (window.innerWidth < 600) {
         player.classList.add("open");
@@ -64,6 +75,11 @@ playerClose.addEventListener("click", (event) => {
     body.classList.remove("not-overflowY");
     playerHeader.classList.add("hidden");
     bottomIcons.classList.add("hidden");
+    viewLibrary.classList.add("hidden");
+    playlistTitle.classList.remove("hidden")
+    playlistInput.classList.add("hidden")
+    createBtn.classList.add("hidden")
+    playlistInput.value = "";
 })
 
 window.addEventListener("resize", () => {
@@ -77,7 +93,9 @@ window.addEventListener("resize", () => {
     }
     if (window.innerWidth < 600) {
         const bottomIconsMobile = document.querySelector(".bottom-icons.mobile")
-        bottomIconsMobile.classList.add("hidden");
+        if (!player.classList.contains("open")) {
+            bottomIconsMobile.classList.add("hidden");
+        }
         if (!currentPlaylistDisplay.classList.contains("hidden")) {
             currentPlaylistDisplay.classList.add("hidden");
         }
@@ -410,26 +428,28 @@ function updateCurrentPlaylistScreen() {
 let percentage = 0;
 
 function progressBarAutomaticUpdate() {
-    let minutes = Math.floor(iframePlayer.getCurrentTime() / 60)
-    let seconds = Math.trunc(iframePlayer.getCurrentTime() - (minutes * 60))
+    if (isPlaying) {
+        let minutes = Math.floor(iframePlayer.getCurrentTime() / 60)
+        let seconds = Math.trunc(iframePlayer.getCurrentTime() - (minutes * 60))
 
-    if (loggedIn === true) {
-        percentage = (Math.floor(iframePlayer.getCurrentTime()) / Math.floor(iframePlayer.getDuration())) * 100;
+        if (loggedIn === true) {
+            percentage = (Math.floor(iframePlayer.getCurrentTime()) / Math.floor(iframePlayer.getDuration())) * 100;
 
-    } else if (loggedIn === undefined || loggedIn === false) {
-        percentage = (Math.floor(iframePlayer.getCurrentTime()) / 60) * 100;
-        if (iframePlayer.getCurrentTime() >= 60) {
-            stopVideo();
+        } else if (loggedIn === undefined || loggedIn === false) {
+            percentage = (Math.floor(iframePlayer.getCurrentTime()) / 60) * 100;
+            if (iframePlayer.getCurrentTime() >= 60) {
+                stopVideo();
+            }
         }
-    }
-    if (seconds == 0) {
-        seconds = '00';
-    } else if (seconds < 10) {
-        seconds = `0${seconds}`
-    }
-    passed.textContent = `${minutes}:${seconds}`;
+        if (seconds == 0) {
+            seconds = '00';
+        } else if (seconds < 10) {
+            seconds = `0${seconds}`
+        }
+        passed.textContent = `${minutes}:${seconds}`;
 
-    bar.style.setProperty('--after-width', `${percentage}%`);
+        bar.style.setProperty('--after-width', `${percentage}%`);
+    }
 }
 
 
@@ -645,19 +665,17 @@ window.addEventListener("popstate", () => {
     navigateToPage(url);
 });
 
-if (location.pathname == '/profile') {
-    logoutButton.addEventListener('click', async () => {
-        try {
-            await fetch('/logout', {
-                method: 'POST',
-            });
-            addPlaylistHistory();
+async function signOut() {
+    try {
+        await fetch('/logout', {
+            method: 'POST',
+        });
+        addPlaylistHistory();
 
-            location.reload();
-        } catch (error) {
-            console.error('Failed to logout:', error);
-        }
-    });
+        location.reload();
+    } catch (error) {
+        console.error('Failed to logout:', error);
+    }
 }
 
 
@@ -759,7 +777,7 @@ function updateLikedButton(liked) {
 
 likeButton.forEach(btn => {
     btn.addEventListener("click", () => {
-        if (loggedIn && isPlaying) {
+        if (loggedIn && currentVideoId !== "none") {
             liked = !liked;
             updateLiked();
             updateLikedButton(liked);
@@ -801,8 +819,46 @@ function checkLiked() {
         .catch(error => {
             console.error('Error occured: ', error);
         });
+}
+
+function test(playlistId) {
+    console.log(playlistId)
+}
+
+function addToLibrary(playlistId) {
+    if (currentVideoId !== "none") {
+        fetch('/addToPlaylist', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ playlistId, currentVideoId }),
+        })
+            .then(response => response.json())
+            .catch(error => {
+                console.error('Error occured: ', error);
+            });
+    } else {
+        alert('Please play a song')
+    }
 
 }
+
+function createPlaylist(event) {
+    event.preventDefault();
+    currentVideoInput.value = currentVideoId;
+    console.log(playlistForm);
+    playlistForm.submit();
+}
+
+
+playlistTitleWrapper.addEventListener("click", () => {
+    playlistTitle.classList.add("hidden")
+    playlistInput.classList.remove("hidden")
+    createBtn.classList.remove("hidden")
+    playlistInput.focus();
+})
+
 
 const likeWraps = document.querySelectorAll(".like-wrap")
 const viewWraps = document.querySelectorAll(".view-wrap")
@@ -818,7 +874,7 @@ likeWraps.forEach(wrap => {
             setTimeout(function () {
                 tooltip.classList.remove("show");
             }, 2000);
-        } else if (loggedIn && !isPlaying) {
+        } else if (loggedIn && !currentVideoId) {
             tooltip.textContent = "Please select a song"
             tooltip.classList.add("show");
             setTimeout(function () {
@@ -840,24 +896,39 @@ viewWraps.forEach(wrap => {
     })
 })
 
-const addToLibraryButton = document.querySelectorAll(".add-to-library");
-const viewLibrary = document.querySelector(".view-library")
-let isViewLibraryOpen = false;
 
 
-addToLibraryButton.addEventListener('click', function () {
-    console.log("worked");
-    // isViewLibraryOpen = !isViewLibraryOpen;
-    // if (isViewLibraryOpen) {
-    //     viewLibrary.classList.remove('hidden');
-    // } else {
-    //     viewLibrary.classList.add('hidden');
-    // }
-});
+addToLibraryButton.forEach(btn => {
+    btn.addEventListener('click', function () {
+        viewLibrary.classList.toggle("hidden");
 
-document.addEventListener('click', function (event) {
-    if (isViewLibraryOpen && !viewLibrary.contains(event.target) && event.target !== addToLibraryButton) {
-        viewLibrary.classList.add('hidden');
-        isViewLibraryOpen = false;
+    });
+})
+
+
+document.addEventListener("click", function (event) {
+    if (
+        !viewLibrary.contains(event.target) &
+        !Array.from(addToLibraryButton).some(function (button) {
+            return button.contains(event.target);
+        })
+    ) {
+        viewLibrary.classList.add("hidden");
+        playlistTitle.classList.remove("hidden")
+        playlistInput.classList.add("hidden")
+        createBtn.classList.add("hidden")
+        playlistInput.value = "";
+    }
+
+    if (!viewLibrary.classList.contains("hidden") &&
+        viewLibrary.contains(event.target) &&
+        !playlistTitleWrapper.contains(event.target) &&
+        !createBtn.contains(event.target)) {
+        playlistTitle.classList.remove("hidden")
+        playlistInput.classList.add("hidden")
+        createBtn.classList.add("hidden")
+        playlistInput.value = "";
+
     }
 });
+
