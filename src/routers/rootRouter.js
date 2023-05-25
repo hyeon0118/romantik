@@ -5,7 +5,6 @@ import { search } from "../controllers/songController";
 import { playlist } from "../controllers/songController";
 import { profile } from "../controllers/songController";
 import { register } from "../controllers/songController";
-import Composer from "../models/Composer";
 import User from "../models/User";
 import Work from "../models/Work";
 import Playlist from "../models/Playlist";
@@ -45,11 +44,12 @@ rootRouter.post('/createPlaylist', async (req, res) => {
     const { name, currentVideoId } = req.body;
     try {
         if (currentVideoId == "none") {
-            let newPlaylist = new Playlist({ name, userId: req.session.email })
+            let newPlaylist = new Playlist({ name, userId: req.session.email, username: req.session.username })
 
             await newPlaylist.save();
         } else {
-            let newPlaylist = new Playlist({ name, playlist: [currentVideoId], userId: req.session.email });
+            const work = await Work.findOne({ videoId: currentVideoId })
+            let newPlaylist = new Playlist({ name, playlist: [currentVideoId], userId: req.session.email, thumbnails: [work.thumbnail], username: req.session.username });
 
             await newPlaylist.save();
         }
@@ -59,13 +59,49 @@ rootRouter.post('/createPlaylist', async (req, res) => {
     }
 })
 
+rootRouter.post("/deleteFromPlaylist", async (req, res) => {
+    const { playlistId, videoId } = req.body;
+    try {
+        if (playlistId != "like") {
+            await Playlist.updateOne(
+                { _id: playlistId },
+                {
+                    $pull: {
+                        playlist: videoId,
+                        thumbnails: { $regex: videoId }
+                    }
+                }
+            );
+        } else {
+            await User.updateOne(
+                { email: req.session.email },
+                { $pull: { liked: videoId } }
+            )
+        }
+
+        res.status(200).json({ message: 'Song deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to delete song from playlist' });
+
+    }
+})
+
+
 rootRouter.post("/addToPlaylist", async (req, res) => {
     const { playlistId, currentVideoId } = req.body;
 
     try {
+        const playlist = await Playlist.findById(playlistId);
+        const work = await Work.findOne({ videoId: currentVideoId })
+
+        if (playlist.playlist.includes(currentVideoId)) {
+            return res.status(400).json({ error: 'Song already exists in the playlist' });
+        }
+
         await Playlist.updateOne(
             { _id: playlistId },
-            { $push: { playlist: currentVideoId } }
+            { $push: { playlist: currentVideoId, thumbnails: work.thumbnail } }
         );
 
         res.status(200).json({ message: 'Song added to playlist successfully' });
@@ -76,6 +112,7 @@ rootRouter.post("/addToPlaylist", async (req, res) => {
 
     }
 });
+
 
 rootRouter.post('/addSongToHistory', (req, res) => {
     const videoId = req.body.videoId;

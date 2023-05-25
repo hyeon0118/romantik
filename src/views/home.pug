@@ -73,9 +73,15 @@ block content
                 - for(let i=0; i < recommendPlaylist.length; i++)
                     - if (recommendPlaylist[i].playlist.length >= 1)
                         .music
-                            a(href=`/playlist/${recommendPlaylist[i]._id}`)
+                            a(onclick=`enterLibrary(event, '/playlist/${recommendPlaylist[i].id}')`)
                                 .cover-wrapper
+                                    - for (let j=0; j < 4; j++)
+                                        - if (!recommendPlaylist[i].thumbnails[j])
+                                            .cover.none 🎵
+                                        - else 
+                                           .cover(style=`background-image: url('${recommendPlaylist[i].thumbnails[j]}')`)
+                                    
                             .info 
                                 .title #{recommendPlaylist[i].name}
-                                .performer #{recommendPlaylist[i].userId}
+                                .performer #{recommendPlaylist[i].username}
                 

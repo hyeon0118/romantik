@@ -44,12 +44,12 @@ export const home = async (req, res) => {
 
   const sortByTimePromise = Work.find({ videoId: { $exists: true }, character: timeRecommend }).exec();
 
-
   const userPlaylistPromise = await Playlist.find({ userId: req.session.email }).exec();
   const userPlaylistResult = await Promise.all(userPlaylistPromise)
 
   try {
     const [sortByViewResult, sortByDateResult, sortByTimeResult, sortByPlaylistResult] = await Promise.all([sortByViewPromise, sortByDatePromise, sortByTimePromise, sortByPlaylistPromise]);
+
 
     return res.render("home", {
       pageTitle: "Home",
@@ -63,7 +63,7 @@ export const home = async (req, res) => {
       recommendPlaylist: sortByPlaylistResult,
       playlist: playlists,
       loggedIn: loggedIn,
-      list: userPlaylistResult
+      list: userPlaylistResult,
     });
   } catch (err) {
     console.log(err);
@@ -146,8 +146,6 @@ export const library = async (req, res) => {
   }
 
   try {
-
-
     const sortByPlaylistPromise = await Playlist.find({ userId: req.session.email }).exec();
     const sortByPlaylistResult = await Promise.all(sortByPlaylistPromise)
 
@@ -183,7 +181,7 @@ export const playlist = async (req, res) => {
 
       let likedList = []
 
-      const playlistInfo = { name: "Liked music" }
+      const playlistInfo = { _id: "like", name: "Your likes", userId: req.session.email }
 
       if (user) {
         for (let i = 0; i < user.liked.length; i++) {
@@ -204,7 +202,8 @@ export const playlist = async (req, res) => {
         playlistInfo: playlistInfo,
         playlist: playlists,
         loggedIn: loggedIn,
-        list: userPlaylistResult
+        list: userPlaylistResult,
+        user: user,
       });
     } else {
 
@@ -212,18 +211,21 @@ export const playlist = async (req, res) => {
 
       const userPlaylist = await Playlist.findOne({ _id: playlistId }).exec();
 
-      if (user) {
-        for (let i = 0; i < userPlaylist.playlist.length; i++) {
-          const music = await Work.findOne({ videoId: `${userPlaylist.playlist[i]}` }).exec();
+      for (let i = 0; i < userPlaylist.playlist.length; i++) {
+        const music = await Work.findOne({ videoId: `${userPlaylist.playlist[i]}` }).exec();
 
-          if (music) {
-            const { composer, title, performer, thumbnail, videoId } = music;
-            const info = { composer, title, performer, thumbnail, videoId };
-            likedList.push(info);
-          }
+        if (music) {
+          const { composer, title, performer, thumbnail, videoId } = music;
+          const info = { composer, title, performer, thumbnail, videoId };
+          likedList.push(info);
         }
       }
 
+      let user = await User.findOne({ email: req.session.email })
+
+      if (!user) {
+        user = ""
+      }
 
 
       return res.render("playlist", {
@@ -232,7 +234,8 @@ export const playlist = async (req, res) => {
         likedList: likedList,
         playlist: playlists,
         loggedIn: loggedIn,
-        list: userPlaylistResult
+        list: userPlaylistResult,
+        user: user,
       })
 
     }
@@ -276,6 +279,27 @@ export const player = async (req, res) => {
 }
 
 export const register = async (req, res) => {
-  return res.render("register", { pageTitle: "Register" });
-}
+  let playlists = []
+  try {
+    const user = await User.findOne({ email: req.session.email })
+    const userPlaylistPromise = await Playlist.find({ userId: req.session.email }).exec();
+    const userPlaylistResult = await Promise.all(userPlaylistPromise)
+
+
+    let loggedIn = false;
+    if (user) {
+      loggedIn = true;
+    }
+
+
+    return res.render("register", {
+      pageTitle: "Register",
+      playlist: playlists,
+      loggedIn: loggedIn,
+      list: userPlaylistResult
+    });
+  } catch (err) {
+    console.log(err);
+  }
+};
 

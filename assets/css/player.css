@@ -202,7 +202,7 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.current-playlist .current-playlist-wrapper > div:not(.current)::after {
+/* .current-playlist .current-playlist-wrapper > div:not(.current)::after {
   content: url("../icons/play.svg");
   position: absolute;
   height: 47px;
@@ -212,11 +212,11 @@
   justify-content: center;
   align-items: center;
   opacity: 0;
-}
+} */
 
-.current-playlist .current-playlist-wrapper > div:not(.current):hover::after {
+/* .current-playlist .current-playlist-wrapper > div:not(.current):hover::after {
   opacity: 1;
-}
+} */
 
 .current-playlist .current-playlist-wrapper .info {
   display: flex;

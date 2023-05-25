@@ -21,7 +21,7 @@ nav
                 a(href="/playlist/liked")
                     li(data-menu="playlist")
                         img(src="/static/icons/heart_inactive.svg")
-                        span Liked 
+                        span Like
                 - for (i=0; i < list.length; i++)
                     a(href=`/playlist/${list[i]._id}`)
                         li(data-menu="playlist")
@@ -29,12 +29,12 @@ nav
                             span #{list[i].name}
         - else 
             a(href="#")
-                li
+                li(onclick="loginAlert()")
                     img(src="/static/icons/library_inactive.svg")
                     span.tablet library
             .divider.desktop 
             ul.my-playlist.desktop 
                 a(href="#")
-                    li
+                    li(onclick="loginAlert()")
                         img(src="/static/icons/heart_inactive.svg")
-                        span Liked 
+                        span Like

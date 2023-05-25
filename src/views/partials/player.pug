@@ -64,11 +64,10 @@
         .titles-wrap 
             - for (i=0; i < list.length; i++)
                 .library-title(onclick=`addToLibrary("${list[i]._id}")`) #{list[i].name}
-            form(action="/createPlaylist", method="POST", id="playlistForm")
-                .library-title.add
-                    span + Create a playlist
-                    input.hidden(name="name", type="text", placeholder="Create a playlist")
-                input.hidden(name="currentVideoId", type="text", value="")
+            .library-title.add(onclick="playlistInputHandler()")
+                span + Create a playlist
+                input.hidden(name="name", type="text", placeholder="Create a playlist")
+            //- input.hidden(name="currentVideoId", type="text", value="")
 
         h3.createBtn.hidden(onclick="createPlaylist(event)") Create a playlist
 

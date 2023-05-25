@@ -33,11 +33,12 @@ const playlistTitle = document.querySelector(".library-title.add span")
 const playlistInput = document.querySelector(".library-title.add input")
 const createBtn = document.querySelector(".createBtn")
 
-const currentVideoInput = document.querySelector('input[name="currentVideoId"]')
 const playlistForm = document.querySelector("#playlistForm")
+const searchForm = document.querySelector("#searchForm")
 
 const addToLibraryButton = document.querySelectorAll(".add-to-library");
 const viewLibrary = document.querySelector(".view-library")
+
 
 nowPlaying.addEventListener("click", () => {
     if (window.innerWidth < 600) {
@@ -48,6 +49,13 @@ nowPlaying.addEventListener("click", () => {
         bottomIcons.classList.remove("hidden");
     }
 });
+
+function deleteCurrentPlaylist(event) {
+    const work = event.target;
+    const indexNumber = work.classList[0];
+    currentPlaylist.splice(indexNumber, 1)
+    updateCurrentPlaylistScreen()
+}
 
 
 viewPlaylist.forEach(btn => {
@@ -103,6 +111,11 @@ window.addEventListener("resize", () => {
 
 })
 
+function loginAlert() {
+    if (!loggedIn) {
+        alert("Please sign in")
+    }
+}
 
 function changeNav() {
     let currentPath = location.pathname;
@@ -118,7 +131,9 @@ function changeNav() {
             menuItem = document.querySelector('nav ul a:first-of-type')
         }
 
-        menuItem.classList.add('active');
+        if (menuItem) {
+            menuItem.classList.add('active');
+        }
     }
 }
 
@@ -166,6 +181,12 @@ function updateNowPlaying() {
     playPause();
 }
 
+function playInPlaylist() {
+    // currentIndex = index;
+    // playPlayer();
+    console.log("worked")
+}
+
 function playPlayer() {
     playing = currentPlaylist[currentIndex]
     currentVideoId = playing.videoId
@@ -177,7 +198,6 @@ function playPlayer() {
     currentPerformer.textContent = playing.performer;
     currentComposer.textContent = playing.composer;
     isPlaying = true;
-
 }
 
 const currentPlaylistList = playlistWrapper.querySelectorAll("div")
@@ -286,7 +306,9 @@ function onPlayerStateChange(event) {
             } else if (repeatMode === 'playlistRepeat') {
                 playNextVideo()
             } else if (repeatMode === 'none') {
-                playNextVideo()
+                if (currentIndex < currentPlaylist.length - 1) {
+                    playNextVideo()
+                }
             }
         }
         if (event.data === YT.PlayerState.PLAYING) { }
@@ -324,7 +346,9 @@ function playNextVideo() {
             currentIndex = Math.floor(Math.random() * (currentPlaylist.length - 1))
         } while (currentIndex === previousIndex);
     }
-    playPlayer()
+    if (currentPlaylist !== []) {
+        playPlayer()
+    }
 }
 
 
@@ -337,7 +361,9 @@ function playPreviousVideo() {
     } else {
         currentIndex = previousIndex;
     }
-    playPlayer();
+    if (currentPlaylist !== []) {
+        playPlayer();
+    }
 }
 
 function stopVideo() {
@@ -384,6 +410,7 @@ function createPlaylistElement(addedTitle, addedPerformer, addedCover, i) {
     const coverWrapper = document.createElement('div');
     coverWrapper.classList.add('cover-wrapper');
     coverWrapper.style.backgroundImage = `url(${addedCover})`
+    coverWrapper.onclick = playInPlaylist;
 
     const info = document.createElement('div');
     info.classList.add('info');
@@ -399,10 +426,12 @@ function createPlaylistElement(addedTitle, addedPerformer, addedCover, i) {
     const drag = document.createElement('div');
     drag.classList.add('drag');
 
-    const dragImage = document.createElement('img');
-    dragImage.src = '/static/icons/drag.svg';
+    const deletePlaylist = document.createElement('img');
+    deletePlaylist.src = '/static/icons/close.svg';
+    deletePlaylist.classList.add("delete-playlist")
+    deletePlaylist.onclick = deleteCurrentPlaylist;
 
-    drag.appendChild(dragImage);
+    drag.appendChild(deletePlaylist);
     info.appendChild(title);
     info.appendChild(performer);
     newElement.appendChild(coverWrapper);
@@ -605,6 +634,7 @@ function navigateToPage(url) {
         .catch((error) => {
             console.error(error);
         });
+    scrollToTop()
 }
 
 function enterLibrary(event, url) {
@@ -743,13 +773,65 @@ function addPlaylistHistory() {
         });
 }
 
+const searchInput = document.querySelector("input[name='keyword']");
+
+function moveCursorToEnd(inputElement) {
+    inputElement.focus();
+    inputElement.setSelectionRange(inputElement.value.length, inputElement.value.length);
+}
+
+function searchUpdate(event) {
+    let keyword = event.target.value;
+    let url = `/search?keyword=${encodeURIComponent(keyword)}`
+
+    if (keyword == "") {
+        url = "/search"
+    }
+    fetch(url)
+        .then((response) => response.text())
+        .then((html) => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+            const newMainContent = doc.querySelector("main");
+
+            const currentMain = document.querySelector("main")
+
+            currentMain.innerHTML = "";
+
+            currentMain.innerHTML = newMainContent.innerHTML;
+
+
+            // searchInput.focus();
+            // moveCursorToEnd(searchInput);
+
+
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
+
 function searchCategory(name) {
-    const keyword = name
+    fetch(`/search?keyword=${name}`)
+        .then((response) => response.text())
+        .then((html) => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+            const newMainContent = doc.querySelector("main");
+            const newHeaderContent = doc.querySelector("header");
 
-    const searchUrl = new URL("/search", window.location.origin);
-    searchUrl.searchParams.set("keyword", keyword);
+            const currentMain = document.querySelector("main")
+            const currentHeader = document.querySelector("header")
 
-    window.location.href = searchUrl.href;
+            currentMain.innerHTML = "";
+            currentHeader.innerHTML = "";
+
+            currentMain.innerHTML = newMainContent.innerHTML;
+            currentHeader.innerHTML = newHeaderContent.innerHTML;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 }
 
 function updateLikedButton(liked) {
@@ -821,8 +903,23 @@ function checkLiked() {
         });
 }
 
-function test(playlistId) {
-    console.log(playlistId)
+function addToLibrary(playlistId) {
+    if (currentVideoId !== "none") {
+        fetch('/addToPlaylist', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ playlistId, currentVideoId }),
+        })
+            .then(response => response.json())
+            .catch(error => {
+                console.error('Error occured: ', error);
+            });
+        viewLibrary.classList.add("hidden")
+    } else {
+        alert('Please play a song')
+    }
 }
 
 function addToLibrary(playlistId) {
@@ -838,27 +935,65 @@ function addToLibrary(playlistId) {
             .catch(error => {
                 console.error('Error occured: ', error);
             });
+        viewLibrary.classList.add("hidden")
     } else {
         alert('Please play a song')
     }
-
 }
+
 
 function createPlaylist(event) {
-    event.preventDefault();
-    currentVideoInput.value = currentVideoId;
-    console.log(playlistForm);
-    playlistForm.submit();
+    const name = playlistInput.value;
+    fetch("/createPlaylist", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, currentVideoId }),
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'Playlist created successfully') {
+                reloadLibrary()
+            } else {
+                console.log('Failed to create a playlist');
+            }
+        })
+        .catch(error => {
+            console.log('Error:', error);
+        });
+    playlistInput.value = "";
+}
+
+function reloadLibrary() {
+    fetch("/library")
+        .then((response) => response.text())
+        .then((html) => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+            const newLibraryContent = doc.querySelector(".view-library");
+
+            const currentLibrary = document.querySelector(".view-library")
+
+
+            currentLibrary.innerHTML = newLibraryContent.innerHTML;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 }
 
 
-playlistTitleWrapper.addEventListener("click", () => {
+function playlistInputHandler() {
+    const playlistTitle = document.querySelector(".library-title.add span")
+    const playlistInput = document.querySelector(".library-title.add input")
+    const createBtn = document.querySelector(".createBtn")
+
     playlistTitle.classList.add("hidden")
     playlistInput.classList.remove("hidden")
     createBtn.classList.remove("hidden")
     playlistInput.focus();
-})
-
+}
 
 const likeWraps = document.querySelectorAll(".like-wrap")
 const viewWraps = document.querySelectorAll(".view-wrap")
@@ -900,8 +1035,11 @@ viewWraps.forEach(wrap => {
 
 addToLibraryButton.forEach(btn => {
     btn.addEventListener('click', function () {
-        viewLibrary.classList.toggle("hidden");
-
+        if (loggedIn) {
+            viewLibrary.classList.toggle("hidden");
+        } else {
+            alert("Please sign in")
+        }
     });
 })
 
@@ -932,3 +1070,39 @@ document.addEventListener("click", function (event) {
     }
 });
 
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth"
+    });
+}
+
+function deleteFromPlaylist(playlistId, videoId) {
+    fetch("/deleteFromPlaylist", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ playlistId, videoId }),
+    })
+        .then(response => response.json())
+        .catch(error => {
+            console.log('Error:', error);
+        });
+    fetch(`/playlist/${playlistId}`)
+        .then((response) => response.text())
+        .then((html) => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+            const content = doc.querySelector("main");
+
+            const current = document.querySelector("main")
+
+
+            current.innerHTML = content.innerHTML;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+}
