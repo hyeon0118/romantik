@@ -87,6 +87,25 @@ rootRouter.post("/deleteFromPlaylist", async (req, res) => {
     }
 })
 
+rootRouter.post("/deletePlaylist", async (req, res) => {
+    const { playlistId } = req.body;
+
+    try {
+        const playlist = await Playlist.findById(playlistId);
+
+        if (playlist) {
+            await playlist.remove();
+        }
+
+        res.status(200).json({ message: 'Playlist deleted successfully' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to delete playlist' });
+
+    }
+})
+
 
 rootRouter.post("/addToPlaylist", async (req, res) => {
     const { playlistId, currentVideoId } = req.body;
@@ -96,7 +115,7 @@ rootRouter.post("/addToPlaylist", async (req, res) => {
         const work = await Work.findOne({ videoId: currentVideoId })
 
         if (playlist.playlist.includes(currentVideoId)) {
-            return res.status(400).json({ error: 'Song already exists in the playlist' });
+            return res.status(200).json({ message: 'Song already added to playlist' })
         }
 
         await Playlist.updateOne(

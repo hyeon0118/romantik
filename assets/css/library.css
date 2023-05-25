@@ -75,6 +75,25 @@
   opacity: 1;
 }
 
+.shake-animation {
+  animation-name: shake;
+  animation-duration: 0.2s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes shake {
+  0% {
+    transform: rotate(-1deg);
+  }
+  50% {
+    transform: rotate(1deg);
+  }
+  100% {
+    transform: rotate(-1deg);
+  }
+}
+
 #library .playlist:not(.liked) .cover-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -98,6 +117,47 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.subheading {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: 20px;
+}
+
+.edit-library {
+  display: flex;
+  width: 60px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  height: 30px;
+  padding: 0 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.1s ease-in-out;
+}
+
+.edit-library:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+  border: 1px solid transparent;
+}
+
+.deleteBtn {
+  cursor: pointer;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: -5px;
+  top: -5px;
+  border-radius: 50%;
+  background-color: #ec6a5f;
+  width: 24px;
+  height: 24px;
 }
 
 @media (min-width: 420px) {

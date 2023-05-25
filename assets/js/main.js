@@ -39,6 +39,11 @@ const searchForm = document.querySelector("#searchForm")
 const addToLibraryButton = document.querySelectorAll(".add-to-library");
 const viewLibrary = document.querySelector(".view-library")
 
+const editBtn = document.querySelector(".edit-library")
+const libraryCovers = document.querySelectorAll("#library .cover-wrapper")
+const deleteBtns = document.querySelectorAll(".deleteBtn")
+let isEditMode = false;
+
 
 nowPlaying.addEventListener("click", () => {
     if (window.innerWidth < 600) {
@@ -426,12 +431,12 @@ function createPlaylistElement(addedTitle, addedPerformer, addedCover, i) {
     const drag = document.createElement('div');
     drag.classList.add('drag');
 
-    const deletePlaylist = document.createElement('img');
-    deletePlaylist.src = '/static/icons/close.svg';
-    deletePlaylist.classList.add("delete-playlist")
-    deletePlaylist.onclick = deleteCurrentPlaylist;
+    const deletePlaylistBtn = document.createElement('img');
+    deletePlaylistBtn.src = '/static/icons/close.svg';
+    deletePlaylistBtn.classList.add("delete-playlist")
+    deletePlaylistBtn.onclick = deleteCurrentPlaylist;
 
-    drag.appendChild(deletePlaylist);
+    drag.appendChild(deletePlaylistBtn);
     info.appendChild(title);
     info.appendChild(performer);
     newElement.appendChild(coverWrapper);
@@ -866,7 +871,6 @@ likeButton.forEach(btn => {
         }
 
     })
-
 })
 
 function updateLiked() {
@@ -943,6 +947,7 @@ function addToLibrary(playlistId) {
 
 
 function createPlaylist(event) {
+    const playlistInput = document.querySelector(".library-title.add input")
     const name = playlistInput.value;
     fetch("/createPlaylist", {
         method: 'POST',
@@ -1105,4 +1110,65 @@ function deleteFromPlaylist(playlistId, videoId) {
         .catch((error) => {
             console.error(error);
         });
+}
+
+function deletePlaylist(playlistId) {
+    fetch("/deletePlaylist", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ playlistId }),
+    })
+        .then(response => response.json())
+        .catch(error => {
+            console.log('Error:', error);
+        });
+    fetch(`/library`)
+        .then((response) => response.text())
+        .then((html) => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, "text/html");
+            const content = doc.querySelector("main");
+
+            const current = document.querySelector("main")
+
+
+            current.innerHTML = content.innerHTML;
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    reloadLibrary();
+}
+
+
+function shakingCovers() {
+    const editBtn = document.querySelector(".edit-library")
+    const libraryCovers = document.querySelectorAll("#library .cover-wrapper")
+    const deleteBtns = document.querySelectorAll(".deleteBtn")
+
+    isEditMode = !isEditMode;
+
+    if (isEditMode) {
+        editBtn.textContent = "Done";
+
+        deleteBtns.forEach(btn => {
+            btn.classList.remove("hidden");
+        });
+
+        libraryCovers.forEach(cover => {
+            cover.classList.add("shake-animation");
+        });
+    } else {
+        editBtn.textContent = "Edit";
+
+        deleteBtns.forEach(btn => {
+            btn.classList.add("hidden");
+        });
+
+        libraryCovers.forEach(cover => {
+            cover.classList.remove("shake-animation");
+        });
+    }
 }

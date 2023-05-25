@@ -2,7 +2,9 @@ extends base
 
 block content
     section#library
-        h2 Library
+        .subheading 
+            h2 Library
+            .edit-library(onclick="shakingCovers()") Edit
         .playlist-wrapper
             .playlist.liked
                 a(onclick="enterLibrary(event, '/playlist/liked')")
@@ -12,6 +14,7 @@ block content
                 .title Your likes
             - for (i = 0; i < userPlaylist.length; i++)
                 .playlist
+                    .deleteBtn.hidden(onclick=`deletePlaylist('${userPlaylist[i].id}')`) X 
                     a(onclick=`enterLibrary(event, '/playlist/${userPlaylist[i].id}')`)
                         - if (userPlaylist[i].playlist.length === 0) 
                             .cover-wrapper(style="display: flex; justify-contents: center; align-items: center") #{userPlaylist[i].name}

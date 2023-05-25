@@ -63,9 +63,6 @@ block content
                     .title #{info.name}
                     p #{info.bio}
             #result-list 
-                //- .result-composer 
-                //-     .cover-wrapper 
-                //-     .title Chopin 
                 h2 Top result for "#{keyword}"
                 - if(results !== undefined && results.length > 0)
                     each result in results
@@ -74,6 +71,6 @@ block content
                             .info 
                                 .title #{result.title}
                                 .performer #{result.performer}
-                            img.add-to-queue(src="/static/icons/add_to_queue.svg")
+                            img.add-to-queue(src="/static/icons/add_to_queue.svg", onclick=`addPlaylist('${result.videoId}', '${result.title}', '${result.performer}', '${result.composer}', '${result.thumbnail}')`)
                 - else 
                     p No results found

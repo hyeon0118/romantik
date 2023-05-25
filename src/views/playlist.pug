@@ -32,7 +32,7 @@ block content
                                 .title #{likedList[i].title}
                                 .performer #{likedList[i].performer}
                             .icon-wrapper
-                                img.add-to-queue(src="/static/icons/add_to_queue.svg")
+                                img.add-to-queue(src="/static/icons/add_to_queue.svg", onclick=`addPlaylist('${likedList[i].videoId}', '${likedList[i].title}', '${likedList[i].performer}', '${likedList[i].composer}', '${likedList[i].thumbnail}')`)
                                 - if (user !== "" && playlistInfo.userId == user.email)
                                     img.delete(src="/static/icons/close.svg", onclick=`deleteFromPlaylist('${playlistInfo._id}', '${likedList[i].videoId}')`)
                 - else 
