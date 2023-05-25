@@ -393,6 +393,17 @@
   border: 1px solid transparent;
 }
 
+.added-notification {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 108px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+}
+
 @media (min-width: 540px) {
 }
 

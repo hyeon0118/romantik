@@ -186,10 +186,9 @@ function updateNowPlaying() {
     playPause();
 }
 
-function playInPlaylist() {
-    // currentIndex = index;
-    // playPlayer();
-    console.log("worked")
+function playInPlaylist(index) {
+    currentIndex = index;
+    playPlayer();
 }
 
 function playPlayer() {
@@ -406,6 +405,15 @@ function addPlaylist(videoId, title, performer, composer, thumbnail) {
     createPlaylistElement(title, performer, thumbnail);
 }
 
+function queueAlarm() {
+    const message = document.querySelector(".added-notification")
+    message.classList.remove("hidden");
+    setTimeout(function () {
+        message.classList.add("hidden")
+    }, 2000);
+}
+
+
 
 
 function createPlaylistElement(addedTitle, addedPerformer, addedCover, i) {
@@ -415,7 +423,7 @@ function createPlaylistElement(addedTitle, addedPerformer, addedCover, i) {
     const coverWrapper = document.createElement('div');
     coverWrapper.classList.add('cover-wrapper');
     coverWrapper.style.backgroundImage = `url(${addedCover})`
-    coverWrapper.onclick = playInPlaylist;
+    coverWrapper.setAttribute('onclick', `playInPlaylist(${i})`);
 
     const info = document.createElement('div');
     info.classList.add('info');
