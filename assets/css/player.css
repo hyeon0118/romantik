@@ -404,10 +404,37 @@
   border-radius: 10px;
 }
 
-@media (min-width: 540px) {
+.added-to-playlist-notification {
+  z-index: 9999;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 108px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+}
+
+@media (min-width: 530px) {
+  .added-notification {
+    bottom: 128px;
+  }
+
+  .added-to-playlist-notification {
+    bottom: 128px;
+  }
 }
 
 @media (min-width: 600px) {
+  .added-notification {
+    bottom: 95px;
+  }
+
+  .added-to-playlist-notification {
+    bottom: 95px;
+  }
+
   .like-wrap .tooltip,
   .view-wrap .tooltip {
     bottom: 35px;

@@ -413,6 +413,14 @@ function queueAlarm() {
     }, 2000);
 }
 
+function playlistAlarm() {
+    const message = document.querySelector(".added-to-playlist-notification")
+    message.classList.remove("hidden");
+    setTimeout(function () {
+        message.classList.add("hidden")
+    }, 2000);
+}
+
 
 
 
@@ -929,30 +937,11 @@ function addToLibrary(playlistId) {
                 console.error('Error occured: ', error);
             });
         viewLibrary.classList.add("hidden")
+        playlistAlarm()
     } else {
         alert('Please play a song')
     }
 }
-
-function addToLibrary(playlistId) {
-    if (currentVideoId !== "none") {
-        fetch('/addToPlaylist', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ playlistId, currentVideoId }),
-        })
-            .then(response => response.json())
-            .catch(error => {
-                console.error('Error occured: ', error);
-            });
-        viewLibrary.classList.add("hidden")
-    } else {
-        alert('Please play a song')
-    }
-}
-
 
 function createPlaylist(event) {
     const playlistInput = document.querySelector(".library-title.add input")
@@ -1180,3 +1169,88 @@ function shakingCovers() {
         });
     }
 }
+
+
+function showDeleteAccount() {
+    const profile = document.querySelector("#profile")
+    const account = document.querySelector("#deleteAccount")
+
+    profile.classList.add("hidden")
+    account.classList.remove("hidden")
+}
+
+
+function noButton() {
+    const profile = document.querySelector("#profile")
+    const account = document.querySelector("#deleteAccount")
+
+    profile.classList.remove("hidden")
+    account.classList.add("hidden")
+}
+
+function deleteAccount() {
+    fetch("/deleteAccount", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+        .then(response => response.json())
+        .then(data => {
+            window.location.href = "/"
+        })
+        .catch(error => {
+            console.log('Error:', error);
+        });
+
+
+}
+
+
+function registerHandler(event) {
+    event.preventDefault();
+
+    const email = document.querySelector('input[name="email"]').value;
+    const password = document.querySelector('input[name="password"]').value;
+    const verification = document.querySelector('input[name="verification"]').value;
+    const username = document.querySelector('input[name="username"]').value;
+
+    let errorMessage = '';
+
+    if (password.length < 6) {
+        errorMessage = `Password must be at least 6 characters long.`;
+    } else if (password !== verification) {
+        errorMessage = 'Password and verification password do not match.';
+    }
+
+    const errorElement = document.querySelector('.error');
+    errorElement.textContent = errorMessage;
+
+    if (errorMessage) {
+        return;
+    }
+
+    fetch("/signup", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password, username })
+    })
+        .then(response => {
+            if (response.ok) {
+                window.location.href = "/profile";
+                return response.json();
+            } else if (response.status === 409) {
+                errorMessage = 'Email already exitsts'
+                errorElement = document.querySelector('.error');
+                errorElement.textContent = error.message;
+            } else {
+                throw new Error('Failed to sign up');
+            }
+        })
+        .catch(error => {
+
+        });
+}
+

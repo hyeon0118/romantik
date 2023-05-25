@@ -17,7 +17,8 @@ block content
                 .username
                     img(src="static/icons/user.svg")
                     input(name="username", type="text", placeholder="Enter your username")
-                input(type="submit")
+                .error 
+                .submit(onclick="registerHandler(event)") Register
             div Have already an account? Click 
                 a(href="/profile")
                     span.here here

@@ -109,7 +109,7 @@
   justify-content: center;
 }
 
-#playlist #playlist-info-wrapper .cover-wrapper {
+#playlist #playlist-info-wrapper .cover-wrapper:not(.like) {
   background: none;
   display: grid;
   grid-template-columns: 1fr 1fr;

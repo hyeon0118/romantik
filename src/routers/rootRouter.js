@@ -10,8 +10,6 @@ import Work from "../models/Work";
 import Playlist from "../models/Playlist";
 import bcrypt from 'bcrypt';
 
-
-
 const rootRouter = express.Router();
 
 rootRouter.get("/", home);
@@ -27,6 +25,12 @@ rootRouter.get('/playlist/:id', playlist);
 rootRouter.post('/signup', async (req, res) => {
     const { email, password, username } = req.body;
     try {
+        const existingUser = await User.findOne({ email: email })
+
+        if (existingUser) {
+            return res.status(409).json({ error: "Email already exists" })
+        }
+
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
@@ -35,7 +39,7 @@ rootRouter.post('/signup', async (req, res) => {
         await newUser.save();
         res.redirect('/profile');
     } catch (error) {
-        res.status(500).json({ error: 'failed to sign up' })
+        res.status(500).json({ error: error })
     }
 })
 
@@ -264,6 +268,23 @@ rootRouter.post('/signin', async (req, res) => {
         res.status(500).json({ error: 'Failed to sign in' });
     }
 
+})
+
+rootRouter.post("/deleteAccount", async (req, res) => {
+    try {
+        const user = await User.findOne({ email: req.session.email });
+
+        if (user) {
+            await user.remove();
+        }
+
+        res.status(200).json({ message: 'Account deleted successfully' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Failed to delete account' });
+
+    }
 })
 
 rootRouter.get('/user', async (req, res) => {

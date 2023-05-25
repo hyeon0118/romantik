@@ -4,14 +4,17 @@ block content
     section#user
         - if (loggedIn)
             section#profile
+                h2 Your Profile
                 .profile-wrapper
-                    .profile-img
                     .user-id #{loggedInEmail}
                     .username #{loggedInUsername}
                 .button-wrapper
-                    button.change-pwChange Change password
                     button.logout(onclick="signOut()") Sign out
-                    button.resignation Delete account
+                    button.resignation(onclick="showDeleteAccount()") Delete account
+            section#deleteAccount.hidden
+                h3 Do you really want to delete your account? 
+                button.yes(onclick="deleteAccount()") DELETE
+                button.no(onclick="noButton()") CANCEL
         - if (!loggedIn)
             section#login
                 h2 Sign in 
@@ -22,7 +25,7 @@ block content
                     .pw
                         img(src="static/icons/pw.svg")
                         input(name="password", type="password", placeholder="Enter your password")
-                    input(type="submit")
+                    input(type="submit", value="Sign in")
                 div Don't have an account? Click 
                     a(href="/register")
                         span.here here

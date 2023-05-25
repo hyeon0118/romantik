@@ -546,7 +546,7 @@ main .cover-wrapper::after {
 }
 
 .username {
-  color: yellow;
+  color: #f9d849;
 }
 
 input[type="text"] {
