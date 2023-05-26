@@ -124,7 +124,7 @@
 #search #after-search {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
 }
 #search #after-search .cover-wrapper {
@@ -136,7 +136,10 @@
   border-radius: 3px;
 }
 #search #after-search .cover-wrapper::after {
-  display: none;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
 }
 #search #result-list {
   padding: 0 25px;
@@ -154,10 +157,8 @@
   display: flex;
   transition: 0.2s ease-in-out;
 }
-#search #after-search .result:hover {
-  background-color: #222222;
-}
-#search #after-search .result::after {
+
+/* #search #after-search .result::after {
   content: url("../icons/play.svg");
   left: 10px;
   top: 6px;
@@ -171,7 +172,7 @@
   transition: 0.2s ease-in-out;
   opacity: 0;
   z-index: 10;
-}
+} */
 
 #search #after-search .result:hover::after {
   opacity: 1;
@@ -195,11 +196,7 @@
 
 #search #after-search .info-box::before {
   content: "";
-  background-image: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.9),
-    rgba(0, 0, 0, 0)
-  );
+  background-image: linear-gradient(to top, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
   position: absolute;
   left: 0;
   top: 0;
@@ -260,6 +257,10 @@
   opacity: 1;
 }
 
+#search #before-search {
+  flex-direction: column;
+}
+
 @media (min-width: 530px) {
   #search #era .cover-wrapper {
     height: 100%;
@@ -284,17 +285,19 @@
     /* align-items: flex-start; */
     display: flex;
     width: calc(100vw - 240px);
-    justify-content: center;
+    /* justify-content: center; */
   }
   #search #after-search {
-    flex-direction: row;
+    flex-direction: column;
     height: 100%;
   }
   #search #after-search .info-box {
-    min-height: calc(100vh - 160px);
+    /* min-height: calc(100vh - 160px); */
+    max-height: 300px;
     width: 100%;
   }
   #search #after-search #result-list {
+    padding-left: 25px;
     overflow-y: auto;
   }
   #search #after-search #result-list {
@@ -306,7 +309,7 @@
     min-height: calc(100vh - 160px);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding-left: 25px;
+    /* padding-left: 25px; */
     align-items: flex-start;
   }
   #search #after-search .result-composer .cover-wrapper {

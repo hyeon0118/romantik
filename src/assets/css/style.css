@@ -39,7 +39,8 @@ header {
   padding: 8px 15px;
   position: fixed;
   width: 100%;
-  background-color: #020202;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
 }
 
 #search input[type="text"] {
@@ -186,7 +187,7 @@ nav {
   letter-spacing: 0.1rem;
   font-size: 10px;
   text-transform: uppercase;
-  background-color: #212121;
+  background-color: #111111;
   display: flex;
   align-items: center;
   height: 40px;
@@ -339,8 +340,8 @@ main .cover-wrapper::after {
   line-height: 16px;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
+  /* -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; */
 }
 
 .title {
@@ -545,12 +546,61 @@ main .cover-wrapper::after {
 }
 
 .username {
-  color: yellow;
+  color: #f9d849;
 }
 
 input[type="text"] {
   color: black;
   width: 100%;
+}
+
+#recommend-playlist .cover-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+#recommend-playlist .cover-wrapper::after {
+  content: url(../icons/search_inactive.svg);
+}
+
+#recommend-playlist .cover-wrapper .cover {
+  background-size: cover;
+}
+
+.cover.none {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.here {
+  color: yellow;
+  text-decoration: underline;
+}
+
+.add-to-queue {
+  cursor: pointer;
+}
+
+.playlist .icon-wrapper {
+  display: flex;
+  align-items: center;
+  width: 70px;
+  justify-content: space-between;
+}
+
+.playlist .icon-wrapper img {
+  width: 25px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.delete-playlist {
+  cursor: pointer;
 }
 
 @media (min-width: 530px) {

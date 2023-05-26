@@ -169,7 +169,7 @@
   height: calc(100vh - 104px);
   background-color: #202020;
   position: absolute;
-  z-index: 9999;
+  z-index: 999;
 }
 
 .current-playlist .info {
@@ -202,7 +202,7 @@
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-.current-playlist .current-playlist-wrapper > div:not(.current)::after {
+/* .current-playlist .current-playlist-wrapper > div:not(.current)::after {
   content: url("../icons/play.svg");
   position: absolute;
   height: 47px;
@@ -212,11 +212,11 @@
   justify-content: center;
   align-items: center;
   opacity: 0;
-}
+} */
 
-.current-playlist .current-playlist-wrapper > div:not(.current):hover::after {
+/* .current-playlist .current-playlist-wrapper > div:not(.current):hover::after {
   opacity: 1;
-}
+} */
 
 .current-playlist .current-playlist-wrapper .info {
   display: flex;
@@ -242,10 +242,204 @@
   align-items: center;
 }
 
-@media (min-width: 540px) {
+.like-wrap,
+.view-wrap {
+  display: flex;
+  position: relative;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.like-wrap .tooltip {
+  display: none;
+  position: absolute;
+  right: auto;
+  bottom: 54px;
+  text-align: center;
+  font-size: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 5px;
+  border-radius: 10px;
+  width: 50px;
+}
+
+.view-wrap .tooltip {
+  position: absolute;
+  right: auto;
+  bottom: 54px;
+  text-align: center;
+  font-size: 10px;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 5px;
+  border-radius: 10px;
+  width: 50px;
+}
+
+.like-wrap .tooltip.show {
+  display: block;
+}
+
+.tooltip {
+  z-index: 99999999;
+}
+
+.like-wrap .tooltip::after,
+.view-wrap .tooltip::after {
+  display: block;
+  content: "";
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0px;
+  height: 0px;
+  border-bottom: 4px solid none;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid rgba(255, 255, 255, 0.5);
+}
+
+.player.open .like-wrap .tooltip {
+  bottom: 40px;
+}
+
+.view-library {
+  padding-top: 20px;
+  font-family: "Montserrat", sans-serif;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  align-items: center;
+  left: 40px;
+  height: 300px;
+  width: 80%;
+  background-color: rgba(100, 100, 100, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  z-index: 9999;
+  bottom: 80px;
+}
+
+.titles-wrap {
+  max-height: calc(100% - 50px);
+  overflow-y: scroll;
+}
+
+.library-title {
+  font-family: "Montserrat", sans-serif;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 80vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60px;
+  font-size: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+}
+
+.library-title:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-bottom: 1px solid transparent;
+}
+
+.library-title:last-of-type {
+  border: none;
+}
+
+.view-library h3 {
+  position: sticky;
+  top: 0;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  height: 50px;
+  border-bottom: 2px solid white;
+  border-radius: 20px 20px 0 0;
+  color: white;
+  padding-bottom: 20px;
+}
+
+.view-library h3:last-of-type {
+  bottom: 0;
+  border: 1px solid white;
+  width: 70%;
+  border-radius: 50px;
+}
+
+.library-title.add input {
+  width: 80vw;
+  padding: 0 20px;
+  height: 100%;
+  background: transparent;
+  color: white;
+}
+
+.view-library .createBtn {
+  cursor: pointer;
+  margin: 20px 0;
+  padding-bottom: 0;
+  padding: 10px 0;
+}
+
+.createBtn:hover {
+  background-color: rgba(255, 255, 255, 0.5);
+  border: 1px solid transparent;
+}
+
+.added-notification {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 108px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+}
+
+.added-to-playlist-notification {
+  z-index: 9999;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 108px;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+}
+
+@media (min-width: 530px) {
+  .added-notification {
+    bottom: 128px;
+  }
+
+  .added-to-playlist-notification {
+    bottom: 128px;
+  }
 }
 
 @media (min-width: 600px) {
+  .added-notification {
+    bottom: 95px;
+  }
+
+  .added-to-playlist-notification {
+    bottom: 95px;
+  }
+
+  .like-wrap .tooltip,
+  .view-wrap .tooltip {
+    bottom: 35px;
+  }
+
   .current-playlist {
     margin-left: 240px;
     width: calc(100vw - 240px);
