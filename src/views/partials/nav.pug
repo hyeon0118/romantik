@@ -1,15 +1,15 @@
 nav 
     .logo.desktop 
         a(href="/")
-            img(src="../../client/assets/img/logo.png")
+            img(src="/public/img/logo.png")
     ul
         a(href="/")
             li(data-menu="home")
-                img(src="../../public/icons/home.svg")
+                img(src="/public/icons/home.svg")
                 span.tablet home
         a(href="/search")
             li(data-demnu="search")
-                img(src="../../public/icons/search.svg")
+                img(src="/public/icons/search.svg")
                 span.tablet search
         - if (loggedIn)
             a(href="/library")
@@ -20,7 +20,7 @@ nav
             ul.my-playlist.desktop 
                 a(href="/playlist/liked")
                     li(data-menu="playlist")
-                        img(src="../public/icons/heart_inactive.svg")
+                        img(src="/public/icons/heart_inactive.svg")
                         span Like
                 - for (i=0; i < list.length; i++)
                     a(href=`/playlist/${list[i]._id}`)
@@ -29,12 +29,12 @@ nav
                             span #{list[i].name}
         - else 
             a(href="#")
-                li(onclick="loginAlert()")
-                    img(src="../public/icons/library_inactive.svg")
+                li.login-alert(onclick="loginAlert()")
+                    img(src="/public/icons/library_inactive.svg")
                     span.tablet library
             .divider.desktop 
             ul.my-playlist.desktop 
                 a(href="#")
-                    li(onclick="loginAlert()")
-                        img(src="../public/icons/heart_inactive.svg")
+                    li.login-alert(onclick="loginAlert()")
+                        img(src="/public/icons/heart_inactive.svg")
                         span Like

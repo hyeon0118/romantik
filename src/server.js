@@ -5,15 +5,15 @@ import flash from "express-flash";
 import MongoStore from "connect-mongo";
 import { localsMiddleware } from "./middlewares";
 import rootRouter from "./routers/rootRouter";
-import path from "path";
+// import path from "path";
 
 const app = express();
 const logger = morgan("dev");
 
 
 app.set("view engine", "pug");
-// app.set("views", process.cwd() + "/src/views");
-app.set("views", path.join(process.cwd(), "src", "views"));
+app.set("views", process.cwd() + "/src/views");
+// app.set("views", path.join(process.cwd(), "src", "views"));
 
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));

@@ -22,4 +22,3 @@ input.addEventListener("input", () => {
         history.replaceState(null, null, "/search");
     }
 })
-

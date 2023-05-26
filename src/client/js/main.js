@@ -4,6 +4,7 @@ import "../scss/player.scss"
 import "../scss/library.scss"
 import "../scss/playlist.scss"
 import "../scss/profile.scss"
+import { async } from "regenerator-runtime"
 
 
 const player = document.querySelector(".player");
@@ -25,7 +26,6 @@ const progressBar = document.querySelector(".progress-bar")
 const passed = progressBar.querySelector(".passed")
 const total = progressBar.querySelector(".total")
 const bar = progressBar.querySelector(".bar")
-const barAfter = window.getComputedStyle(bar, "::after")
 let duration = 0;
 
 const playlistWrapper = document.querySelector('.current-playlist-wrapper');
@@ -51,6 +51,14 @@ const editBtn = document.querySelector(".edit-library")
 const libraryCovers = document.querySelectorAll("#library .cover-wrapper")
 const deleteBtns = document.querySelectorAll(".deleteBtn")
 let isEditMode = false;
+
+const playerClose = document.querySelector(".player-header img")
+
+const playButton = document.querySelectorAll(".play")
+
+var tag = document.createElement('script');
+
+let loggedIn = false;
 
 
 nowPlaying.addEventListener("click", () => {
@@ -87,7 +95,6 @@ playlistClose.addEventListener("click", () => {
     bottomIcons.classList.remove("hidden");
 })
 
-const playerClose = document.querySelector(".player-header img")
 
 playerClose.addEventListener("click", (event) => {
     event.stopPropagation();
@@ -124,11 +131,14 @@ window.addEventListener("resize", () => {
 
 })
 
-function loginAlert() {
+
+window.loginAlert = () => {
     if (!loggedIn) {
         alert("Please sign in")
     }
 }
+
+
 
 function changeNav() {
     let currentPath = location.pathname;
@@ -152,19 +162,15 @@ function changeNav() {
 
 changeNav()
 
-const playButton = document.querySelectorAll(".play")
-const iframe = document.querySelector("#iframe")
 
-
-var tag = document.createElement('script');
 
 tag.src = "https://www.youtube.com/iframe_api";
 var firstScriptTag = document.getElementsByTagName('script')[0];
 firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-
 var iframePlayer;
-function onYouTubeIframeAPIReady() {
+
+window.onYouTubeIframeAPIReady = () => {
     iframePlayer = new YT.Player('player', {
         height: '0',
         width: '0',
@@ -188,13 +194,13 @@ let currentIndex = -1;
 let playing = 'none';
 let currentVideoId = 'none';
 
-function updateNowPlaying() {
+window.updateNowPlaying = () => {
     currentIndex = currentPlaylist.length - 1;
     playPlayer();
     playPause();
 }
 
-function playInPlaylist(index) {
+window.playInPlaylist = (index) => {
     currentIndex = index;
     playPlayer();
 }
@@ -233,12 +239,12 @@ function playPause() {
     if (isPlaying) {
         playButton.forEach(btn => {
             btn.className = "pause"
-            btn.src = "/static/icons/pause.svg";
+            btn.src = "/public/icons/pause.svg";
         })
     } else if (!isPlaying) {
         playButton.forEach(btn => {
             btn.className = "play"
-            btn.src = "/static/icons/play.svg";
+            btn.src = "/public/icons/play.svg";
         })
     }
 }
@@ -275,18 +281,17 @@ repeat.addEventListener("click", () => {
     }
 
     if (repeatMode === true) {
-        repeat.src = "/static/icons/repeat_one.svg";
+        repeat.src = "/public/icons/repeat_one.svg";
     } else if (repeatMode === 'playlistRepeat') {
-        repeat.src = "/static/icons/repeat_active.svg";
+        repeat.src = "/public/icons/repeat_active.svg";
     } else {
-        repeat.src = "/static/icons/repeat_inactive.svg";
+        repeat.src = "/public/icons/repeat_inactive.svg";
     }
 })
 
 setInterval(progressBarAutomaticUpdate, 1000);
 
 
-let loggedIn = false;
 function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING && loggedIn !== true) {
         duration = "1:00"
@@ -332,10 +337,10 @@ let shuffled = false;
 random.addEventListener("click", () => {
     if (!shuffled) {
         shuffled = true
-        random.src = '/static/icons/random_active.svg';
+        random.src = '/public/icons/random_active.svg';
     } else {
         shuffled = false
-        random.src = '/static/icons/random_inactive.svg';
+        random.src = '/public/icons/random_inactive.svg';
     }
 })
 
@@ -389,7 +394,7 @@ previous.addEventListener("click", playPreviousVideo)
 
 let currentPlaylist = [];
 
-function addPlaylist(videoId, title, performer, composer, thumbnail) {
+window.addPlaylist = (videoId, title, performer, composer, thumbnail) => {
     const added = {
         videoId: videoId,
         title: title,
@@ -413,7 +418,7 @@ function addPlaylist(videoId, title, performer, composer, thumbnail) {
     createPlaylistElement(title, performer, thumbnail);
 }
 
-function queueAlarm() {
+window.queueAlarm = () => {
     const message = document.querySelector(".added-notification")
     message.classList.remove("hidden");
     setTimeout(function () {
@@ -456,7 +461,7 @@ function createPlaylistElement(addedTitle, addedPerformer, addedCover, i) {
     drag.classList.add('drag');
 
     const deletePlaylistBtn = document.createElement('img');
-    deletePlaylistBtn.src = '/static/icons/close.svg';
+    deletePlaylistBtn.src = '/public/icons/close.svg';
     deletePlaylistBtn.classList.add("delete-playlist")
     deletePlaylistBtn.onclick = deleteCurrentPlaylist;
 
@@ -530,10 +535,6 @@ function updateProgressBar(event) {
 bar.addEventListener('click', updateProgressBar);
 
 let currentCoverUrl = "";
-
-function getCover(url) {
-
-}
 
 function updateCurrentCover() {
     const covers = document.querySelectorAll(".player .cover-wrapper");
@@ -609,12 +610,12 @@ soundIcon.addEventListener("click", (event) => {
     let previousHeight = newSoundHeight;
     if (!isMuted) {
         isMuted = true;
-        soundIcon.src = "/static/icons/mute.svg";
+        soundIcon.src = "/public/icons/mute.svg";
         previousVolume = iframePlayer.getVolume();
         iframePlayer.setVolume(0);
         soundbar.style.setProperty(soundHeightVariable, 0);
     } else {
-        soundIcon.src = "/static/icons/sound.svg";
+        soundIcon.src = "/public/icons/sound.svg";
         iframePlayer.setVolume(previousVolume);
         soundbar.style.setProperty(soundHeightVariable, previousHeight);
     }
@@ -640,7 +641,7 @@ soundbarContainer.addEventListener("mouseleave", hideSoundbar)
 
 // main tag update 
 
-function navigateToPage(url) {
+window.navigateToPage = (url) => {
     fetch(url)
         .then((response) => response.text())
         .then((html) => {
@@ -657,7 +658,6 @@ function navigateToPage(url) {
 
             currentMain.innerHTML = newMainContent.innerHTML;
             currentHeader.innerHTML = newHeaderContent.innerHTML;
-            pageTitle = url.charAt(0);
             changeNav();
         })
         .catch((error) => {
@@ -665,7 +665,7 @@ function navigateToPage(url) {
         });
 }
 
-function enterLibrary(event, url) {
+window.enterLibrary = (event, url) => {
     const mainContent = document.querySelector("main");
     event.preventDefault();
     navigateToPage(url);
@@ -693,9 +693,8 @@ logo.addEventListener("click", (event) => {
     window.history.pushState({}, "", url);
 })
 
-const profile = document.querySelector("header .profile-wrapper")
 
-function profileBtn(event) {
+window.profileBtn = (event) => {
     event.preventDefault();
     const url = "/profile"
     fetch(url)
@@ -709,7 +708,6 @@ function profileBtn(event) {
             const docHeader = document.querySelector("header");
             docHeader.innerHTML = headerContent;
             docMain.innerHTML = mainContent;
-            pageTitle = url.charAt(0)
             changeNav();
         })
         .catch((error) => {
@@ -723,7 +721,7 @@ window.addEventListener("popstate", () => {
     navigateToPage(url);
 });
 
-async function signOut() {
+window.signOut = async () => {
     try {
         await fetch('/logout', {
             method: 'POST',
@@ -803,12 +801,12 @@ function addPlaylistHistory() {
 
 const searchInput = document.querySelector("input[name='keyword']");
 
-function moveCursorToEnd(inputElement) {
+window.moveCursorToEnd = (inputElement) => {
     inputElement.focus();
     inputElement.setSelectionRange(inputElement.value.length, inputElement.value.length);
 }
 
-function searchUpdate(event) {
+window.searchUpdate = (event) => {
     let keyword = event.target.value;
     let url = `/search?keyword=${encodeURIComponent(keyword)}`
 
@@ -839,7 +837,7 @@ function searchUpdate(event) {
         });
 }
 
-function searchCategory(name) {
+window.searchCategory = (name) => {
     fetch(`/search?keyword=${name}`)
         .then((response) => response.text())
         .then((html) => {
@@ -865,11 +863,11 @@ function searchCategory(name) {
 function updateLikedButton(liked) {
     likeButton.forEach(btn => {
         if (liked) {
-            btn.src = "/static/icons/heart.svg"
+            btn.src = "/public/icons/heart.svg"
             btn.classList.remove("inactive")
             btn.classList.add("active")
         } else {
-            btn.src = "/static/icons/heart_inactive.svg"
+            btn.src = "/public/icons/heart_inactive.svg"
             btn.classList.remove("active")
             btn.classList.add("inactive")
         }
@@ -878,7 +876,7 @@ function updateLikedButton(liked) {
             if (otherBtn !== btn) {
                 otherBtn.classList.toggle("inactive", !liked);
                 otherBtn.classList.toggle("active", liked);
-                otherBtn.src = liked ? "/static/icons/heart.svg" : "/static/icons/heart_inactive.svg";
+                otherBtn.src = liked ? "/public/icons/heart.svg" : "/public/icons/heart_inactive.svg";
             }
         })
     })
@@ -930,7 +928,7 @@ function checkLiked() {
         });
 }
 
-function addToLibrary(playlistId) {
+window.addToLibrary = (playlistId) => {
     if (currentVideoId !== "none") {
         fetch('/addToPlaylist', {
             method: 'POST',
@@ -950,7 +948,8 @@ function addToLibrary(playlistId) {
     }
 }
 
-function createPlaylist(event) {
+
+window.createPlaylist = (event) => {
     const playlistInput = document.querySelector(".library-title.add input")
     const name = playlistInput.value;
     fetch("/createPlaylist", {
@@ -993,7 +992,7 @@ function reloadLibrary() {
 }
 
 
-function playlistInputHandler() {
+window.playlistInputHandler = () => {
     const playlistTitle = document.querySelector(".library-title.add span")
     const playlistInput = document.querySelector(".library-title.add input")
     const createBtn = document.querySelector(".createBtn")
@@ -1079,7 +1078,7 @@ document.addEventListener("click", function (event) {
     }
 });
 
-function deleteFromPlaylist(playlistId, videoId) {
+window.deleteFromPlaylist = (playlistId, videoId) => {
     fetch("/deleteFromPlaylist", {
         method: 'POST',
         headers: {
@@ -1108,7 +1107,7 @@ function deleteFromPlaylist(playlistId, videoId) {
         });
 }
 
-function deletePlaylist(playlistId) {
+window.deletePlaylist = (playlistId) => {
     fetch("/deletePlaylist", {
         method: 'POST',
         headers: {
@@ -1139,7 +1138,7 @@ function deletePlaylist(playlistId) {
 }
 
 
-function shakingCovers() {
+window.shakingCovers = () => {
     const editBtn = document.querySelector(".edit-library")
     const libraryCovers = document.querySelectorAll("#library .cover-wrapper")
     const deleteBtns = document.querySelectorAll(".deleteBtn")
@@ -1170,7 +1169,7 @@ function shakingCovers() {
 }
 
 
-function showDeleteAccount() {
+window.showDeleteAccount = () => {
     const profile = document.querySelector("#profile")
     const account = document.querySelector("#deleteAccount")
 
@@ -1179,7 +1178,7 @@ function showDeleteAccount() {
 }
 
 
-function noButton() {
+window.noButton = () => {
     const profile = document.querySelector("#profile")
     const account = document.querySelector("#deleteAccount")
 
@@ -1187,7 +1186,7 @@ function noButton() {
     account.classList.add("hidden")
 }
 
-function deleteAccount() {
+window.deleteAccount = () => {
     fetch("/deleteAccount", {
         method: 'POST',
         headers: {
@@ -1206,7 +1205,7 @@ function deleteAccount() {
 }
 
 
-function registerHandler(event) {
+window.registerHandler = (event) => {
     event.preventDefault();
 
     const email = document.querySelector('input[name="email"]').value;

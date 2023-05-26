@@ -84,10 +84,6 @@ export const search = async (req, res) => {
   const userPlaylistPromise = await Playlist.find({ userId: req.session.email }).exec();
   const userPlaylistResult = await Promise.all(userPlaylistPromise)
 
-
-
-
-
   try {
     if (query !== undefined) {
       if (query === "Frédéric Chopin" || query === "Franz Schubert" || query === "Robert Schumann" || query === "Franz Liszt" || query === "Pyotr Ilyich Tchaikovsky" || query === "Felix Mendelssohn" || query === "Johannes Brahms" || query === "Sergei Rachmaninov") {
@@ -123,7 +119,7 @@ export const search = async (req, res) => {
       });
 
     } else {
-      return res.render("Search", {
+      return res.render("search", {
         pageTitle: "Search",
         playlist: playlists,
         loggedIn: loggedIn,
