@@ -1,14 +1,10 @@
-#user body {
-  overflow-y: hidden;
-}
-#user main {
+#user {
+  height: calc(100vh - 104px - 64px);
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: calc(100vh - 104px);
-  padding: 0;
+  justify-content: center;
 }
+
 #user #profile .profile-wrapper {
   display: flex;
   flex-direction: column;
@@ -16,6 +12,7 @@
   align-items: center;
   font-size: 20px;
 }
+
 #user #profile .profile-img::after {
   cursor: pointer;
   content: "Change";
@@ -31,9 +28,11 @@
   opacity: 0;
   transition: 0.2s ease-in-out;
 }
+
 #user #profile .profile-img:hover::after {
   opacity: 1;
 }
+
 #user #profile .profile-wrapper .profile-img {
   position: relative;
   width: 250px;
@@ -41,16 +40,21 @@
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 50%;
 }
+
 #user #profile .profile-wrapper div {
   margin: 3px 0;
 }
-#user #profile .profile-wrapper div:nth-of-type(2) {
-  opacity: 0.6;
+
+#user .username {
+  font-size: 30px;
+  font-weight: 800;
 }
+
 #user #profile .profile-wrapper div:nth-of-type(3) {
   font-size: 25px;
   font-weight: bold;
 }
+
 #user #profile .button-wrapper {
   margin-top: 20px;
   display: flex;
@@ -58,6 +62,7 @@
   flex-direction: column;
   align-items: center;
 }
+
 #user #profile button {
   cursor: pointer;
   font-size: 16px;
@@ -67,16 +72,19 @@
   margin: 5px;
   width: 80%;
 }
+
 #user #profile button:hover {
   background-color: rgba(255, 255, 255, 0.3);
   border-color: transparent;
 }
+
 #user section {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 #user form {
   width: 80vw;
   display: flex;
@@ -84,6 +92,7 @@
   justify-content: center;
   align-items: center;
 }
+
 #user form div {
   display: flex;
   flex-direction: flex;
@@ -93,10 +102,12 @@
   background-color: white;
   border-radius: 30px;
 }
+
 #user form img {
   width: 30px;
   height: 30px;
 }
+
 #user input {
   width: 300px;
   padding: 15px 20px;
@@ -105,6 +116,7 @@
   border-radius: 30px;
   font-size: 18px;
 }
+
 #user label {
   /* display: flex; */
   display: none;
@@ -114,21 +126,84 @@
   font-size: 20px;
   margin-bottom: 10px;
 }
+
 #user input[type=submit] {
   border-radius: 30px;
   width: 250px;
   background-color: rgba(255, 255, 255, 0.7);
   margin-bottom: 20px;
 }
+
 #user input[type=submit]:hover {
+  color: white;
   background-color: rgba(255, 255, 255, 0.3);
 }
+
+#user .submit {
+  color: black;
+  cursor: pointer;
+  width: 300px;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+  width: 250px;
+  background-color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 20px;
+}
+
+#user .submit:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
 #user h2 {
   font-size: 30px;
   margin-bottom: 20px;
 }
+
+#deleteAccount button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  font-size: 16px;
+  margin: 5px;
+  padding: 10px 30px;
+  border: 1px solid transparent;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+#deleteAccount .yes {
+  border: 1px solid #f8625a;
+  color: #f8625a;
+}
+
+#deleteAccount .yes:hover {
+  background-color: #f8625a;
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid transparent;
+}
+
+#deleteAccount .no {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+#deleteAccount .no:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 1px solid transparent;
+}
+
+#register .error {
+  background: none;
+  color: #f8625a;
+}
+
 @media (min-width: 600px) {
   #user #profile button {
     width: 400px;
   }
-}/*# sourceMappingURL=profile.css.map */
+}
+/*# sourceMappingURL=profile.css.map */

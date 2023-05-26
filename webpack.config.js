@@ -6,6 +6,7 @@ const BASE_JS = "./src/client/js/";
 module.exports = {
   entry: {
     main: BASE_JS + "main.js",
+    search: BASE_JS + "search.js"
   },
   plugins: [
     new MiniCssExtractPlugin({
@@ -32,6 +33,16 @@ module.exports = {
         test: /\.scss$/,
         use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
       },
+      {
+        test: /\.svg$/,
+        use: [
+          'svg-url-loader'
+        ]
+      },
+      {
+        test: /\.(png|jpe?g|gif)$/i,
+        type: 'asset/resource',
+      }
     ],
   },
 };

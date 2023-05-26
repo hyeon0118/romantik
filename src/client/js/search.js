@@ -3,14 +3,6 @@ const input = document.querySelector('input[name="keyword"]');
 const before = document.getElementById("before-search");
 const after = document.getElementById("after-search");
 
-// function showCloseDiv() {
-//     if (input.value !== "") {
-//         closeIcon.style.opacity = 1
-//     } else {
-//         closeIcon.style.opacity = 0;
-//     }
-// }
-
 function clearInput() {
     input.value = "";
     closeIcon.style.opacity = 0;

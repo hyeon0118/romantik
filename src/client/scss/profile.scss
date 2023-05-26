@@ -1,158 +1,197 @@
 #user {
-  body {
-    overflow-y: hidden;
-  }
+  height: calc(100vh - 104px - 64px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-  main {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: calc(100vh - 104px);
-    padding: 0;
-  }
+#user #profile .profile-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+}
+#user #profile .profile-img::after {
+  cursor: pointer;
+  content: "Change";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  background-color: rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transition: 0.2s ease-in-out;
+}
+#user #profile .profile-img:hover::after {
+  opacity: 1;
+}
+#user #profile .profile-wrapper .profile-img {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+}
+#user #profile .profile-wrapper div {
+  margin: 3px 0;
+}
 
-  #profile .profile-wrapper {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 20px;
-  }
+#user .username {
+  font-size: 30px;
+  font-weight: 800;
+}
 
-  #profile .profile-img::after {
-    cursor: pointer;
-    content: "Change";
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14px;
-    background-color: rgba(0, 0, 0, 0.3);
-    opacity: 0;
-    transition: 0.2s ease-in-out;
-  }
+#user #profile .profile-wrapper div:nth-of-type(3) {
+  font-size: 25px;
+  font-weight: bold;
+}
+#user #profile .button-wrapper {
+  margin-top: 20px;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+#user #profile button {
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 10px 30px;
+  margin: 5px;
+  width: 80%;
+}
+#user #profile button:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-color: transparent;
+}
+#user section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#user form {
+  width: 80vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#user form div {
+  display: flex;
+  flex-direction: flex;
+  align-items: center;
+  padding: 0 15px;
+  margin-bottom: 20px;
+  background-color: white;
+  border-radius: 30px;
+}
+#user form img {
+  width: 30px;
+  height: 30px;
+}
+#user input {
+  width: 300px;
+  padding: 15px 20px;
+  color: black;
+  background-color: transparent;
+  border-radius: 30px;
+  font-size: 18px;
+}
+#user label {
+  /* display: flex; */
+  display: none;
+  justify-content: center;
+  width: 100%;
+  /* padding-left: 20px; */
+  font-size: 20px;
+  margin-bottom: 10px;
+}
 
-  #profile .profile-img:hover::after {
-    opacity: 1;
-  }
+#user input[type="submit"] {
+  border-radius: 30px;
+  width: 250px;
+  background-color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 20px;
+}
 
-  #profile .profile-wrapper .profile-img {
-    position: relative;
+#user input[type="submit"]:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.3);
+}
 
-    width: 250px;
-    height: 250px;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-  }
+#user .submit {
+  color: black;
+  cursor: pointer;
+  width: 300px;
+  padding: 15px 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 30px;
+  width: 250px;
+  background-color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 20px;
+}
 
-  #profile .profile-wrapper div {
-    margin: 3px 0;
-  }
+#user .submit:hover {
+  color: white;
+  background-color: rgba(255, 255, 255, 0.3);
+}
 
-  #profile .profile-wrapper div:nth-of-type(2) {
-    opacity: 0.6;
-  }
+#user h2 {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
 
-  #profile .profile-wrapper div:nth-of-type(3) {
-    font-size: 25px;
-    font-weight: bold;
-  }
+#deleteAccount button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80%;
+  font-size: 16px;
+  margin: 5px;
+  padding: 10px 30px;
+  border: 1px solid transparent;
+  border-radius: 30px;
+  cursor: pointer;
+}
 
-  #profile .button-wrapper {
-    margin-top: 20px;
-    display: flex;
-    width: 100%;
-    flex-direction: column;
-    align-items: center;
-  }
+#deleteAccount .yes {
+  border: 1px solid #f8625a;
+  color: #f8625a;
+}
 
-  #profile button {
-    cursor: pointer;
-    font-size: 16px;
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    padding: 10px 30px;
-    margin: 5px;
-    width: 80%;
-  }
+#deleteAccount .yes:hover {
+  background-color: #f8625a;
+  color: rgba(255, 255, 255, 0.8);
+  border: 1px solid transparent;
+}
 
-  #profile button:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-    border-color: transparent;
-  }
+#deleteAccount .no {
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
 
-  section {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+#deleteAccount .no:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 1px solid transparent;
+}
 
-  form {
-    width: 80vw;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
+#register .error {
+  background: none;
+  color: #f8625a;
+}
 
-  form div {
-    display: flex;
-    flex-direction: flex;
-    align-items: center;
-    padding: 0 15px;
-    margin-bottom: 20px;
-    background-color: white;
-    border-radius: 30px;
-  }
-
-  form img {
-    width: 30px;
-    height: 30px;
-  }
-
-  input {
-    width: 300px;
-    padding: 15px 20px;
-    color: black;
-    background-color: transparent;
-    border-radius: 30px;
-    font-size: 18px;
-  }
-
-  label {
-    /* display: flex; */
-    display: none;
-    justify-content: center;
-    width: 100%;
-    /* padding-left: 20px; */
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-
-  input[type="submit"] {
-    border-radius: 30px;
-    width: 250px;
-    background-color: rgba(255, 255, 255, 0.7);
-    margin-bottom: 20px;
-  }
-
-  input[type="submit"]:hover {
-    background-color: rgba(255, 255, 255, 0.3);
-  }
-
-  h2 {
-    font-size: 30px;
-    margin-bottom: 20px;
-  }
-
-  @media (min-width: 600px) {
-    #profile button {
-      width: 400px;
-    }
+@media (min-width: 600px) {
+  #user #profile button {
+    width: 400px;
   }
 }
+
+/*# sourceMappingURL=profile.css.map */

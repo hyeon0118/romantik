@@ -1,10 +1,12 @@
 #search input {
   color: black;
 }
+
 #search .search-wrapper {
   width: 80vw;
   display: flex;
 }
+
 #search main .cover-wrapper {
   background: none;
   display: flex;
@@ -16,6 +18,7 @@
   font-weight: 500;
   text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
 }
+
 #search #era .cover-wrapper::after {
   content: "";
   width: 100%;
@@ -27,50 +30,22 @@
   background-image: linear-gradient(to bottom, rgb(0, 0, 0), rgba(0, 0, 0, 0));
   margin: 0;
 }
+
 #search #era .cover-wrapper:hover::after {
   opacity: 0.5;
 }
+
 #search .cover-wrapper span {
   z-index: 1;
 }
-#search input[type=text] {
-  border: none;
-  height: 30px;
-  width: 100%;
-  padding: 0;
-  box-sizing: border-box;
-  font-size: 14px;
-  background-color: transparent;
-}
-#search input:focus {
-  outline: none;
-}
-#search .searchbar {
-  display: flex;
-  align-items: center;
-  height: 40px;
-  box-sizing: border-box;
-  display: flex;
-  background-color: white;
-  border-radius: 20px;
-  width: 80vw;
-  min-width: 250px;
-  max-width: 500px;
-}
-#search .searchbar svg {
-  width: 25px;
-  padding: 0 10px;
-}
-#search .searchbar svg:nth-of-type(2) {
-  opacity: 0;
-  transition: 0.1s ease-in-out;
-}
+
 #search #era .music-wrapper {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 100px 100px;
   grid-gap: 15px;
 }
+
 #search #era .music-wrapper .music {
   margin: 0;
   width: 100%;
@@ -78,86 +53,104 @@
   text-align: center;
   align-items: center;
 }
+
 #search #era .music-wrapper .cover-wrapper {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 100%;
 }
+
 #search #era .early-romantic {
-  background-image: url(../img/early_romantic.jpeg);
+  background-image: url(/public/img/early_romantic.jpeg);
   background-position: center;
 }
+
 #search #era .middle-romantic {
-  background-image: url(../img/middle_romantic.jpeg);
+  background-image: url(/public/img/middle_romantic.jpeg);
   background-position: bottom;
 }
+
 #search #era .late-romantic {
-  background-image: url(../img/late_romantic.jpeg);
+  background-image: url(/public/img/late_romantic.jpeg);
   background-position: center;
 }
+
 #search #era .post-romantic {
-  background-image: url(../img/post_romantic.jpeg);
+  background-image: url(/public/img/post_romantic.jpeg);
   background-position: center;
   background-size: 105%;
 }
+
 #search #composer .cover-wrapper,
 #search #after-search .result-composer .cover-wrapper {
   filter: brightness(0.8);
   border-radius: 50%;
 }
+
 #search #composer .music {
   margin-right: 20px;
 }
+
 #search #composer .chopin {
-  background-image: url(../img/chopin.jpeg);
+  background-image: url(/public/img/chopin.jpeg);
   background-position: center;
 }
+
 #search #composer .brahms {
-  background-image: url(../img/brahms.jpeg);
+  background-image: url(/public/img/brahms.jpeg);
   background-position: center;
 }
-#search #composer .clara-schumann {
-  background-image: url(../img/clara_schumann.jpeg);
+
+#search #composer .schubert {
+  background-image: url(/public/img/schubert.jpeg);
   background-position: center;
 }
+
 #search #composer .liszt {
-  background-image: url(../img/liszt.jpeg);
+  background-image: url(/public/img/liszt.jpeg);
   background-position: center;
 }
+
 #search #composer .mendelssohn {
-  background-image: url(../img/mendelssohn.jpeg);
+  background-image: url(/public/img/mendelssohn.jpeg);
   background-position: center;
 }
+
 #search #composer .rachmaninov {
-  background-image: url(../img/rachmaninoff.jpg);
+  background-image: url(/public/img/rachmaninoff.jpg);
   background-position: center;
 }
+
 #search #composer .robert-schumann {
-  background-image: url(../img/robert_schumann.jpeg);
+  background-image: url(/public/img/robert_schumann.jpeg);
   background-position: center;
 }
+
 #search #composer .tchaikovsky {
-  background-image: url(../img/tchaikovsky.jpg);
+  background-image: url(/public/img/tchaikovsky.jpg);
   background-position: center;
 }
+
 #search #composer .info {
   margin-top: 12px;
   text-align: center;
 }
+
 #search #composer .cover-wrapper::after,
 #search #after-search .composer::after {
-  content: url("../icons/search_inactive.svg");
+  content: url("/public/icons/search_inactive.svg");
   width: 100%;
   height: 100%;
   margin: 0;
 }
+
 #search #after-search {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
 }
+
 #search #after-search .cover-wrapper {
   background-color: #444;
   min-height: 47px;
@@ -166,52 +159,43 @@
   max-height: 47px;
   border-radius: 3px;
 }
+
 #search #after-search .cover-wrapper::after {
-  display: none;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
 }
+
 #search #result-list {
   padding: 0 25px;
   width: 100%;
   max-width: 800px;
 }
+
 #search #after-search #result-list {
   display: flex;
   flex-direction: column;
   margin-top: 22px;
 }
+
 #search #after-search .result {
   position: relative;
   padding: 6px 10px;
   display: flex;
   transition: 0.2s ease-in-out;
 }
-#search #after-search .result:hover {
-  background-color: #222222;
-}
-#search #after-search .result::after {
-  content: url("../icons/play.svg");
-  left: 10px;
-  top: 6px;
-  background-color: rgba(0, 0, 0, 0.5);
-  width: 47px;
-  height: 47px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  transition: 0.2s ease-in-out;
-  opacity: 0;
-  z-index: 10;
-}
+
 #search #after-search .result:hover::after {
   opacity: 1;
   background-color: rgba(0, 0, 0, 0.5);
 }
-#search #after-search.category .info-box {
+
+#search #after-search .info-box {
   position: relative;
-  background-image: url(../img/chopin.jpeg);
   width: 100%;
-  height: 300px;
+  height: 40vh;
+  max-height: 500px;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -220,12 +204,11 @@
   justify-content: flex-end;
   padding: 0 25px 10px 25px;
   z-index: -2;
-  max-width: 500px;
-  border-radius: 10px;
 }
-#search #after-search.category .info-box::before {
+
+#search #after-search .info-box::before {
   content: "";
-  background-image: linear-gradient(to top, rgba(0, 0, 0, 0.9), rgba(0, 0, 0, 0));
+  background-image: linear-gradient(to top, rgb(0, 0, 0), rgba(0, 0, 0, 0));
   position: absolute;
   left: 0;
   top: 0;
@@ -233,41 +216,49 @@
   width: 100%;
   z-index: -1;
 }
-#search #after-search.category .info-box h2 {
+
+#search #after-search .info-box h2 {
   color: rgba(255, 255, 255, 0.8);
   font-size: 24px;
   line-height: initial;
 }
-#search #after-search.category .years {
+
+#search #after-search .years {
   font-size: 12px;
   color: rgba(255, 255, 255, 0.5);
 }
-#search #after-search.category p {
+
+#search #after-search p {
   color: rgba(255, 255, 255, 0.8);
   font-size: 14px;
   margin-top: 5px;
   line-height: 16px;
 }
+
 #search #after-search h2 {
   margin-bottom: 20px;
 }
+
 #search #after-search .result-composer {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 20px;
 }
+
 #search #after-search .result-composer .title {
   margin-top: 10px;
 }
+
 #search #after-search .result-composer .cover-wrapper {
   min-width: 125px;
   min-height: 125px;
-  background-image: url(../img/chopin.jpeg);
+  background-image: url(/public/img/chopin.jpeg);
   position: relative;
 }
+
 #search #after-search .result-composer .cover-wrapper::before {
-  content: url("../icons/search_inactive.svg");
+  content: url("/public/icons/search_inactive.svg");
   position: absolute;
   background-color: rgba(0, 0, 0, 0.5);
   left: 0;
@@ -280,9 +271,15 @@
   opacity: 0;
   transition: 0.2s ease-in-out;
 }
+
 #search #after-search .result-composer .cover-wrapper:hover::before {
   opacity: 1;
 }
+
+#search #before-search {
+  flex-direction: column;
+}
+
 @media (min-width: 530px) {
   #search #era .cover-wrapper {
     height: 100%;
@@ -303,38 +300,38 @@
   #search #era .post-romantic {
     background-size: cover;
   }
-  #search #after-search:not(.category) {
-    /* align-items: flex-start; */
+  #search #after-search {
     display: flex;
     width: calc(100vw - 240px);
-    justify-content: center;
   }
-  #search #after-search.category {
-    flex-direction: row;
+  #search #after-search {
+    flex-direction: column;
     height: 100%;
   }
-  #search #after-search.category .info-box {
-    min-height: calc(100vh - 160px);
+  #search #after-search .info-box {
+    max-height: 300px;
+    width: 100%;
   }
   #search #after-search #result-list {
+    padding-left: 25px;
     overflow-y: auto;
   }
-  #search #after-search.category #result-list {
+  #search #after-search #result-list {
     overflow-y: scroll;
     margin: 0;
     max-height: calc(100vh - 160px);
   }
-  #search #after-search.category {
+  #search #after-search {
     min-height: calc(100vh - 160px);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding-left: 25px;
     align-items: flex-start;
   }
   #search #after-search .result-composer .cover-wrapper {
     min-width: 150px;
     min-height: 150px;
-    background-image: url(../img/chopin.jpeg);
+    background-image: url(/public/img/chopin.jpeg);
     position: relative;
   }
-}/*# sourceMappingURL=search.css.map */
+}
+/*# sourceMappingURL=search.css.map */

@@ -1,3 +1,11 @@
+import "../scss/styles.scss"
+import "../scss/search.scss"
+import "../scss/player.scss"
+import "../scss/library.scss"
+import "../scss/playlist.scss"
+import "../scss/profile.scss"
+
+
 const player = document.querySelector(".player");
 const random = document.querySelector(".player .random")
 const repeat = document.querySelector(".player .repeat")
@@ -655,7 +663,6 @@ function navigateToPage(url) {
         .catch((error) => {
             console.error(error);
         });
-    scrollToTop()
 }
 
 function enterLibrary(event, url) {
@@ -1071,14 +1078,6 @@ document.addEventListener("click", function (event) {
 
     }
 });
-
-function scrollToTop() {
-    window.scrollTo({
-        top: 0,
-        left: 0,
-        behavior: "smooth"
-    });
-}
 
 function deleteFromPlaylist(playlistId, videoId) {
     fetch("/deleteFromPlaylist", {

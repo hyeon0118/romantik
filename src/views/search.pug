@@ -9,56 +9,56 @@ block content
                         h2 Era #{keyword}
                 .music-wrapper
                     .music 
-                        .early-romantic.cover-wrapper(onclick="searchCategory('Early Romantic')") Early Romantic
+                        .early-romantic.cover-wrapper(style="background-image: url('public/img/early_romantic.jpeg')", onclick="searchCategory('Early Romantic')") Early Romantic
                     .music
-                        .middle-romantic.cover-wrapper(onclick="searchCategory('Middle Romantic')") Middle Romantic
+                        .middle-romantic.cover-wrapper(style="background-image: url('public/img/middle_romantic.jpeg')",onclick="searchCategory('Middle Romantic')") Middle Romantic
                     .music    
-                        .late-romantic.cover-wrapper(onclick="searchCategory('Late Romantic')") Late Romantic
+                        .late-romantic.cover-wrapper(style="background-image: url('public/img/late_romantic.jpeg')", onclick="searchCategory('Late Romantic')") Late Romantic
                     .music    
-                        .post-romantic.cover-wrapper(onclick="searchCategory('Post Romantic')") Post Romantic
+                        .post-romantic.cover-wrapper(style="background-image: url('public/img/post_romantic.jpeg')", onclick="searchCategory('Post Romantic')") Post Romantic
             section.music-section#composer
                 .music-header
                     .title-wrapper 
                         h2 Composers 
                     .buttons.desktop 
-                        img.left(src="/static/icons/left.svg")
-                        img.right(src="/static/icons/right.svg")
+                        img.left(src="public/icons/left.svg")
+                        img.right(src="public/icons/right.svg")
                 .music-wrapper 
                     .music
-                        .chopin.cover-wrapper(onclick="searchCategory('Frédéric Chopin')")
+                        .chopin.cover-wrapper(style="background-image: url('public/img/chopin.jpeg')", onclick="searchCategory('Frédéric Chopin')")
                         .info 
                             .title Frédéric Chopin
                     .music
-                        .robert-schumann.cover-wrapper(onclick="searchCategory('Robert Schumann')")
+                        .robert-schumann.cover-wrapper(style="background-image: url('public/img/robert_schumann.jpeg')", onclick="searchCategory('Robert Schumann')")
                         .info 
                             .title Robert Schumann
                     .music
-                        .schubert.cover-wrapper(onclick="searchCategory('Franz Schubert')") 
+                        .schubert.cover-wrapper(style="background-image: url('public/img/schubert.jpeg')", onclick="searchCategory('Franz Schubert')") 
                         .info 
                             .title Franz Schubert
                     .music
-                        .liszt.cover-wrapper(onclick="searchCategory('Franz Liszt')")
+                        .liszt.cover-wrapper(style="background-image: url('public/img/liszt.jpeg')", onclick="searchCategory('Franz Liszt')")
                         .info 
                             .title Franz Liszt
                     .music
-                        .tchaikovsky.cover-wrapper(onclick="searchCategory('Pyotr Ilyich Tchaikovsky')")
+                        .tchaikovsky.cover-wrapper(style="background-image: url('public/img/tchaikovsky.jpg')", onclick="searchCategory('Pyotr Ilyich Tchaikovsky')")
                         .info 
                             .title Pyotr Ilyich Tchaikovsky
                     .music
-                        .mendelssohn.cover-wrapper(onclick="searchCategory('Felix Mendelssohn')")
+                        .mendelssohn.cover-wrapper(style="background-image: url('public/img/mendelssohn.jpeg')", onclick="searchCategory('Felix Mendelssohn')")
                         .info 
                             .title Felix Mendelssohn 
                     .music
-                        .brahms.cover-wrapper(onclick="searchCategory('Johannes Brahms')")
+                        .brahms.cover-wrapper(style="background-image: url('public/img/brahms.jpeg')", onclick="searchCategory('Johannes Brahms')")
                         .info 
                             .title Johannes Brahms
                     .music
-                        .rachmaninov.cover-wrapper(onclick="searchCategory('Sergei Rachmaninov')")
+                        .rachmaninov.cover-wrapper(style="background-image: url('public/img/rachmaninoff.jpg')", onclick="searchCategory('Sergei Rachmaninov')")
                         .info 
                             .title Sergei Rachmaninov 
         #after-search(style=`display: ${keyword == undefined ? 'none': 'flex'}`)
             - if(info)
-                .info-box(style=`background-image:url("/static/img/${info.picture}")`)
+                .info-box(style=`background-image:url("public/img/${info.picture}")`)
                     .years #{info.dates}
                     .title #{info.name}
                     p #{info.bio}
@@ -71,6 +71,6 @@ block content
                             .info 
                                 .title #{result.title}
                                 .performer #{result.performer}
-                            img.add-to-queue(src="/static/icons/add_to_queue.svg", onclick=`addPlaylist('${result.videoId}', '${result.title}', '${result.performer}', '${result.composer}', '${result.thumbnail}'); queueAlarm()`)
+                            img.add-to-queue(src="public/icons/add_to_queue.svg", onclick=`addPlaylist('${result.videoId}', '${result.title}', '${result.performer}', '${result.composer}', '${result.thumbnail}'); queueAlarm()`)
                 - else 
                     p No results found

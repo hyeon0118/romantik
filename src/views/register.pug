@@ -6,16 +6,16 @@ block content
             h2 Sign up
             form(action="/signup",method="POST")
                 .email
-                    img(src="static/icons/email.svg")
+                    img(src="public/icons/email.svg")
                     input(name="email", type="email", placeholder="Enter your E-mail")
                 .pw
-                    img(src="static/icons/pw.svg")
+                    img(src="public/icons/pw.svg")
                     input(name="password", type="password", placeholder="Enter your password")
                 .pw
-                    img(src="static/icons/pw.svg")
+                    img(src="public/icons/pw.svg")
                     input(name="verification", type="password", placeholder="Enter your password")
                 .username
-                    img(src="static/icons/user.svg")
+                    img(src="public/icons/user.svg")
                     input(name="username", type="text", placeholder="Enter your username")
                 .error 
                 .submit(onclick="registerHandler(event)") Register

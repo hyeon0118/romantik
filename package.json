@@ -1,5 +1,5 @@
 {
-  "name": "your_project_name",
+  "name": "romantik",
   "version": "1.0.0",
   "description": "xxxx",
   "scripts": {
@@ -29,8 +29,8 @@
     "node-fetch": "^2.6.1",
     "postcss": "^8.4.21",
     "pug": "^3.0.2",
-    "webpack": "^5.33.2",
-    "regenerator-runtime": "^0.13.7"
+    "regenerator-runtime": "^0.13.7",
+    "webpack": "^5.33.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.1",
@@ -47,6 +47,7 @@
     "sass": "^1.32.10",
     "sass-loader": "^11.0.1",
     "style-loader": "^2.0.0",
+    "svg-url-loader": "^8.0.0",
     "webpack": "^5.33.2",
     "webpack-cli": "^4.6.0"
   }
